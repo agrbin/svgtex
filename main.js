@@ -7,11 +7,14 @@ var REQ_TO_LIVE = -1;
 
 var server = require('webserver').create();
 var page = require('webpage').create();
+var args = require('system').args;
 var activeRequests = {};
 var service = null;
 
-// communication from page and this script is done with callPhantom API
-// https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage
+if (args.length > 1) {
+  PORT = args[1];
+}
+
 page.onCallback = function(data) {
   var record = activeRequests[data[0]];
   var resp = record[0];
@@ -38,9 +41,7 @@ page.onCallback = function(data) {
 
 console.log("loading bench page");
 page.open('index.html', function (status) {
-  console.log("server started on port " + PORT);
-  console.log("you can hit server with http://localhost:" + PORT + "/?2^n");
-  console.log(".. or by sending latex source in POST (not url encoded)");
+
   service = server.listen('127.0.0.1:' + PORT, function(req, resp) {
     var query;
     if (req.method == 'GET') {
@@ -55,6 +56,15 @@ page.open('index.html', function (status) {
       window.engine.process(q, window.callPhantom);
     }, query);
   });
+
+  if (!service) {
+    console.log("server failed to start on port " + PORT);
+    phantom.exit(1);
+  } else {
+    console.log("server started on port " + PORT);
+    console.log("you can hit server with http://localhost:" + PORT + "/?2^n");
+    console.log(".. or by sending latex source in POST (not url encoded)");
+  }
 });
 
 
