@@ -70,7 +70,7 @@ page.open('index.html', function (status) {
   } else {
     console.log("server started on port " + PORT);
     console.log("you can hit server with http://localhost:" + PORT + "/?2^n");
-    console.log(".. or by sending latex source in POST (not url encoded)");
+    console.log(".. or by sending tex source in POST (not url encoded)");
   }
 });
 
