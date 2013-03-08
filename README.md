@@ -1,7 +1,7 @@
 svgtex
 ======
 
-Using MathJax and PhantomJS to create LaTeX SVGs on server side with minimum overhead.
+Using MathJax and PhantomJS to create SVGs on server side with minimum overhead.
 
 MathJax is a great tool! Why not use it on a server side too?
 
