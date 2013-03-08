@@ -1,6 +1,3 @@
-// this file is called from index.html, in page loaded from the inside of
-// phantomjs script.
-
 // perfect singleton
 window.engine = (new (function() {
 
@@ -31,9 +28,7 @@ window.engine = (new (function() {
     this.Q.Push(["Text", this.math, latex]);
     this.Q.Push(this.bind(function() {
       // then, this toSVG call will invoke cb(result).
-      this.math.root.toSVG({
-        appendChild : function(x) {cb(x);}
-      });
+      cb(document.getElementsByTagName("SVG")[1].cloneNode(true));
     }));
   };
 

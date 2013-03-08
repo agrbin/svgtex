@@ -7,7 +7,10 @@ This file is loaded from main.js (phantomjs).
       MathJax.Hub.Config({
         jax: ["input/TeX","output/SVG"],
         showProcessingMessages: false,
-        messageStyle: "none"
+        messageStyle: "none",
+        tex2jax: {
+          inlineMath: [["$","$"],["\\(","\\)"]]
+        }
       });
     </script>
     <script type="text/javascript"
@@ -16,6 +19,6 @@ This file is loaded from main.js (phantomjs).
     <script type="text/javascript" src="engine.js"></script>
   </head>
   <body>
-  <script type="math/tex" id="math"></script>
+  <div id="math">${}$</script>
   </body>
 </html>

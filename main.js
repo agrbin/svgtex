@@ -15,6 +15,13 @@ if (args.length > 1) {
   PORT = args[1];
 }
 
+// thanks to:
+// stackoverflow.com/questions/5515869/string-length-in-bytes-in-javascript
+function utf8_strlen(str) {
+  var m = encodeURIComponent(str).match(/%[89ABab]/g);
+  return str.length + (m ? m.length : 0);
+}
+
 page.onCallback = function(data) {
   var record = activeRequests[data[0]];
   var resp = record[0];
@@ -23,7 +30,7 @@ page.onCallback = function(data) {
   if ((typeof data[1]) === 'string') {
     resp.statusCode = 200;
     resp.setHeader("Content-Type", "image/svg+xml");
-    resp.setHeader("Content-Length", data[1].length);
+    resp.setHeader("Content-Length", utf8_strlen(data[1]));
     resp.write(data[1]);
     console.log(data[0].substr(0, 30) + '.. ' +
         data[0].length + 'B query, OK ' + data[1].length + 'B result' + t);
