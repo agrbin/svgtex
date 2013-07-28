@@ -34,3 +34,6 @@ Stability
 ---------
 
 experimental.
+
+Read https://github.com/agrbin/svgtex/wiki for more details!
+
