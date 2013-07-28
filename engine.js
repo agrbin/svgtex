@@ -28,7 +28,7 @@ window.engine = (new (function() {
     this.Q.Push(["Text", this.math, latex]);
     this.Q.Push(this.bind(function() {
       // then, this toSVG call will invoke cb(result).
-      cb(document.getElementsByTagName("SVG")[1].cloneNode(true));
+      cb(document.getElementsByTagName("svg")[1].cloneNode(true));
     }));
   };
 
