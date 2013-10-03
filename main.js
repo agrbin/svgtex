@@ -29,11 +29,12 @@ page.onCallback = function(data) {
 
   if ((typeof data[1]) === 'string') {
     resp.statusCode = 200;
-    resp.setHeader("Content-Type", "image/svg+xml");
-    resp.setHeader("Content-Length", utf8_strlen(data[1]));
-    resp.write(data[1]);
+	var out = JSON.stringify({tex:data[0],svg:data[1],mml:data[2]});
+    resp.setHeader("Content-Type", "application/json");
+    resp.setHeader("Content-Length", out.length);
+    resp.write(out);
     console.log(data[0].substr(0, 30) + '.. ' +
-        data[0].length + 'B query, OK ' + data[1].length + 'B result' + t);
+        data[0].length + 'B query, OK ' + out.length + 'B result' + t);
   } else {
     resp.statusCode = 400;
     resp.write(data[1][0]);

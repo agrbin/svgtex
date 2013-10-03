@@ -5,6 +5,17 @@ window.engine = (new (function() {
   this.math = null;
   this.buffer = [];
 
+  function toMathML(jax,callback) {
+	  var mml;
+	  try {
+		  mml = jax.root.toMathML("");
+	  } catch(err) {
+		  if (!err.restart) {throw err} // an actual error
+		  return MathJax.Callback.After([toMathML,jax,callback],err.restart);
+	  }
+	  MathJax.Callback(callback)(mml);
+  }
+
   // bind helper.
   this.bind = function(method) {
     var engine = this;
@@ -97,7 +108,14 @@ window.engine = (new (function() {
       this.buffer.push( [latex, cb] );
     } else {
       this._process(latex, this.bind(function(svg) {
-        cb([latex, this._merge(svg)]);
+		  var jax = MathJax.Hub.getAllJax();
+		  var mergedSVG = this._merge(document.getElementsByTagName("svg")[1].cloneNode(true));
+		  toMathML(jax[0],function (mml) {
+			  mml = mml;
+			  //console.log(jax[0].originalText + "\n\n=>\n\n"+ mml);
+				cb([latex, mergedSVG, mml]);
+		  });
+		  //console.log(mergedSVG);
       }));
     }
   };
