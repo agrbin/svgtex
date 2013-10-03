@@ -6,14 +6,14 @@ window.engine = (new (function() {
   this.buffer = [];
 
   function toMathML(jax,callback) {
-    var mml;
-    try {
-      mml = jax.root.toMathML("");
-    } catch(err) {
-      if (!err.restart) {throw err} // an actual error
-      return MathJax.Callback.After([toMathML,jax,callback],err.restart);
-    }
-    MathJax.Callback(callback)(mml);
+	  var mml;
+	  try {
+		  mml = jax.root.toMathML("");
+	  } catch(err) {
+		  if (!err.restart) {throw err} // an actual error
+		  return MathJax.Callback.After([toMathML,jax,callback],err.restart);
+	  }
+	  MathJax.Callback(callback)(mml);
   }
 
   // bind helper.
@@ -29,11 +29,7 @@ window.engine = (new (function() {
   this._init = function() {
     this.Q.Push(this.bind(function () {
       this.math = MathJax.Hub.getAllJax("math")[0];
-            this._process_buffered();
-      var jax = MathJax.Hub.getAllJax();
-      toMathML(jax[0],function (mml) {
-          alert(jax[0].originalText + "\n\n=>\n\n"+ mml);
-        });
+      this._process_buffered();
     }));
   };
 
@@ -70,13 +66,20 @@ window.engine = (new (function() {
 
     // clone and copy all used paths into local defs.
     // xlink:href in uses FIX
-    var uses = svg.getElementsByTagName("use");
+    var uses = svg.getElementsByTagName("use"),
+		copied = {};
     for (var k = 0; k < uses.length; ++k) {
       var id = uses[k].getAttribute("href");
+	  if (id && copied[id]) {
+		  uses[k].setAttribute("xlink:href", id);
+		  // Already copied, skip
+		  continue;
+	  }
       defs.appendChild(
         document.getElementById(id.substr(1)).cloneNode(true)
       );
       uses[k].setAttribute("xlink:href", id);
+	  copied[id] = true;
     }
 
     // check for errors in svg.
@@ -112,8 +115,14 @@ window.engine = (new (function() {
       this.buffer.push( [latex, cb] );
     } else {
       this._process(latex, this.bind(function(svg) {
-        alert(this._merge(svg));
-        cb([latex, this._merge(svg)]);
+		  var jax = MathJax.Hub.getAllJax();
+		  var mergedSVG = this._merge(document.getElementsByTagName("svg")[1].cloneNode(true));
+		  toMathML(jax[0],function (mml) {
+			  mml = mml;
+			  //console.log(jax[0].originalText + "\n\n=>\n\n"+ mml);
+				cb([latex, mergedSVG, mml]);
+		  });
+		  //console.log(mergedSVG);
       }));
     }
   };

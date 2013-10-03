@@ -5,7 +5,6 @@ This file is loaded from main.js (phantomjs).
   <head>
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
-        extension:["tex2jax.js"],
         jax: ["input/TeX","output/SVG","output/NativeMML"],
         showProcessingMessages: false,
         messageStyle: "none",
@@ -15,11 +14,11 @@ This file is loaded from main.js (phantomjs).
       });
     </script>
     <script type="text/javascript"
-      src="http://cdn.mathjax.org/mathjax/latest/MathJax.js">
+      src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_SVG-full">
     </script>
     <script type="text/javascript" src="engine.js"></script>
   </head>
   <body>
-  <div id="math">${\sin(x^2)}$</div>
+  <div id="math">${}$</div>
   </body>
 </html>
