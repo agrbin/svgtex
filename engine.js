@@ -5,6 +5,17 @@ window.engine = (new (function() {
   this.math = null;
   this.buffer = [];
 
+  function toMathML(jax,callback) {
+    var mml;
+    try {
+      mml = jax.root.toMathML("");
+    } catch(err) {
+      if (!err.restart) {throw err} // an actual error
+      return MathJax.Callback.After([toMathML,jax,callback],err.restart);
+    }
+    MathJax.Callback(callback)(mml);
+  }
+
   // bind helper.
   this.bind = function(method) {
     var engine = this;
@@ -18,7 +29,11 @@ window.engine = (new (function() {
   this._init = function() {
     this.Q.Push(this.bind(function () {
       this.math = MathJax.Hub.getAllJax("math")[0];
-      this._process_buffered();
+            this._process_buffered();
+      var jax = MathJax.Hub.getAllJax();
+      toMathML(jax[0],function (mml) {
+          alert(jax[0].originalText + "\n\n=>\n\n"+ mml);
+        });
     }));
   };
 
@@ -97,6 +112,7 @@ window.engine = (new (function() {
       this.buffer.push( [latex, cb] );
     } else {
       this._process(latex, this.bind(function(svg) {
+        alert(this._merge(svg));
         cb([latex, this._merge(svg)]);
       }));
     }
