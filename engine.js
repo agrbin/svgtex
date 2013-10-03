@@ -70,7 +70,8 @@ window.engine = (new (function() {
 		copied = {};
     for (var k = 0; k < uses.length; ++k) {
       var id = uses[k].getAttribute("href");
-	  if (copied[id]) {
+	  if (id && copied[id]) {
+		  uses[k].setAttribute("xlink:href", id);
 		  // Already copied, skip
 		  continue;
 	  }
