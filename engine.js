@@ -66,13 +66,19 @@ window.engine = (new (function() {
 
     // clone and copy all used paths into local defs.
     // xlink:href in uses FIX
-    var uses = svg.getElementsByTagName("use");
+    var uses = svg.getElementsByTagName("use"),
+		copied = {};
     for (var k = 0; k < uses.length; ++k) {
       var id = uses[k].getAttribute("href");
+	  if (copied[id]) {
+		  // Already copied, skip
+		  continue;
+	  }
       defs.appendChild(
         document.getElementById(id.substr(1)).cloneNode(true)
       );
       uses[k].setAttribute("xlink:href", id);
+	  copied[id] = true;
     }
 
     // check for errors in svg.
