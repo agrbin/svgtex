@@ -66,10 +66,6 @@ window.engine = (new (function() {
 			defs = document.getElementById('MathJax_SVG_Hidden')
 			.nextSibling.childNodes[0].cloneNode(false);
 
-		// append shalow defs and change xmlns.
-		svg.insertBefore(defs, svg.childNodes[0]);
-		svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-
 		// clone and copy all used paths into local defs.
 		// xlink:href in uses FIX
 		uses = svg.getElementsByTagName('use');
