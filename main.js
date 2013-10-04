@@ -2,9 +2,6 @@
 // and will receive POST requests (not urlencoded)
 var PORT = 16000;
 
-// server will process this many queries and then exit. (-1, never stop).
-var REQ_TO_LIVE = -1;
-
 var server = require('webserver').create();
 var page = require('webpage').create();
 var args = require('system').args;
@@ -42,9 +39,6 @@ page.onCallback = function(data) {
     //    data[0].length + 'B query, ERR ' + data[1][0] + t);
   }
   resp.close();
-  if (!(--REQ_TO_LIVE)) {
-    phantom.exit();
-  }
 };
 
 console.log("loading bench page");
@@ -56,7 +50,7 @@ page.open('index.html', function (status) {
       // URL starts with /? and is urlencoded.
       query = unescape(req.url.substr(2));
     } else {
-      query = req.postRaw;
+      query = req.post.tex;
     }
 	if (query === undefined) {
 		return resp.close();

@@ -11,7 +11,8 @@ var express = require('express'),
 	cluster = require('cluster'),
 	http = require('http'),
 	fs = require('fs'),
-	child_process = require('child_process');
+	child_process = require('child_process'),
+	querystring = require('querystring');
 
 var config;
 
@@ -51,12 +52,14 @@ function backendCB (err, stdout, stderr) {
 }
 
 var backend,
-	backendPort;
+	backendPort,
+	requestQueue = [];
+
 function startBackend () {
 	if (backend) {
 		backend.kill();
 	}
-	backendPort = Math.floor(1024 + Math.random() * 50000);
+	backendPort = Math.floor(9000 + Math.random() * 50000);
 	console.error(instanceName + ': Starting backend on port ' + backendPort);
 	backend = child_process.exec('phantomjs main.js ' + backendPort, backendCB);
 	backend.stdout.pipe(process.stdout);
@@ -85,29 +88,23 @@ app.get(/^\/robots.txt$/, function ( req, res ) {
 	res.end( "User-agent: *\nDisallow: /\n" );
 });
 
-
-app.post(/^\/$/, function ( req, res ) {
-	// First some rudimentary input validation
-	if (!req.body.tex) {
-		res.writeHead(400);
-		return res.end(JSON.stringify({error: "'tex' post parameter is missing!"}));
-	}
-	var tex = new Buffer(req.body.tex);
+function handleRequest(req, res, tex) {
 	// do the backend request
-	var options = {
-		hostname: 'localhost',
-		port: backendPort.toString(),
-		path: '/',
-		method: 'POST',
-		headers: {
-			'Content-Length': tex.length,
-			'Content-Type': 'application/x-www-form-urlencoded',
-			'Connection': 'close'
-		},
-		agent: false
-	};
+	var query = new Buffer(querystring.stringify({tex:tex})),
+		options = {
+			hostname: 'localhost',
+			port: backendPort.toString(),
+			path: '/',
+			method: 'POST',
+			headers: {
+				'Content-Length': query.length,
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Connection': 'close'
+			},
+			agent: false
+		};
 	var chunks = [];
-	console.log(options);
+	//console.log(options);
 	var httpreq = http.request(options, function(httpres) {
 		httpres.on('data', function(chunk) {
 			chunks.push(chunk);
@@ -119,8 +116,10 @@ app.post(/^\/$/, function ( req, res ) {
 				'Content-type': 'application/json',
 				'Content-length': buf.length
 			});
-			res.write(buf)
+			res.write(buf);
 			res.end();
+			requestQueue.shift();
+			handleRequests();
 		});
 	});
 	httpreq.on('error', function(err) {
@@ -129,9 +128,30 @@ app.post(/^\/$/, function ( req, res ) {
 		return res.end(JSON.stringify({error: "Backend error: " + err.toString()}));
 	});
 
-	httpreq.write(tex);
-	httpreq.end();
+	httpreq.end(query);
+}
 
+function handleRequests() {
+	// Call the next request on the queue
+	if (requestQueue.length) {
+		requestQueue[0]();
+	}
+}
+
+app.post(/^\/$/, function ( req, res ) {
+	// First some rudimentary input validation
+	if (!req.body.tex) {
+		res.writeHead(400);
+		return res.end(JSON.stringify({error: "'tex' post parameter is missing!"}));
+	}
+	var tex = req.body.tex;
+
+	requestQueue.push(handleRequest.bind(null, req, res, tex));
+	// phantomjs only handles one request at a time. Enforce this.
+	if (requestQueue.length === 1) {
+		// Start this process
+		handleRequests();
+	}
 
 });
 
