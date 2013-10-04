@@ -92,6 +92,7 @@ app.post(/^\/$/, function ( req, res ) {
 		res.writeHead(400);
 		return res.end(JSON.stringify({error: "'tex' post parameter is missing!"}));
 	}
+	var tex = new Buffer(req.body.tex);
 	// do the backend request
 	var options = {
 		hostname: 'localhost',
@@ -99,7 +100,7 @@ app.post(/^\/$/, function ( req, res ) {
 		path: '/',
 		method: 'POST',
 		headers: {
-			'Content-Length': req.body.tex.length,
+			'Content-Length': tex.length,
 			'Content-Type': 'application/x-www-form-urlencoded',
 			'Connection': 'close'
 		},
@@ -111,14 +112,15 @@ app.post(/^\/$/, function ( req, res ) {
 		httpres.on('data', function(chunk) {
 			chunks.push(chunk);
 		});
-		httpreq.on('end', function() {
+		httpres.on('end', function() {
 			var buf = chunks.join('');
 			res.writeHead(200,
 			{
 				'Content-type': 'application/json',
 				'Content-length': buf.length
 			});
-			res.end(buf);
+			res.write(buf)
+			res.end();
 		});
 	});
 	httpreq.on('error', function(err) {
@@ -127,16 +129,9 @@ app.post(/^\/$/, function ( req, res ) {
 		return res.end(JSON.stringify({error: "Backend error: " + err.toString()}));
 	});
 
-	httpreq.write(new Buffer(req.body.tex));
+	httpreq.write(tex);
 	httpreq.end();
 
-
-	//request.get('http://localhost:' + backendPort + '/' + req.body.tex,
-	//	{},
-	//	function(err, resp, body) {
-	//		res.end(body);
-	//	}
-	//);
 
 });
 

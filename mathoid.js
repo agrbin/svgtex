@@ -4,45 +4,45 @@
  * not much else right now.
  */
 
-var cluster = require('cluster'),
-	storoid_worker = require('./mathoid-worker.js');
+var cluster = require('cluster');
 
 // Start a few more workers than there are cpus visible to the OS, so that we
 // get some degree of parallelism even on single-core systems. A single
 // long-running request would otherwise hold up all concurrent short requests.
-var numCPUs = require('os').cpus().length + 3;
 
 if (cluster.isMaster) {
-  // Fork workers.
-  for (var i = 0; i < 1 /*numCPUs*/; i++) {
-    cluster.fork();
-  }
+	var numCPUs = require('os').cpus().length + 3;
+	// Fork workers.
+	for (var i = 0; i < numCPUs; i++) {
+		cluster.fork();
+	}
 
-  cluster.on('exit', function(worker, code, signal) {
-    if (!worker.suicide) {
-      var exitCode = worker.process.exitCode;
-      console.log('worker', worker.process.pid,
-                  'died ('+exitCode+'), restarting.');
-      cluster.fork();
-    }
-  });
+	cluster.on('exit', function(worker, code, signal) {
+		if (!worker.suicide) {
+			var exitCode = worker.process.exitCode;
+			console.log('worker', worker.process.pid,
+				'died ('+exitCode+'), restarting.');
+			cluster.fork();
+		}
+	});
 
-  process.on('SIGTERM', function() {
-    console.log('master shutting down, killing workers');
-    var workers = cluster.workers;
-    Object.keys(workers).forEach(function(id) {
-        console.log('Killing worker ' + id);
-        workers[id].destroy();
-    });
-    console.log('Done killing workers, bye');
-    process.exit(1);
-  } );
+	process.on('SIGTERM', function() {
+		console.log('master shutting down, killing workers');
+		var workers = cluster.workers;
+		Object.keys(workers).forEach(function(id) {
+			console.log('Killing worker ' + id);
+			workers[id].destroy();
+		});
+		console.log('Done killing workers, bye');
+		process.exit(1);
+	} );
 } else {
-  process.on('SIGTERM', function() {
-    console.log('Worker shutting down');
-    process.exit(1);
-  });
-  // when running on appfog.com the listen port for the app
-  // is passed in an environment variable.  Most users can ignore this!
-  storoid_worker.listen(process.env.VCAP_APP_PORT || 8010);
+	storoid_worker = require('./mathoid-worker.js');
+	process.on('SIGTERM', function() {
+		console.log('Worker shutting down');
+		process.exit(1);
+	});
+	// when running on appfog.com the listen port for the app
+	// is passed in an environment variable.  Most users can ignore this!
+	storoid_worker.listen(process.env.VCAP_APP_PORT || 8010);
 }
