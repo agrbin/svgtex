@@ -31,21 +31,21 @@ page.onCallback = function(data) {
     resp.statusCode = 200;
 	var out = JSON.stringify({tex:data[0],svg:data[1],mml:data[2]});
     resp.setHeader("Content-Type", "application/json");
-    resp.setHeader("Content-Length", out.length);
+    resp.setHeader("Content-Length", utf8_strlen(out.length).toString());
     resp.write(out);
-    console.log(data[0].substr(0, 30) + '.. ' +
-        data[0].length + 'B query, OK ' + out.length + 'B result' + t);
+    //console.log(data[0].substr(0, 30) + '.. ' +
+    //    data[0].length + 'B query, OK ' + out.length + 'B result' + t);
   } else {
     resp.statusCode = 400;
     resp.write(data[1][0]);
-    console.log(data[0].substr(0, 30) + '.. ' +
-        data[0].length + 'B query, ERR ' + data[1][0] + t);
+    //console.log(data[0].substr(0, 30) + '.. ' +
+    //    data[0].length + 'B query, ERR ' + data[1][0] + t);
   }
   resp.close();
   if (!(--REQ_TO_LIVE)) {
     phantom.exit();
   }
-}
+};
 
 console.log("loading bench page");
 page.open('index.html', function (status) {
@@ -58,6 +58,9 @@ page.open('index.html', function (status) {
     } else {
       query = req.postRaw;
     }
+	if (query === undefined) {
+		return resp.close();
+	}
     activeRequests[query] = [resp, (new Date()).getTime()];
     // this is just queueing call, it will return at once.
     page.evaluate(function(q) {
@@ -68,11 +71,11 @@ page.open('index.html', function (status) {
   if (!service) {
     console.log("server failed to start on port " + PORT);
     phantom.exit(1);
-  } else {
+  }/* else {
     console.log("server started on port " + PORT);
     console.log("you can hit server with http://localhost:" + PORT + "/?2^n");
     console.log(".. or by sending tex source in POST (not url encoded)");
-  }
+  }*/
 });
 
 
