@@ -6,8 +6,6 @@
 
 // global includes
 var express = require('express'),
-	async = require('async'),
-	request = require('request'),
 	cluster = require('cluster'),
 	http = require('http'),
 	fs = require('fs'),
@@ -40,31 +38,31 @@ console.log( ' - ' + instanceName + ' loading...' );
  * Backend setup
  */
 var restarts = 10;
-function backendCB (err, stdout, stderr) {
-	if (err) {
-		restarts--;
-		if (restarts > 0) {
-			startBackend();
-		}
-		console.error(err.toString());
-		process.exit(1);
-	}
-}
 
 var backend,
 	backendPort,
 	requestQueue = [];
 
-function startBackend () {
+var startBackend = function () {
 	if (backend) {
 		backend.kill();
 	}
+	var backendCB = function (err, stdout, stderr) {
+		if (err) {
+			restarts--;
+			if (restarts > 0) {
+				startBackend();
+			}
+			console.error(err.toString());
+			process.exit(1);
+		}
+	};
 	backendPort = Math.floor(9000 + Math.random() * 50000);
 	console.error(instanceName + ': Starting backend on port ' + backendPort);
 	backend = child_process.exec('phantomjs main.js ' + backendPort, backendCB);
 	backend.stdout.pipe(process.stdout);
 	backend.stderr.pipe(process.stderr);
-}
+};
 startBackend();
 
 /* -------------------- Web service --------------------- */
@@ -88,6 +86,14 @@ app.get(/^\/robots.txt$/, function ( req, res ) {
 	res.end( "User-agent: *\nDisallow: /\n" );
 });
 
+var handleRequests = function() {
+	// Call the next request on the queue
+	if (requestQueue.length) {
+		requestQueue[0]();
+	}
+};
+
+
 function handleRequest(req, res, tex) {
 	// do the backend request
 	var query = new Buffer(querystring.stringify({tex:tex})),
@@ -110,7 +116,7 @@ function handleRequest(req, res, tex) {
 			chunks.push(chunk);
 		});
 		httpres.on('end', function() {
-			var buf = chunks.join('');
+			var buf = Buffer.concat(chunks);
 			res.writeHead(200,
 			{
 				'Content-type': 'application/json',
@@ -129,13 +135,6 @@ function handleRequest(req, res, tex) {
 	});
 
 	httpreq.end(query);
-}
-
-function handleRequests() {
-	// Call the next request on the queue
-	if (requestQueue.length) {
-		requestQueue[0]();
-	}
 }
 
 app.post(/^\/$/, function ( req, res ) {

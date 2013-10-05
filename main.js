@@ -9,46 +9,48 @@ var activeRequests = {};
 var service = null;
 
 if (args.length > 1) {
-  PORT = args[1];
+	PORT = args[1];
 }
 
 // thanks to:
 // stackoverflow.com/questions/5515869/string-length-in-bytes-in-javascript
-function utf8_strlen(str) {
+function utf8Strlen(str) {
   var m = encodeURIComponent(str).match(/%[89ABab]/g);
   return str.length + (m ? m.length : 0);
 }
 
 page.onCallback = function(data) {
-  var record = activeRequests[data[0]];
-  var resp = record[0];
-  var t = ', took ' + (((new Date()).getTime() - record[1])) + 'ms.';
-
-  if ((typeof data[1]) === 'string') {
-    resp.statusCode = 200;
-	var out = JSON.stringify({tex:data[0],svg:data[1],mml:data[2]});
-    resp.setHeader("Content-Type", "application/json");
-    resp.setHeader("Content-Length", utf8_strlen(out).toString());
-    resp.write(out);
-    //console.log(data[0].substr(0, 30) + '.. ' +
-    //    data[0].length + 'B query, OK ' + out.length + 'B result' + t);
-  } else {
-    resp.statusCode = 400;
-    resp.write(data[1][0]);
-    //console.log(data[0].substr(0, 30) + '.. ' +
-    //    data[0].length + 'B query, ERR ' + data[1][0] + t);
-  }
-  resp.close();
+	var out,
+		log = '',
+		record = activeRequests[data[0]],
+		resp = record[0],
+		t = ', took ' + (((new Date()).getTime() - record[1])) + 'ms.';
+	if ((typeof data[1]) === 'string') {
+		resp.statusCode = 200;
+		log = data[0].substr(0, 30) + '.. ' + data[0].length + 'B query, OK ' + data[1].length  + '/' + data[2].length  + 'B result' + t;
+		out = JSON.stringify({tex:data[0],svg:data[1],mml:data[2],'log':log, 'sucess':true});
+		resp.setHeader('Content-Type', 'application/json');
+		resp.setHeader('Content-Length', utf8Strlen(out).toString() );
+		resp.write(out);
+		//console.log(log);
+	} else {
+		resp.statusCode = 400;
+		log = data[0].substr(0, 30) + '.. ' +
+		data[0].length + 'B query, ERR ' + data[1][0] + t;
+		out = JSON.stringify({err:data[1][0],svg:data[1],mml:data[2],'log':log,'sucess':false});
+		resp.write(out);
+		//console.log(log);
+	}
+	resp.close();
 };
 
-console.log("loading bench page");
-page.open('index.html', function (status) {
-
+console.log('loading bench page');
+page.open('index.html', function ( ) {
   service = server.listen('127.0.0.1:' + PORT, function(req, resp) {
     var query;
-    if (req.method == 'GET') {
+    if (req.method === 'GET') {
       // URL starts with /? and is urlencoded.
-      query = unescape(req.url.substr(2));
+      query = decodeURI(req.url.substr(2));
     } else {
       query = req.post.tex;
     }
@@ -63,7 +65,7 @@ page.open('index.html', function (status) {
   });
 
   if (!service) {
-    console.log("server failed to start on port " + PORT);
+    console.log('server failed to start on port ' + PORT);
     phantom.exit(1);
   }/* else {
     console.log("server started on port " + PORT);
