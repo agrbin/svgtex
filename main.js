@@ -1,6 +1,6 @@
 // this script will set up a HTTP server on this port (local connections only)
 // and will receive POST requests (not urlencoded)
-var PORT = 16000;
+var PORT = parseInt(require('system').env.PORT) || 16000;
 
 // server will process this many queries and then exit. (-1, never stop).
 var REQ_TO_LIVE = -1;
@@ -49,7 +49,7 @@ page.onCallback = function(data) {
 console.log("loading bench page");
 page.open('index.html', function (status) {
 
-  service = server.listen('127.0.0.1:' + PORT, function(req, resp) {
+  service = server.listen('0.0.0.0:' + PORT, function(req, resp) {
     var query;
     if (req.method == 'GET') {
       // URL starts with /? and is urlencoded.
