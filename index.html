@@ -5,20 +5,40 @@ This file is loaded from main.js (phantomjs).
   <head>
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
-        jax: ["input/TeX","output/SVG"],
         showProcessingMessages: false,
         messageStyle: "none",
         tex2jax: {
-          inlineMath: [["$","$"],["\\(","\\)"]]
+          inlineMath: [["$", "$"], ["\\(", "\\)"]]
         }
       });
     </script>
+
+    <!--
+      The latest version of MathJax that's deployed to the CDN has a bug that prevents
+      MathML from working in PhantomJS:  https://github.com/mathjax/MathJax/issues/672
+      But, the latest .zip download has the fix.  So, for now, it needs to be
+      deployed locally.
+    -->
     <script type="text/javascript"
-      src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default">
+      src="../mathjax-MathJax-78ea6af/MathJax.js?config=TeX-AMS-MML_SVG">
     </script>
+    <!--
+      When they get that fixed:
+      <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_SVG">
+      </script>
+    -->
     <script type="text/javascript" src="engine.js"></script>
   </head>
   <body>
-  <div id="math">${}$</div>
+    <div id="math-latex">${n^2}$</div>
+    <div id="math-mml">
+      <math>
+        <msup>
+          <mi>b</mi>
+          <mn>2</mn>
+        </msup>
+      </math>
+    </div>
   </body>
 </html>

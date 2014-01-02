@@ -2,7 +2,9 @@
 window.engine = (new (function() {
 
   this.Q = MathJax.Hub.queue;
-  this.math = null;
+  this.latex = null;
+  this.mml = null;
+  // FIXME:  I don't think buffer can tell the diff between latex and mml
   this.buffer = [];
 
   // bind helper.
@@ -13,34 +15,44 @@ window.engine = (new (function() {
     };
   };
 
-  // initialize Engine, after MathJax is loaded, this.math will
-  // point to our jax.
+  // Initialize engine.
+  // After MathJax is loaded:
+  //   - this.latex will point to the LaTeX div and jax, and
+  //   - this.mml will point to the MathML div and jax
   this._init = function() {
     this.Q.Push(this.bind(function () {
-      this.math = MathJax.Hub.getAllJax("math")[0];
+      this.latex = {
+        div: document.getElementById("math-latex"),
+        jax: MathJax.Hub.getAllJax("math-latex")[0]
+      }
+      this.mml = {
+        div: document.getElementById("math-mml"),
+        jax: MathJax.Hub.getAllJax("math-mml")[0]
+      }
       this._process_buffered();
     }));
   };
 
-  // receives input latex string and invokes cb
-  // function with svg result.
-  this._process = function(latex, cb) {
-    this.Q.Push(["Text", this.math, latex]);
+  // Receives an input string and pushes a conversion job onto the MathJax
+  // queue. MathJax, when it is finished conversion, will then invoke the next
+  // function in the queue, which is the callback, that makes its way back to
+  // the client in the response.
+  this._process = function(src_type, src, cb) {
+    this.Q.Push(["Text", this[src_type].jax, src]);
     this.Q.Push(this.bind(function() {
-      // then, this toSVG call will invoke cb(result).
-      cb(document.getElementsByTagName("svg")[1].cloneNode(true));
+      cb(this[src_type].div.getElementsByTagName("svg")[0].cloneNode(true));
     }));
   };
 
-  // this is a helper for merge, who will want to decide
-  // whether something went wrong while rendering latex.
+  // This is a helper for merge, who will want to decide
+  // whether something went wrong while rendering the math.
   // the constant #C00 could be overriden by config!!
   this._text_is_error = function(txt) {
     return txt.getAttribute("fill") == "#C00" &&
       txt.getAttribute("stroke") == "none";
   };
 
-  // mathjax keeps parts of SVG symbols in one hidden svg at
+  // MathJax keeps parts of SVG symbols in one hidden svg at
   // the begining of the DOM, this function should take two
   // SVGs and return one stand-alone svg which could be
   // displayed like an image on some different page.
@@ -78,9 +90,10 @@ window.engine = (new (function() {
     return tmpDiv.innerHTML;
   };
 
-  // if someone calls process before init is complete,
-  // that call will be stored into buffer. After the init
+  // If someone calls process() before init is complete,
+  // that call will be stored into a buffer. After the init
   // is complete, all buffer stuff will get resolved.
+  // FIXME:  need to test buffering, since the introduction of MML.
   this._process_buffered = function() {
     for (var i = 0; i < this.buffer.length; ++i) {
       this.process(this.buffer[i][0], this.buffer[i][1]);
@@ -88,19 +101,28 @@ window.engine = (new (function() {
     this.buffer = [];
   };
 
-  // callback will be invoked with array [original latex, SVG output]
-  // if there is an error during the latex rendering then second
-  // element (instead of SVG output) will be array again with
-  // only one string element describing the error message.
-  this.process = function(latex, cb) {
-    if (this.math === null) {
-      this.buffer.push( [latex, cb] );
-    } else {
-      this._process(latex, this.bind(function(svg) {
-        cb([latex, this._merge(svg)]);
+  // When process() is finished, the callback cb will be invoked with an
+  // array [<src string>, <svg out>].
+  // If there is an error during the rendering then the second
+  // element, instead of a string, will be a nested array with
+  // one string element giving the error message.
+  this.process = function(src_type, src, cb) {
+    // For debugging, the console doesn't work from here, but you can return dummy
+    // data, as follows.  It will show up in the browser instead of the real results.
+    //cb([src, "query is '" + src + "'"]);
+
+    if (this[src_type] === null || this[src_type].jax === null) {
+      this.buffer.push( [src_type, src, cb] );
+    }
+    else {
+      // bind() here (see "bind helper", above) just makes sure that `this`,
+      // inside the function, continues to refer to this engine object.
+      this._process(src_type, src, this.bind(function(svg) {
+        cb([src, this._merge(svg)]);
       }));
     }
   };
+
 
   this._init();
 }));
