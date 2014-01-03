@@ -120,7 +120,10 @@ function parse_request(req) {
 function parse_parameterized_request(req_content) {
   var param_strings = req_content.split(/&/);
   var num_param_strings = param_strings.length;
-  var parsed = {};
+  // default values:
+  var parsed = {
+    width: null
+  };
   for (var i = 0; i < num_param_strings; ++i) {
     var ps = param_strings[i];
     var ie = ps.indexOf('=');
@@ -144,9 +147,6 @@ function parse_parameterized_request(req_content) {
       parsed.type = latex_or_mml(val);
       parsed.src = val;
     }
-    else if (key == 'display') {
-      parsed.display = val;
-    }
     else if (key == 'width') {
       parsed.width = val;
     }
@@ -159,8 +159,6 @@ function parse_parameterized_request(req_content) {
   }
   return parsed;
 }
-
-
 
 console.log("loading bench page");
 page.open('index.html', function (status) {
@@ -177,29 +175,16 @@ page.open('index.html', function (status) {
       return;
     }
 
-  /*
-    var query;
-    if (req.method == 'GET') {
-      var url = req.url;
-      var iq = url.indexOf("?");
-      query = decodeURIComponent(url.substr(iq+1));
-    }
-    else {
-      query = req.postRaw;
-    }
-  */
-
     activeRequests[query.src] = [resp, (new Date()).getTime()];
 
     // The following evaluates the function argument in the page's context,
-    // with query -> q. That, in turn, calls the process_latex() function in
+    // with query -> _query. That, in turn, calls the process() function in
     // engine.js, which causes MathJax to render the math.  The callback is
     // PhantomJS's callPhantom() function, which in turn calls page.onCallback(),
-    // above.
-    // This just queues up the call, and will return at once.
-    page.evaluate(function(q, st) {
-      window.engine.process(st, q, window.callPhantom);
-    }, query.src, query.type);
+    // above.  This just queues up the call, and will return at once.
+    page.evaluate(function(_query) {
+      window.engine.process(_query, window.callPhantom);
+    }, query);
   });
 
   if (!service) {

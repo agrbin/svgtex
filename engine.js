@@ -4,7 +4,7 @@ window.engine = (new (function() {
   this.Q = MathJax.Hub.queue;
   this.latex = null;
   this.mml = null;
-  // FIXME:  I don't think buffer can tell the diff between latex and mml
+  // FIXME:  need to test buffering
   this.buffer = [];
 
   // bind helper.
@@ -23,11 +23,15 @@ window.engine = (new (function() {
     this.Q.Push(this.bind(function () {
       this.latex = {
         div: document.getElementById("math-latex"),
-        jax: MathJax.Hub.getAllJax("math-latex")[0]
+        jax: MathJax.Hub.getAllJax("math-latex")[0],
+        last_width: null,
+        last_src: ''
       }
       this.mml = {
         div: document.getElementById("math-mml"),
-        jax: MathJax.Hub.getAllJax("math-mml")[0]
+        jax: MathJax.Hub.getAllJax("math-mml")[0],
+        last_width: null,
+        last_src: ''
       }
       this._process_buffered();
     }));
@@ -37,10 +41,38 @@ window.engine = (new (function() {
   // queue. MathJax, when it is finished conversion, will then invoke the next
   // function in the queue, which is the callback, that makes its way back to
   // the client in the response.
-  this._process = function(src_type, src, cb) {
-    this.Q.Push(["Text", this[src_type].jax, src]);
+  this._process = function(query, cb) {
+    var type = query.type,
+        src = query.src,
+        width= query.width,
+        t = this[type],
+        div = t.div,
+        jax = t.jax;
+
+    if (width === null) {
+      div.removeAttribute('style');
+    }
+    else {
+      div.setAttribute('style', 'width: ' + width + 'px');
+    }
+
+    // There are these possibilities:
+    // - if src and width are the same as last time, no need to Rerender
+    // - if src is the same, but width is not, then Rerender() (calling
+    //   Text() does not work)
+    // - if src is not the same, call Text()
+
+    if (t.last_src == src && t.last_width !== width) {
+      this.Q.Push(["Rerender", jax]);
+    }
+    else if (t.last_src != src) {
+      this.Q.Push(["Text", jax, src]);
+    }
+    t.last_src = src;
+    t.last_width = width;
+
     this.Q.Push(this.bind(function() {
-      cb(this[src_type].div.getElementsByTagName("svg")[0].cloneNode(true));
+      cb(this[type].div.getElementsByTagName("svg")[0].cloneNode(true));
     }));
   };
 
@@ -106,19 +138,20 @@ window.engine = (new (function() {
   // If there is an error during the rendering then the second
   // element, instead of a string, will be a nested array with
   // one string element giving the error message.
-  this.process = function(src_type, src, cb) {
+  this.process = function(query, cb) {
     // For debugging, the console doesn't work from here, but you can return dummy
     // data, as follows.  It will show up in the browser instead of the real results.
     //cb([src, "query is '" + src + "'"]);
 
-    if (this[src_type] === null || this[src_type].jax === null) {
-      this.buffer.push( [src_type, src, cb] );
+    var type = query.type;
+    if (this[type] === null || this[type].jax === null) {
+      this.buffer.push( [query, cb] );
     }
     else {
       // bind() here (see "bind helper", above) just makes sure that `this`,
       // inside the function, continues to refer to this engine object.
-      this._process(src_type, src, this.bind(function(svg) {
-        cb([src, this._merge(svg)]);
+      this._process(query, this.bind(function(svg) {
+        cb([query.src, this._merge(svg)]);
       }));
     }
   };
