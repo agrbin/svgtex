@@ -151,7 +151,7 @@ window.engine = (new (function() {
       // bind() here (see "bind helper", above) just makes sure that `this`,
       // inside the function, continues to refer to this engine object.
       this._process(query, this.bind(function(svg) {
-        cb([query.src, this._merge(svg)]);
+        cb([query.num, query.src, this._merge(svg)]);
       }));
     }
   };

@@ -8,9 +8,15 @@ var REQ_TO_LIVE = -1;
 var server = require('webserver').create();
 var page = require('webpage').create();
 var args = require('system').args;
-// FIXME:  I don't think it's good that this uses the original query data
-// as the hash key.
+
+// activeRequests holds information about any active MathJax requests.  It is
+// a hash, with a sequential number as the key.  requestCount gets incremented
+// for *every* HTTP request, but only requests that get passed to MathJax have an
+// entry in activeRequests.  Each element of activeRequests
+// is an array of [<response object>, <start time>].
+var requestCount = 0;
 var activeRequests = {};
+
 var service = null;
 
 if (args.length > 1) {
@@ -25,31 +31,38 @@ function utf8_strlen(str) {
 }
 
 // This is the callback that gets invoked after the math has been converted.
-// The argument, data, is an array that holds the two arguments from the
-// process() function in engine.js.  The first element is the original
-// text, the second is either the converted svg, or an array of one element
+// The argument, data, is an array that holds the three arguments from the
+// process() function in engine.js:  the request number, the original
+// text, and either the converted svg, or an array of one element
 // that holds an error message.
 page.onCallback = function(data) {
-  var record = activeRequests[data[0]];
-  var resp = record[0];
-  var t = ', took ' + (((new Date()).getTime() - record[1])) + 'ms.';
+  var num = data[0],
+      src = data[1],
+      svg_or_error = data[2],
+      record = activeRequests[num],
+      resp = record[0],
+      start_time = record[1],
+      duration = (new Date()).getTime() - start_time,
+      duration_msg = ', took ' + duration + 'ms.';
 
-  if ((typeof data[1]) === 'string') {
+  if ((typeof svg_or_error) === 'string') {
     resp.statusCode = 200;
     resp.setHeader("Content-Type", "image/svg+xml");
-    resp.setHeader("Content-Length", utf8_strlen(data[1]));
-    resp.write(data[1]);
-    console.log(data[0].substr(0, 30) + '.. ' +
-        data[0].length + 'B query, OK ' + data[1].length + 'B result' + t);
+    resp.setHeader("Content-Length", utf8_strlen(svg_or_error));
+    resp.write(svg_or_error);
+    console.log(num + ': ' + src.substr(0, 30) + '.. ' +
+        src.length + 'B query, OK ' + svg_or_error.length + 'B result' +
+        duration_msg);
   }
   else {
     resp.statusCode = 400;    // bad request
-    resp.write(data[1][0]);
-    console.log(data[0].substr(0, 30) + '.. ' +
-        data[0].length + 'B query, error: ' + data[1][0] + t);
+    resp.write(svg_or_error[0]);
+    console.log(num, src.substr(0, 30) + '.. ' +
+        src.length + 'B query, error: ' + svg_or_error[0] + duration_msg);
   }
   resp.close();
-  // FIXME:  We should clean up activeRequests here.
+
+  delete(activeRequests[num]);
 
   if (!(--REQ_TO_LIVE)) {
     phantom.exit();
@@ -165,17 +178,20 @@ page.open('index.html', function (status) {
 
   // Set up the listener that will respond to every new request
   service = server.listen('0.0.0.0:' + PORT, function(req, resp) {
-    console.log("Request received: " + req.method + " '" + req.url + "'");
+    var request_num = requestCount++;
     var query = parse_request(req);
+    console.log(request_num + ': ' + "received: " + req.method + " " +
+        req.url.substr(0, 30) + " ..");
     if (query.error) {
-      console.log('Error:  ' + query.error);
+      console.log(request_num + ": error: " + query.error);
       resp.statusCode = query.status_code;
       resp.write(query.error);
       resp.close();
       return;
     }
 
-    activeRequests[query.src] = [resp, (new Date()).getTime()];
+    activeRequests[request_num] = [resp, (new Date()).getTime()];
+    query.num = request_num;
 
     // The following evaluates the function argument in the page's context,
     // with query -> _query. That, in turn, calls the process() function in
