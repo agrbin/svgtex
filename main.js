@@ -30,7 +30,6 @@ function utf8_strlen(str) {
 // text, the second is either the converted svg, or an array of one element
 // that holds an error message.
 page.onCallback = function(data) {
-  console.log("page.onCallback");
   var record = activeRequests[data[0]];
   var resp = record[0];
   var t = ', took ' + (((new Date()).getTime() - record[1])) + 'ms.';
@@ -58,32 +57,139 @@ page.onCallback = function(data) {
 }
 
 
+// Helper function to determine if a src string is latex or mathml
+function latex_or_mml(src) {
+  return src.match('^\\s*<\\s*math(\\s+|>)') ? 'mml' : 'latex';
+}
+
+// Parse the request and return an object with the parsed values.
+// It will either have an error indication, e.g.
+//   { status_code: 400, error: "message" }
+// or a valid request, e.g.
+//   { type: 'latex', src: 'n^2', width: '500' }
+
+function parse_request(req) {
+  if (req.method == 'GET') {
+    var url = req.url;
+    var iq = url.indexOf("?");
+    if (iq == -1) {  // no query string
+      return {
+        status_code: 400,  // bad request
+        error: "Missing query string"
+      };
+    }
+
+    var qs = url.substr(iq+1);
+    // If the query string does not have an equal sign, or if it starts with something
+    // that doesn't look like a param name, then it is not parameterized
+    if (qs.indexOf("=") == -1 || !qs.match('^[a-zA-Z]+=')) {
+      var src = decodeURIComponent(qs);
+      return {
+        type: latex_or_mml(src),
+        src: src
+      }
+    }
+    else return parse_parameterized_request(qs);
+  }
+
+  else if (req.method == 'POST') {
+    // If the post content does not have an equal sign, or if it starts with something
+    // that doesn't look like a param name, then it is not parameterized (and, for
+    // backward compatibility, we assume it is not URL encoded)
+    var pr = req.postRaw;
+    if (pr.indexOf("=") == -1 || !pr.match('^[a-zA-Z]+=')) {
+      return {
+        type: latex_or_mml(pr),
+        src: pr
+      }
+    }
+    else return parse_parameterized_request(pr);
+  }
+
+  else {  // method is not GET or POST
+    return {
+      status_code: 400,  // bad request
+      error: "Method " + req.method + " not supported"
+    }
+  }
+}
+
+// Parse a parameterized request.  This must be properly URL encoded, including
+// using %3D for any '=' that appears in an equation.  For example,
+// ?latex=x%3Dy
+function parse_parameterized_request(req_content) {
+  var param_strings = req_content.split(/&/);
+  var num_param_strings = param_strings.length;
+  var parsed = {};
+  for (var i = 0; i < num_param_strings; ++i) {
+    var ps = param_strings[i];
+    var ie = ps.indexOf('=');
+    if (ie == -1) {
+      return {
+        status_code: 400,
+        error: "Can't decipher request parameter"
+      }
+    }
+    var key = ps.substr(0, ie);
+    var val = decodeURIComponent(ps.substr(ie+1));
+    if (key == 'latex') {
+      parsed.type = 'latex';
+      parsed.src = val;
+    }
+    else if (key == 'mml') {
+      parsed.type = 'mml';
+      parsed.src = val;
+    }
+    else if (key == 'src') {
+      parsed.type = latex_or_mml(val);
+      parsed.src = val;
+    }
+    else if (key == 'display') {
+      parsed.display = val;
+    }
+    else if (key == 'width') {
+      parsed.width = val;
+    }
+    else {
+      return {
+        status_code: 400,
+        error: "Unrecognized parameter name"
+      }
+    }
+  }
+  return parsed;
+}
+
+
+
 console.log("loading bench page");
 page.open('index.html', function (status) {
 
   // Set up the listener that will respond to every new request
   service = server.listen('0.0.0.0:' + PORT, function(req, resp) {
     console.log("Request received: " + req.method + " '" + req.url + "'");
+    var query = parse_request(req);
+    if (query.error) {
+      console.log('Error:  ' + query.error);
+      resp.statusCode = query.status_code;
+      resp.write(query.error);
+      resp.close();
+      return;
+    }
+
+  /*
     var query;
     if (req.method == 'GET') {
       var url = req.url;
       var iq = url.indexOf("?");
-      if (iq == -1) {  // no query string
-        resp.statusCode = 400;    // bad request
-        resp.write("Missing query string");
-        console.log('Error:  Missing query string');
-        resp.close();
-        return;
-      }
       query = decodeURIComponent(url.substr(iq+1));
     }
     else {
       query = req.postRaw;
     }
-    // Is it LaTeX, or is it MathML?
-    src_type = query.match('^\\s*<\\s*math(\\s+|>)') ? 'mml' : 'latex';
+  */
 
-    activeRequests[query] = [resp, (new Date()).getTime()];
+    activeRequests[query.src] = [resp, (new Date()).getTime()];
 
     // The following evaluates the function argument in the page's context,
     // with query -> q. That, in turn, calls the process_latex() function in
@@ -93,7 +199,7 @@ page.open('index.html', function (status) {
     // This just queues up the call, and will return at once.
     page.evaluate(function(q, st) {
       window.engine.process(st, q, window.callPhantom);
-    }, query, src_type);
+    }, query.src, query.type);
   });
 
   if (!service) {

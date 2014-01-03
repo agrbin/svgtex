@@ -31,13 +31,16 @@ This file is loaded from main.js (phantomjs).
     <script type="text/javascript" src="engine.js"></script>
   </head>
   <body>
-    <div id="math-latex">${n^2}$</div>
+    <h1>svgtex template file</h1>
+    <p>LaTeX equation:</p>
+    <div id="math-latex">${\frac{x}{2}}$</div>
+    <p>MathML equation:</p>
     <div id="math-mml">
       <math>
-        <msup>
-          <mi>b</mi>
+        <mfrac>
+          <mi>y</mi>
           <mn>2</mn>
-        </msup>
+        </mfrac>
       </math>
     </div>
   </body>
