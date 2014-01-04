@@ -4,7 +4,6 @@ window.engine = (new (function() {
   this.Q = MathJax.Hub.queue;
   this.latex = null;
   this.mml = null;
-  // FIXME:  need to test buffering
   this.buffer = [];
 
   // bind helper.
@@ -16,9 +15,6 @@ window.engine = (new (function() {
   };
 
   // Initialize engine.
-  // After MathJax is loaded:
-  //   - this.latex will point to the LaTeX div and jax, and
-  //   - this.mml will point to the MathML div and jax
   this._init = function() {
     this.Q.Push(this.bind(function () {
       this.latex = {
@@ -44,7 +40,7 @@ window.engine = (new (function() {
   this._process = function(query, cb) {
     var type = query.type,
         src = query.src,
-        width= query.width,
+        width = query.width,
         t = this[type],
         div = t.div,
         jax = t.jax;
@@ -72,7 +68,7 @@ window.engine = (new (function() {
     t.last_width = width;
 
     this.Q.Push(this.bind(function() {
-      cb(this[type].div.getElementsByTagName("svg")[0].cloneNode(true));
+      cb(div.getElementsByTagName("svg")[0]);
     }));
   };
 
@@ -84,6 +80,13 @@ window.engine = (new (function() {
       txt.getAttribute("stroke") == "none";
   };
 
+  // Serialize an (svg) element
+  this._serialize = function(svg) {
+    var tmpDiv = document.createElement('div');
+    tmpDiv.appendChild(svg);
+    return tmpDiv.innerHTML;
+  };
+
   // MathJax keeps parts of SVG symbols in one hidden svg at
   // the begining of the DOM, this function should take two
   // SVGs and return one stand-alone svg which could be
@@ -93,7 +96,7 @@ window.engine = (new (function() {
       .nextSibling.childNodes[0];
     var defs = origDefs.cloneNode(false);
 
-    // append shalow defs and change xmlns.
+    // append shallow defs and change xmlns.
     svg.insertBefore(defs, svg.childNodes[0]);
     svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
 
@@ -117,15 +120,12 @@ window.engine = (new (function() {
     }
 
     svg.style.position = "static";
-    var tmpDiv = document.createElement('div');
-    tmpDiv.appendChild(svg);
-    return tmpDiv.innerHTML;
+    return this._serialize(svg);
   };
 
   // If someone calls process() before init is complete,
   // that call will be stored into a buffer. After the init
   // is complete, all buffer stuff will get resolved.
-  // FIXME:  need to test buffering, since the introduction of MML.
   this._process_buffered = function() {
     for (var i = 0; i < this.buffer.length; ++i) {
       this.process(this.buffer[i][0], this.buffer[i][1]);
@@ -141,21 +141,21 @@ window.engine = (new (function() {
   this.process = function(query, cb) {
     // For debugging, the console doesn't work from here, but you can return dummy
     // data, as follows.  It will show up in the browser instead of the real results.
-    //cb([src, "query is '" + src + "'"]);
+    //cb([query.num, query.src, ["debug message"]]);
+    //return;
 
     var type = query.type;
     if (this[type] === null || this[type].jax === null) {
       this.buffer.push( [query, cb] );
     }
     else {
-      // bind() here (see "bind helper", above) just makes sure that `this`,
-      // inside the function, continues to refer to this engine object.
-      this._process(query, this.bind(function(svg) {
-        cb([query.num, query.src, this._merge(svg)]);
+      this._process(query, this.bind(function(svg_elem) {
+        var ret = (typeof svg_elem) == 'undefined' ?
+            ['MathJax error'] : this._merge(svg_elem.cloneNode(true));
+        cb([query.num, query.src, ret]);
       }));
     }
   };
-
 
   this._init();
 }));
