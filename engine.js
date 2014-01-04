@@ -111,7 +111,9 @@ window.engine = (new (function() {
           jax = t.jax;
 
       if (width === null) {
-        div.removeAttribute('style');
+        //div.removeAttribute('style');
+        // Let's just use a default width of 1000 (arbitrary)
+        div.setAttribute('style', 'width: 1000px');
       }
       else {
         div.setAttribute('style', 'width: ' + width + 'px');
