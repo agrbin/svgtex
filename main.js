@@ -82,6 +82,11 @@ function latex_or_mml(src) {
 //   { type: 'latex', src: 'n^2', width: '500' }
 
 function parse_request(req) {
+  // Set any defaults here:
+  var query = {
+    width: null
+  };
+
   if (req.method == 'GET') {
     var url = req.url;
     var iq = url.indexOf("?");
@@ -97,12 +102,11 @@ function parse_request(req) {
     // that doesn't look like a param name, then it is not parameterized
     if (qs.indexOf("=") == -1 || !qs.match('^[a-zA-Z]+=')) {
       var src = decodeURIComponent(qs);
-      return {
-        type: latex_or_mml(src),
-        src: src
-      }
+      query.type = latex_or_mml(src);
+      query.src = src;
+      return query;
     }
-    else return parse_parameterized_request(qs);
+    else return parse_parameterized_request(qs, query);
   }
 
   else if (req.method == 'POST') {
@@ -111,12 +115,11 @@ function parse_request(req) {
     // backward compatibility, we assume it is not URL encoded)
     var pr = req.postRaw;
     if (pr.indexOf("=") == -1 || !pr.match('^[a-zA-Z]+=')) {
-      return {
-        type: latex_or_mml(pr),
-        src: pr
-      }
+      query.type = latex_or_mml(pr);
+      query.src = pr;
+      return query;
     }
-    else return parse_parameterized_request(pr);
+    else return parse_parameterized_request(pr, query);
   }
 
   else {  // method is not GET or POST
@@ -130,13 +133,10 @@ function parse_request(req) {
 // Parse a parameterized request.  This must be properly URL encoded, including
 // using %3D for any '=' that appears in an equation.  For example,
 // ?latex=x%3Dy
-function parse_parameterized_request(req_content) {
+function parse_parameterized_request(req_content, query) {
   var param_strings = req_content.split(/&/);
   var num_param_strings = param_strings.length;
-  // default values:
-  var parsed = {
-    width: null
-  };
+
   for (var i = 0; i < num_param_strings; ++i) {
     var ps = param_strings[i];
     var ie = ps.indexOf('=');
@@ -149,19 +149,19 @@ function parse_parameterized_request(req_content) {
     var key = ps.substr(0, ie);
     var val = decodeURIComponent(ps.substr(ie+1));
     if (key == 'latex') {
-      parsed.type = 'latex';
-      parsed.src = val;
+      query.type = 'latex';
+      query.src = val;
     }
     else if (key == 'mml') {
-      parsed.type = 'mml';
-      parsed.src = val;
+      query.type = 'mml';
+      query.src = val;
     }
     else if (key == 'src') {
-      parsed.type = latex_or_mml(val);
-      parsed.src = val;
+      query.type = latex_or_mml(val);
+      query.src = val;
     }
     else if (key == 'width') {
-      parsed.width = val;
+      query.width = val;
     }
     else {
       return {
@@ -170,12 +170,10 @@ function parse_parameterized_request(req_content) {
       }
     }
   }
-  return parsed;
+  return query;
 }
 
-console.log("loading bench page");
-page.open('index.html', function (status) {
-
+function listenLoop() {
   // Set up the listener that will respond to every new request
   service = server.listen('0.0.0.0:' + PORT, function(req, resp) {
     var request_num = requestCount++;
@@ -210,8 +208,22 @@ page.open('index.html', function (status) {
   else {
     console.log("Server started on port " + PORT);
     console.log("You can hit the server with http://localhost:" + PORT + "/?2^n");
-    console.log(".. or by sending tex source in POST (not url encoded).");
+    console.log(".. or by sending math source in POST (not url encoded).");
   }
+}
+
+console.log("Loading bench page");
+page.open('index.html', listenLoop);
+
+/* These includeJs calls would allow us to specify the MathJax location as a
+   command-line parameter, but then you'd have to take the <script> tags out of
+   index.html, and we'd lose the ability to debug by loading that in a browser
+   directly.
+page.open('index.html', function (status) {
+  page.includeJs('mathjax/MathJax.js?config=TeX-AMS-MML_SVG', function() {
+    page.includeJs('engine.js', listenLoop);
+  });
 });
+*/
 
 
