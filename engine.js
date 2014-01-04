@@ -33,9 +33,10 @@ window.engine = (new (function() {
     }));
   };
 
-  // This is a helper for merge, who will want to decide
-  // whether something went wrong while rendering the math.
-  // the constant #C00 could be overriden by config!!
+  // This helper function determines whether or not a <text> node inside the SVG
+  // output from MathJax is an error message.  It uses the default error message
+  // fill color.  Note that the constant #C00 could be overriden by the MathJax
+  // config!!
   this._text_is_error = function(txt) {
     return txt.getAttribute("fill") == "#C00" &&
       txt.getAttribute("stroke") == "none";
@@ -70,14 +71,6 @@ window.engine = (new (function() {
         document.getElementById(id.substr(1)).cloneNode(true)
       );
       uses[k].setAttribute("xlink:href", id);
-    }
-
-    // check for errors in svg.
-    var texts = document.getElementsByTagName("text", svg);
-    for (var i = 0; i < texts.length; ++i) {
-      if (this._text_is_error(texts[i])) {
-        return [texts[i].textContent];
-      }
     }
 
     svg.style.position = "static";
@@ -141,6 +134,16 @@ window.engine = (new (function() {
 
       this.Q.Push(this.bind(function() {
         var svg_elem = div.getElementsByTagName("svg")[0];
+
+        // check for errors in svg.
+        var texts = svg_elem.getElementsByTagName("text");
+        for (var i = 0; i < texts.length; ++i) {
+          if (this._text_is_error(texts[i])) {
+            cb([query.num, query.src, [texts[i].textContent]]);
+            return;
+          }
+        }
+
         var ret = (typeof svg_elem) == 'undefined' ?
             ['MathJax error'] : this._merge(svg_elem.cloneNode(true));
         cb([query.num, query.src, ret]);
