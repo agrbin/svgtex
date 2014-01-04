@@ -52,7 +52,7 @@ window.engine = (new (function() {
       div.setAttribute('style', 'width: ' + width + 'px');
     }
 
-    // There are these possibilities:
+    // Possibilities:
     // - if src and width are the same as last time, no need to Rerender
     // - if src is the same, but width is not, then Rerender() (calling
     //   Text() does not work)
@@ -149,7 +149,37 @@ window.engine = (new (function() {
       this.buffer.push( [query, cb] );
     }
     else {
-      this._process(query, this.bind(function(svg_elem) {
+
+      var src = query.src,
+          width = query.width,
+          t = this[type],
+          div = t.div,
+          jax = t.jax;
+
+      if (width === null) {
+        div.removeAttribute('style');
+      }
+      else {
+        div.setAttribute('style', 'width: ' + width + 'px');
+      }
+
+      // Possibilities:
+      // - if src and width are the same as last time, no need to Rerender
+      // - if src is the same, but width is not, then Rerender() (calling
+      //   Text() does not work)
+      // - if src is not the same, call Text()
+
+      if (t.last_src == src && t.last_width !== width) {
+        this.Q.Push(["Rerender", jax]);
+      }
+      else if (t.last_src != src) {
+        this.Q.Push(["Text", jax, src]);
+      }
+      t.last_src = src;
+      t.last_width = width;
+
+      this.Q.Push(this.bind(function() {
+        var svg_elem = div.getElementsByTagName("svg")[0];
         var ret = (typeof svg_elem) == 'undefined' ?
             ['MathJax error'] : this._merge(svg_elem.cloneNode(true));
         cb([query.num, query.src, ret]);
