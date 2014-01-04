@@ -33,45 +33,6 @@ window.engine = (new (function() {
     }));
   };
 
-  // Receives an input string and pushes a conversion job onto the MathJax
-  // queue. MathJax, when it is finished conversion, will then invoke the next
-  // function in the queue, which is the callback, that makes its way back to
-  // the client in the response.
-  this._process = function(query, cb) {
-    var type = query.type,
-        src = query.src,
-        width = query.width,
-        t = this[type],
-        div = t.div,
-        jax = t.jax;
-
-    if (width === null) {
-      div.removeAttribute('style');
-    }
-    else {
-      div.setAttribute('style', 'width: ' + width + 'px');
-    }
-
-    // Possibilities:
-    // - if src and width are the same as last time, no need to Rerender
-    // - if src is the same, but width is not, then Rerender() (calling
-    //   Text() does not work)
-    // - if src is not the same, call Text()
-
-    if (t.last_src == src && t.last_width !== width) {
-      this.Q.Push(["Rerender", jax]);
-    }
-    else if (t.last_src != src) {
-      this.Q.Push(["Text", jax, src]);
-    }
-    t.last_src = src;
-    t.last_width = width;
-
-    this.Q.Push(this.bind(function() {
-      cb(div.getElementsByTagName("svg")[0]);
-    }));
-  };
-
   // This is a helper for merge, who will want to decide
   // whether something went wrong while rendering the math.
   // the constant #C00 could be overriden by config!!
