@@ -2,7 +2,7 @@
 window.engine = (new (function() {
 
   this.Q = MathJax.Hub.queue;
-  this.latex = null;
+  this.tex = null;
   this.mml = null;
   this.buffer = [];
 
@@ -17,17 +17,17 @@ window.engine = (new (function() {
   // Initialize engine.
   this._init = function() {
     this.Q.Push(this.bind(function () {
-      this.latex = {
-        div: document.getElementById("math-latex"),
-        jax: MathJax.Hub.getAllJax("math-latex")[0],
+      this.tex = {
+        div: document.getElementById("math-tex"),
+        jax: MathJax.Hub.getAllJax("math-tex")[0],
         last_width: null,
-        last_src: ''
+        last_q: ''
       }
       this.mml = {
         div: document.getElementById("math-mml"),
         jax: MathJax.Hub.getAllJax("math-mml")[0],
         last_width: null,
-        last_src: ''
+        last_q: ''
       }
       this._process_buffered();
     }));
@@ -88,14 +88,14 @@ window.engine = (new (function() {
   };
 
   // When process() is finished, the callback cb will be invoked with an
-  // array [<src string>, <svg out>].
+  // array [<q string>, <svg out>].
   // If there is an error during the rendering then the second
   // element, instead of a string, will be a nested array with
   // one string element giving the error message.
   this.process = function(query, cb) {
     // For debugging, the console doesn't work from here, but you can return dummy
     // data, as follows.  It will show up in the browser instead of the real results.
-    //cb([query.num, query.src, ["debug message"]]);
+    //cb([query.num, query.q, ["debug message"]]);
     //return;
 
     var type = query.type;
@@ -104,7 +104,7 @@ window.engine = (new (function() {
     }
     else {
 
-      var src = query.src,
+      var q = query.q,
           width = query.width,
           t = this[type],
           div = t.div,
@@ -120,35 +120,40 @@ window.engine = (new (function() {
       }
 
       // Possibilities:
-      // - if src and width are the same as last time, no need to Rerender
-      // - if src is the same, but width is not, then Rerender() (calling
+      // - if q and width are the same as last time, no need to Rerender
+      // - if q is the same, but width is not, then Rerender() (calling
       //   Text() does not work)
-      // - if src is not the same, call Text()
+      // - if q is not the same, call Text()
 
-      if (t.last_src == src && t.last_width !== width) {
+      if (t.last_q == q && t.last_width !== width) {
         this.Q.Push(["Rerender", jax]);
       }
-      else if (t.last_src != src) {
-        this.Q.Push(["Text", jax, src]);
+      else if (t.last_q != q) {
+        this.Q.Push(["Text", jax, q]);
       }
-      t.last_src = src;
+      t.last_q = q;
       t.last_width = width;
 
       this.Q.Push(this.bind(function() {
         var svg_elem = div.getElementsByTagName("svg")[0];
-
-        // check for errors in svg.
-        var texts = svg_elem.getElementsByTagName("text");
-        for (var i = 0; i < texts.length; ++i) {
-          if (this._text_is_error(texts[i])) {
-            cb([query.num, query.src, [texts[i].textContent]]);
-            return;
+        var ret = null;
+        if (!svg_elem) {
+          ret = ['MathJax error'];
+        }
+        else {
+          var texts = svg_elem.getElementsByTagName("text");
+          for (var i = 0; i < texts.length; ++i) {
+            if (this._text_is_error(texts[i])) {
+              ret = [texts[i].textContent];
+              break;
+            }
           }
         }
+        if (!ret) {    // no error
+          ret = this._merge(svg_elem.cloneNode(true));
+        }
 
-        var ret = (typeof svg_elem) == 'undefined' ?
-            ['MathJax error'] : this._merge(svg_elem.cloneNode(true));
-        cb([query.num, query.src, ret]);
+        cb([query.num, query.q, ret]);
       }));
     }
   };

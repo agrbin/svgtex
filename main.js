@@ -70,104 +70,80 @@ page.onCallback = function(data) {
 }
 
 
-// Helper function to determine if a src string is latex or mathml
-function latex_or_mml(src) {
-  return src.match('^\\s*<\\s*math(\\s+|>)') ? 'mml' : 'latex';
+// Helper function to determine if a src string is tex or mathml
+/*
+function tex_or_mml(src) {
+  return src.match('^\\s*<\\s*math(\\s+|>)') ? 'mml' : 'tex';
 }
+*/
 
 // Parse the request and return an object with the parsed values.
 // It will either have an error indication, e.g.
-//   { status_code: 400, error: "message" }
+//   { num: 5, status_code: 400, error: "message" }
 // or a valid request, e.g.
-//   { type: 'latex', src: 'n^2', width: '500' }
+//   { num: 5, type: 'tex', q: 'n^2', width: '500' }
 
 function parse_request(req) {
   // Set any defaults here:
   var query = {
+    num: requestCount++,
+    type: 'tex',
     width: null
   };
 
+  var qs;   // will store the content of the (tex or mml) math
   if (req.method == 'GET') {
     var url = req.url;
     var iq = url.indexOf("?");
     if (iq == -1) {  // no query string
-      return {
-        status_code: 400,  // bad request
-        error: "Missing query string"
-      };
-    }
-
-    var qs = url.substr(iq+1);
-    // If the query string does not have an equal sign, or if it starts with something
-    // that doesn't look like a param name, then it is not parameterized
-    if (qs.indexOf("=") == -1 || !qs.match('^[a-zA-Z]+=')) {
-      var src = decodeURIComponent(qs);
-      query.type = latex_or_mml(src);
-      query.src = src;
+      query.status_code = 400;  // bad request
+      query.error = "Missing query string";
       return query;
     }
-    else return parse_parameterized_request(qs, query);
+
+    qs = url.substr(iq+1);
   }
 
   else if (req.method == 'POST') {
-    // If the post content does not have an equal sign, or if it starts with something
-    // that doesn't look like a param name, then it is not parameterized (and, for
-    // backward compatibility, we assume it is not URL encoded)
-    var pr = req.postRaw;
-    if (pr.indexOf("=") == -1 || !pr.match('^[a-zA-Z]+=')) {
-      query.type = latex_or_mml(pr);
-      query.src = pr;
-      return query;
-    }
-    else return parse_parameterized_request(pr, query);
+    qs = req.postRaw;
   }
 
   else {  // method is not GET or POST
-    return {
-      status_code: 400,  // bad request
-      error: "Method " + req.method + " not supported"
-    }
+    query.status_code = 400;  // bad request
+    query.error = "Method " + req.method + " not supported";
+    return query;
   }
-}
 
-// Parse a parameterized request.  This must be properly URL encoded, including
-// using %3D for any '=' that appears in an equation.  For example,
-// ?latex=x%3Dy
-function parse_parameterized_request(req_content, query) {
-  var param_strings = req_content.split(/&/);
+  var param_strings = qs.split(/&/);
   var num_param_strings = param_strings.length;
 
   for (var i = 0; i < num_param_strings; ++i) {
     var ps = param_strings[i];
     var ie = ps.indexOf('=');
     if (ie == -1) {
-      return {
-        status_code: 400,
-        error: "Can't decipher request parameter"
-      }
+      query.status_code = 400;  // bad request
+      query.error = "Can't decipher request parameter";
+      return query;
     }
     var key = ps.substr(0, ie);
     var val = decodeURIComponent(ps.substr(ie+1));
-    if (key == 'latex') {
-      query.type = 'latex';
-      query.src = val;
+    if (key == 'type') {
+      query.type = val;
     }
     else if (key == 'mml') {
       query.type = 'mml';
       query.src = val;
     }
-    else if (key == 'src') {
-      query.type = latex_or_mml(val);
-      query.src = val;
+    else if (key == 'q') {
+      query.q = val;
     }
     else if (key == 'width') {
       query.width = val;
     }
     else {
-      return {
-        status_code: 400,
-        error: "Unrecognized parameter name"
-      }
+      query.status_code = 400;  // bad request
+      query.error = "Unrecognized parameter name";
+      return query;
     }
   }
   return query;
@@ -176,8 +152,8 @@ function parse_parameterized_request(req_content, query) {
 function listenLoop() {
   // Set up the listener that will respond to every new request
   service = server.listen('0.0.0.0:' + PORT, function(req, resp) {
-    var request_num = requestCount++;
     var query = parse_request(req);
+    var request_num = query.num;
     console.log(request_num + ': ' + "received: " + req.method + " " +
         req.url.substr(0, 30) + " ..");
     if (query.error) {
@@ -188,14 +164,12 @@ function listenLoop() {
       return;
     }
 
-    activeRequests[request_num] = [resp, (new Date()).getTime()];
-    query.num = request_num;
-
     // The following evaluates the function argument in the page's context,
     // with query -> _query. That, in turn, calls the process() function in
     // engine.js, which causes MathJax to render the math.  The callback is
     // PhantomJS's callPhantom() function, which in turn calls page.onCallback(),
     // above.  This just queues up the call, and will return at once.
+    activeRequests[request_num] = [resp, (new Date()).getTime()];
     page.evaluate(function(_query) {
       window.engine.process(_query, window.callPhantom);
     }, query);
