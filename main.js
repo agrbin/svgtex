@@ -146,6 +146,12 @@ function parse_request(req) {
       return query;
     }
   }
+  if (!query.q) {   // no source math
+    query.status_code = 400;  // bad request
+    query.error = "No source math detected in input";
+    return query;
+  }
+
   return query;
 }
 
@@ -181,8 +187,8 @@ function listenLoop() {
   }
   else {
     console.log("Server started on port " + PORT);
-    console.log("You can hit the server with http://localhost:" + PORT + "/?2^n");
-    console.log(".. or by sending math source in POST (not url encoded).");
+    console.log("You can hit the server with http://localhost:" + PORT + "/?q=2^n");
+    console.log(".. or by sending math source in POST.");
   }
 }
 
