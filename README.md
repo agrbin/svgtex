@@ -21,7 +21,10 @@ You can hit the server with http://localhost:16000/?q=2^n
 .. or by sending math source in POST.
 ```
 
-And then (in a different console).. curl it up!
+Try it out by pointing your browser at http://localhost:16000/, and using the test form
+to enter an equation in either TeX or MathML.
+
+Or, from a different console, use curl:
 
 ```
 $ curl localhost:16000/?q=x

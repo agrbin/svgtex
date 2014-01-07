@@ -1,5 +1,4 @@
-// this script will set up a HTTP server on this port (local connections only)
-// and will receive POST requests (not urlencoded)
+// This script will set up a HTTP server on this port.
 var PORT = parseInt(require('system').env.PORT) || 16000;
 
 // server will process this many queries and then exit. (-1, never stop).
@@ -8,6 +7,7 @@ var REQ_TO_LIVE = -1;
 var server = require('webserver').create();
 var page = require('webpage').create();
 var args = require('system').args;
+var fs = require('fs');
 
 // activeRequests holds information about any active MathJax requests.  It is
 // a hash, with a sequential number as the key.  requestCount gets incremented
@@ -16,6 +16,11 @@ var args = require('system').args;
 // is an array of [<response object>, <start time>].
 var requestCount = 0;
 var activeRequests = {};
+
+// This will hold the test HTML form, which is read once, the first time it is
+// requested, from test.html.
+var test_form_filename = 'test.html';
+var test_form = null;
 
 var service = null;
 
@@ -80,6 +85,8 @@ function tex_or_mml(src) {
 // Parse the request and return an object with the parsed values.
 // It will either have an error indication, e.g.
 //   { num: 5, status_code: 400, error: "message" }
+// Or indicate that the test form should be returned, e.g.
+//   { num: 5, test_form: 1 }
 // or a valid request, e.g.
 //   { num: 5, type: 'tex', q: 'n^2', width: '500' }
 
@@ -94,6 +101,22 @@ function parse_request(req) {
   var qs;   // will store the content of the (tex or mml) math
   if (req.method == 'GET') {
     var url = req.url;
+
+    if (url == '' || url == '/') {
+      // User has requested the test form
+      if (test_form == null && fs.isReadable(test_form_filename)) {
+        test_form = fs.read(test_form_filename);  // set the global variable
+      }
+      if (test_form != null) {
+        query.test_form = 1;
+      }
+      else {
+        query.status_code = 500;  // Internal server error
+        query.error = "Can't find test form";
+      }
+      return query;
+    }
+
     var iq = url.indexOf("?");
     if (iq == -1) {  // no query string
       query.status_code = 400;  // bad request
@@ -162,23 +185,35 @@ function listenLoop() {
     var request_num = query.num;
     console.log(request_num + ': ' + "received: " + req.method + " " +
         req.url.substr(0, 30) + " ..");
-    if (query.error) {
-      console.log(request_num + ": error: " + query.error);
-      resp.statusCode = query.status_code;
-      resp.write(query.error);
-      resp.close();
-      return;
-    }
 
-    // The following evaluates the function argument in the page's context,
-    // with query -> _query. That, in turn, calls the process() function in
-    // engine.js, which causes MathJax to render the math.  The callback is
-    // PhantomJS's callPhantom() function, which in turn calls page.onCallback(),
-    // above.  This just queues up the call, and will return at once.
-    activeRequests[request_num] = [resp, (new Date()).getTime()];
-    page.evaluate(function(_query) {
-      window.engine.process(_query, window.callPhantom);
-    }, query);
+    if (query.test_form) {
+      console.log(request_num + ": returning test form");
+      //if (test_form == null) {
+      //  test_form = "fleegle";
+      //}
+      resp.write(test_form);
+      resp.close();
+    }
+    else {
+      if (query.error) {
+        console.log(request_num + ": error: " + query.error);
+        resp.statusCode = query.status_code;
+        resp.write(query.error);
+        resp.close();
+      }
+
+      else {
+        // The following evaluates the function argument in the page's context,
+        // with query -> _query. That, in turn, calls the process() function in
+        // engine.js, which causes MathJax to render the math.  The callback is
+        // PhantomJS's callPhantom() function, which in turn calls page.onCallback(),
+        // above.  This just queues up the call, and will return at once.
+        activeRequests[request_num] = [resp, (new Date()).getTime()];
+        page.evaluate(function(_query) {
+          window.engine.process(_query, window.callPhantom);
+        }, query);
+      }
+    }
   });
 
   if (!service) {
