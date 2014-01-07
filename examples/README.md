@@ -1,9 +1,9 @@
-The examples here are from the MathJax example pages:
+Most of the examples here are from the MathJax example pages:
 
-* LaTeX:  http://www.mathjax.org/demos/tex-samples/
+* TeX:  http://www.mathjax.org/demos/tex-samples/
 * MathML: http://www.mathjax.org/demos/mathml-samples/
 
-To run the examples through svgtex, use the [render_examples.sh](render_examples.sh)
+To run the examples through svgtex, use the [test.pl](test.pl)
 script, while the server is running in another shell.
 
 See [the wiki](https://github.com/agrbin/svgtex/wiki#examples-and-benchmark) for
