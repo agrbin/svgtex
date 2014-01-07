@@ -47,7 +47,7 @@ page.onCallback = function(data) {
 
   if ((typeof svg_or_error) === 'string') {
     resp.statusCode = 200;
-    resp.setHeader("Content-Type", "image/svg+xml");
+    resp.setHeader("Content-Type", "image/svg+xml; charset=utf-8");
     resp.setHeader("Content-Length", utf8_strlen(svg_or_error));
     resp.write(svg_or_error);
     console.log(num + ': ' + src.substr(0, 30) + '.. ' +
@@ -126,7 +126,7 @@ function parse_request(req) {
       return query;
     }
     var key = ps.substr(0, ie);
-    var val = decodeURIComponent(ps.substr(ie+1));
+    var val = decodeURIComponent(ps.substr(ie+1).replace(/\+/g, ' '));
     if (key == 'type') {
       query.type = val;
     }
