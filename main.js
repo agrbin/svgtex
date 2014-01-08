@@ -161,7 +161,7 @@ function parse_request(req) {
       query.q = val;
     }
     else if (key == 'width') {
-      query.width = val;
+      query.width = parseInt(val) || null;
     }
     else {
       query.status_code = 400;  // bad request

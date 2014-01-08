@@ -1,5 +1,15 @@
 <html>
   <head>
+    <script type='text/javascript'
+            src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.js'></script>
+    <script type='text/javascript'>
+      $(function() {
+        var m = $('#method');
+        m.on('change', function() {
+          $('#form').attr('method', m.val());
+        });
+      });
+    </script>
     <style type='text/css'>
       tr {
         vertical-align: top
@@ -8,8 +18,18 @@
   </head>
   <body>
     <h1>svgtex tester</h1>
-    <form method='GET' action='/'>
+    <form id='form' method='GET' action='/'>
       <table>
+        <tr>
+          <td>method</td>
+          <td>
+            <select id='method'>
+              <option value='GET' selected='selected'>GET</option>
+              <option value='POST'>POST</option>
+            </select>
+          </td>
+        </tr>
+
         <tr>
           <td>type</td>
           <td>
