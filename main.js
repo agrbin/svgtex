@@ -28,6 +28,12 @@ if (args.length > 1) {
   PORT = args[1];
 }
 
+// To load an alternate bench page, for testing, give its name on the command line
+var bench_page = 'index.html';
+if (args.length > 2) {
+  bench_page = args[2];
+}
+
 // thanks to:
 // stackoverflow.com/questions/5515869/string-length-in-bytes-in-javascript
 function utf8_strlen(str) {
@@ -227,8 +233,8 @@ function listenLoop() {
   }
 }
 
-console.log("Loading bench page");
-page.open('index.html', listenLoop);
+console.log("Loading bench page " + bench_page);
+page.open(bench_page, listenLoop);
 
 /* These includeJs calls would allow us to specify the MathJax location as a
    command-line parameter, but then you'd have to take the <script> tags out of
