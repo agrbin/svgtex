@@ -15,10 +15,9 @@ Then, start the server:
 ```
 $ phantomjs main.js
 
-Loading bench page
+Loading bench page index.html
 Server started on port 16000
-You can hit the server with http://localhost:16000/?q=2^n
-.. or by sending math source in POST.
+Point your brownser at http://localhost:16000 for a test form.
 ```
 
 Try it out by pointing your browser at http://localhost:16000/, and using the test form
@@ -32,11 +31,8 @@ $ curl localhost:16000/?q=x
 <svg xmlns:xlink="http://www.w3.org/1999/xlink" style="width: 1.34ex; height: 1.099ex; ...
 ```
 
-MathML example:
-
-```
-http://localhost:16000/?type=mml&q=%3Cmath%3E%3Cmfrac%3E%3Cmi%3Ey%3C%2Fmi%3E%3Cmn%3E2%3C%2Fmn%3E%3C%2Fmfrac%3E%3C%2Fmath%3E
-```
+Or, try this MathML example:
+[http://localhost:16000/?type=mml&q=%3Cmath%3E%3Cmfrac%3E%3Cmi%3Ey%3C%2Fmi%3E%3Cmn%3E2%3C%2Fmn%3E%3C%2Fmfrac%3E%3C%2Fmath%3E](http://localhost:16000/?type=mml&q=%3Cmath%3E%3Cmfrac%3E%3Cmi%3Ey%3C%2Fmi%3E%3Cmn%3E2%3C%2Fmn%3E%3C%2Fmfrac%3E%3C%2Fmath%3E).
 
 
 Loading MathJax from the CDN vs locally
