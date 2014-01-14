@@ -1,20 +1,142 @@
-// This script will set up a HTTP server on this port.
-var PORT = parseInt(require('system').env.PORT) || 16000;
+// Version
+var VERSION = '0.1-dev';
 
-// server will process this many queries and then exit. (-1, never stop).
-var REQ_TO_LIVE = -1;
-
+var system = require('system');
+var args = system.args;
 var server = require('webserver').create();
 var page = require('webpage').create();
-var args = require('system').args;
 var fs = require('fs');
 
+var usage =
+  'Usage: phantomjs main.js [options]\n' +
+  'Options:\n' +
+  '  -h,--help            Print this usage message and exit\n' +
+  '  -v,--version         Print the version number and exit\n' +
+  '  -p,--port <port>     IP port on which to start the server\n' +
+  '  -r,--requests <num>  Process this many requests and then exit.  -1 means \n' +
+  '                       never stop.\n' +
+  '  -b,--bench <page>    Use alternate bench page (default is index.html)\n' +
+  '  -d,--debug           Enable verbose debug messages\n';
+
+var port = 16000;
+var requests_to_serve = -1;
+var bench_page = 'index.html';
+var debug = false;
+
+// Parse command-line options.  This keeps track of which one we are on
+var arg_num = 1;
+
+// Helper function for option parsing.  Allow option/arg in any of
+// these forms:
+//    1: -p 1234
+//    2: --po 1234
+//    3: --po=1234
+// Returns:
+//    1 or 2: true
+//    3:      '1234'
+//    else:   false
+function option_match(name, takes_optarg, arg) {
+  var ieq = arg.indexOf('=');
+
+  var arg_key;
+  if (arg.substr(0, 2) == '--' && (takes_optarg && ieq != -1)) {  // form #3
+    arg_key = arg.substring(2, ieq);
+    if (name.substr(0, arg_key.length) == arg_key) {
+      return arg.substr(ieq + 1);
+    }
+    return false;
+  }
+
+  if (arg.substr(0, 2) == '--') {
+    arg_key = arg.substr(2);
+  }
+  else if (arg.substr(0, 1) == '-') {
+    arg_key = arg.substr(1);
+  }
+  else {
+    return false;
+  }
+  return name.substr(0, arg_key.length) == arg_key;
+}
+
+// This helper handles one option that takes an option-argument
+function option_arg_parse(name) {
+  var arg = args[arg_num];
+  match = option_match(name, true, arg);
+  if (!match) return false;
+
+  if (typeof match != 'string') {
+    if (arg_num + 1 < args.length) {
+      arg_num++;
+      match = args[arg_num];
+    }
+    else {
+      phantom.exit(1);
+    }
+  }
+
+  if (name == 'port') {
+      port = match - 0;
+  }
+  else if (name == 'requests') { requests_to_serve = match - 0; }
+  else if (name == 'bench') { bench_page = match; }
+
+  arg_num++;
+  return true;
+}
+
+var to_exit = false;
+while (arg_num < args.length) {
+  var arg = args[arg_num];
+
+  if (option_match('help', false, arg)) {
+    console.log(usage);
+    phantom.exit(0);
+    break;
+  }
+
+  if (option_match('version', false, arg)) {
+    console.log('svgtex version ' + VERSION);
+    phantom.exit(0);
+    break;
+  }
+
+  if (option_match('debug', false, arg)) {
+    debug = true;
+    arg_num++;
+    continue;
+  }
+
+  if (option_arg_parse('port')) {
+    continue;
+  }
+  if (option_arg_parse('requests')) {
+    continue;
+  }
+  if (option_arg_parse('bench')) {
+    continue;
+  }
+
+  console.error("Unrecognized argument: '" + arg + "'. Use '--help' for usage info.");
+  phantom.exit(1);
+  break;
+}
+
+/*
+  console.log(
+    'port = ' + port + ", " +
+    'requests_to_serve = ' + requests_to_serve + ", " +
+    'bench_page = ' + bench_page + ", " +
+    'debug = ' + debug + "\n"
+  );
+*/
+
 // activeRequests holds information about any active MathJax requests.  It is
-// a hash, with a sequential number as the key.  requestCount gets incremented
+// a hash, with a sequential number as the key.  request_num gets incremented
 // for *every* HTTP request, but only requests that get passed to MathJax have an
 // entry in activeRequests.  Each element of activeRequests
 // is an array of [<response object>, <start time>].
-var requestCount = 0;
+var request_num = 0;
 var activeRequests = {};
 
 // This will hold the test HTML form, which is read once, the first time it is
@@ -23,16 +145,6 @@ var test_form_filename = 'test.html';
 var test_form = null;
 
 var service = null;
-
-if (args.length > 1) {
-  PORT = args[1];
-}
-
-// To load an alternate bench page, for testing, give its name on the command line
-var bench_page = 'index.html';
-if (args.length > 2) {
-  bench_page = args[2];
-}
 
 // thanks to:
 // stackoverflow.com/questions/5515869/string-length-in-bytes-in-javascript
@@ -75,18 +187,11 @@ page.onCallback = function(data) {
 
   delete(activeRequests[num]);
 
-  if (!(--REQ_TO_LIVE)) {
+  if (!(--requests_to_serve)) {
     phantom.exit();
   }
 }
 
-
-// Helper function to determine if a src string is tex or mathml
-/*
-function tex_or_mml(src) {
-  return src.match('^\\s*<\\s*math(\\s+|>)') ? 'mml' : 'tex';
-}
-*/
 
 // Parse the request and return an object with the parsed values.
 // It will either have an error indication, e.g.
@@ -99,10 +204,19 @@ function tex_or_mml(src) {
 function parse_request(req) {
   // Set any defaults here:
   var query = {
-    num: requestCount++,
+    num: request_num++,
     type: 'tex',
     width: null
   };
+
+  if (debug) {
+    if (req.method == 'POST') {
+      console.log("  req.postRaw = '" + req.postRaw + "'");
+    }
+    else {
+      console.log("  req.url = '" + req.url + "'");
+    }
+  }
 
   var qs;   // will store the content of the (tex or mml) math
   if (req.method == 'GET') {
@@ -134,6 +248,11 @@ function parse_request(req) {
   }
 
   else if (req.method == 'POST') {
+    if (typeof req.postRaw !== 'string') {   // which can happen
+      query.status_code = 400;  // bad request
+      query.error = "Missing post content";
+      return query;
+    }
     qs = req.postRaw;
   }
 
@@ -159,10 +278,6 @@ function parse_request(req) {
     if (key == 'type') {
       query.type = val;
     }
-    else if (key == 'mml') {
-      query.type = 'mml';
-      query.src = val;
-    }
     else if (key == 'q') {
       query.q = val;
     }
@@ -186,7 +301,7 @@ function parse_request(req) {
 
 function listenLoop() {
   // Set up the listener that will respond to every new request
-  service = server.listen('0.0.0.0:' + PORT, function(req, resp) {
+  service = server.listen('0.0.0.0:' + port, function(req, resp) {
     var query = parse_request(req);
     var request_num = query.num;
     console.log(request_num + ': ' + "received: " + req.method + " " +
@@ -194,9 +309,6 @@ function listenLoop() {
 
     if (query.test_form) {
       console.log(request_num + ": returning test form");
-      //if (test_form == null) {
-      //  test_form = "fleegle";
-      //}
       resp.write(test_form);
       resp.close();
     }
@@ -223,12 +335,12 @@ function listenLoop() {
   });
 
   if (!service) {
-    console.log("server failed to start on port " + PORT);
+    console.log("server failed to start on port " + port);
     phantom.exit(1);
   }
   else {
-    console.log("Server started on port " + PORT);
-    console.log("You can hit the server with http://localhost:" + PORT + "/?q=2^n");
+    console.log("Server started on port " + port);
+    console.log("You can hit the server with http://localhost:" + port + "/?q=2^n");
     console.log(".. or by sending math source in POST.");
   }
 }

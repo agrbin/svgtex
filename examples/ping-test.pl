@@ -1,11 +1,8 @@
 #!/usr/bin/env perl
 # This pings each of several instances, and should be run over a long period of
-# time, to see if/when they crash.
-#    - 16001:  30 seconds
-#    - 16002:  5 minutes
-#    - 16003:  hour
-#    - 16004:  6 hours
-#    - 16005:  day
+# time, to see if/when they crash.  Start the svgtex instances on separate ports.
+# Change the @instances table below to define which instances you want to ping,
+# and how often.
 
 use strict;
 use warnings;
@@ -22,12 +19,10 @@ use Data::Dumper;
 my $ua = LWP::UserAgent->new();
 $ua->timeout(10);
 
+# This table defines which instances we'll ping, and how often (in seconds)
 my @instances = (
   { port => 16001, freq =>    30, },
-  { port => 16002, freq =>   300, },
-  { port => 16003, freq =>  3600, },
-  { port => 16004, freq => 21600, },
-  { port => 16005, freq => 86400, },
+  #{ port => 16002, freq =>    30, },
 );
 
 my $start_time = time();
@@ -45,12 +40,8 @@ while(1) {
             my $response = $ua->get($url);
             my $status = $response->is_success ? "success" : "error: " . $response->status_line;
             print "$status\n";
-
             $inst->{last} = $time_now;
         }
     }
 }
-
-
-print "OK\n";
 
