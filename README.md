@@ -32,7 +32,7 @@ $ curl localhost:16000/?q=x
 ```
 
 Or, try this MathML example:
-[http://localhost:16000/?type=mml&q=%3Cmath%3E%3Cmfrac%3E%3Cmi%3Ey%3C%2Fmi%3E%3Cmn%3E2%3C%2Fmn%3E%3C%2Fmfrac%3E%3C%2Fmath%3E](http://localhost:16000/?type=mml&q=%3Cmath%3E%3Cmfrac%3E%3Cmi%3Ey%3C%2Fmi%3E%3Cmn%3E2%3C%2Fmn%3E%3C%2Fmfrac%3E%3C%2Fmath%3E).
+http://localhost:16000/?type=mml&q=%3Cmath%3E%3Cmfrac%3E%3Cmi%3Ey%3C%2Fmi%3E%3Cmn%3E2%3C%2Fmn%3E%3C%2Fmfrac%3E%3C%2Fmath%3E.
 
 
 Loading MathJax from the CDN vs locally
