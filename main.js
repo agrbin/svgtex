@@ -1,5 +1,4 @@
-// this script will set up a HTTP server on this port (local connections only)
-// and will receive POST requests (not urlencoded)
+// This script will set up a HTTP server on this port.
 var PORT = parseInt(require('system').env.PORT) || 16000;
 
 // server will process this many queries and then exit. (-1, never stop).
@@ -8,7 +7,21 @@ var REQ_TO_LIVE = -1;
 var server = require('webserver').create();
 var page = require('webpage').create();
 var args = require('system').args;
+var fs = require('fs');
+
+// activeRequests holds information about any active MathJax requests.  It is
+// a hash, with a sequential number as the key.  requestCount gets incremented
+// for *every* HTTP request, but only requests that get passed to MathJax have an
+// entry in activeRequests.  Each element of activeRequests
+// is an array of [<response object>, <start time>].
+var requestCount = 0;
 var activeRequests = {};
+
+// This will hold the test HTML form, which is read once, the first time it is
+// requested, from test.html.
+var test_form_filename = 'test.html';
+var test_form = null;
+
 var service = null;
 
 if (args.length > 1) {
@@ -22,56 +35,210 @@ function utf8_strlen(str) {
   return str.length + (m ? m.length : 0);
 }
 
+// This is the callback that gets invoked after the math has been converted.
+// The argument, data, is an array that holds the three arguments from the
+// process() function in engine.js:  the request number, the original
+// text, and either the converted svg, or an array of one element
+// that holds an error message.
 page.onCallback = function(data) {
-  var record = activeRequests[data[0]];
-  var resp = record[0];
-  var t = ', took ' + (((new Date()).getTime() - record[1])) + 'ms.';
+  var num = data[0],
+      src = data[1],
+      svg_or_error = data[2],
+      record = activeRequests[num],
+      resp = record[0],
+      start_time = record[1],
+      duration = (new Date()).getTime() - start_time,
+      duration_msg = ', took ' + duration + 'ms.';
 
-  if ((typeof data[1]) === 'string') {
+  if ((typeof svg_or_error) === 'string') {
     resp.statusCode = 200;
-    resp.setHeader("Content-Type", "image/svg+xml");
-    resp.setHeader("Content-Length", utf8_strlen(data[1]));
-    resp.write(data[1]);
-    console.log(data[0].substr(0, 30) + '.. ' +
-        data[0].length + 'B query, OK ' + data[1].length + 'B result' + t);
-  } else {
-    resp.statusCode = 400;
-    resp.write(data[1][0]);
-    console.log(data[0].substr(0, 30) + '.. ' +
-        data[0].length + 'B query, ERR ' + data[1][0] + t);
+    resp.setHeader("Content-Type", "image/svg+xml; charset=utf-8");
+    resp.setHeader("Content-Length", utf8_strlen(svg_or_error));
+    resp.write(svg_or_error);
+    console.log(num + ': ' + src.substr(0, 30) + '.. ' +
+        src.length + 'B query, OK ' + svg_or_error.length + 'B result' +
+        duration_msg);
+  }
+  else {
+    resp.statusCode = 400;    // bad request
+    resp.write(svg_or_error[0]);
+    console.log(num, src.substr(0, 30) + '.. ' +
+        src.length + 'B query, error: ' + svg_or_error[0] + duration_msg);
   }
   resp.close();
+
+  delete(activeRequests[num]);
+
   if (!(--REQ_TO_LIVE)) {
     phantom.exit();
   }
 }
 
-console.log("loading bench page");
-page.open('index.html', function (status) {
 
-  service = server.listen('0.0.0.0:' + PORT, function(req, resp) {
-    var query;
-    if (req.method == 'GET') {
-      // URL starts with /? and is urlencoded.
-      query = unescape(req.url.substr(2));
-    } else {
-      query = req.postRaw;
+// Helper function to determine if a src string is tex or mathml
+/*
+function tex_or_mml(src) {
+  return src.match('^\\s*<\\s*math(\\s+|>)') ? 'mml' : 'tex';
+}
+*/
+
+// Parse the request and return an object with the parsed values.
+// It will either have an error indication, e.g.
+//   { num: 5, status_code: 400, error: "message" }
+// Or indicate that the test form should be returned, e.g.
+//   { num: 5, test_form: 1 }
+// or a valid request, e.g.
+//   { num: 5, type: 'tex', q: 'n^2', width: '500' }
+
+function parse_request(req) {
+  // Set any defaults here:
+  var query = {
+    num: requestCount++,
+    type: 'tex',
+    width: null
+  };
+
+  var qs;   // will store the content of the (tex or mml) math
+  if (req.method == 'GET') {
+    var url = req.url;
+
+    if (url == '' || url == '/') {
+      // User has requested the test form
+      if (test_form == null && fs.isReadable(test_form_filename)) {
+        test_form = fs.read(test_form_filename);  // set the global variable
+      }
+      if (test_form != null) {
+        query.test_form = 1;
+      }
+      else {
+        query.status_code = 500;  // Internal server error
+        query.error = "Can't find test form";
+      }
+      return query;
     }
-    activeRequests[query] = [resp, (new Date()).getTime()];
-    // this is just queueing call, it will return at once.
-    page.evaluate(function(q) {
-      window.engine.process(q, window.callPhantom);
-    }, query);
+
+    var iq = url.indexOf("?");
+    if (iq == -1) {  // no query string
+      query.status_code = 400;  // bad request
+      query.error = "Missing query string";
+      return query;
+    }
+
+    qs = url.substr(iq+1);
+  }
+
+  else if (req.method == 'POST') {
+    qs = req.postRaw;
+  }
+
+  else {  // method is not GET or POST
+    query.status_code = 400;  // bad request
+    query.error = "Method " + req.method + " not supported";
+    return query;
+  }
+
+  var param_strings = qs.split(/&/);
+  var num_param_strings = param_strings.length;
+
+  for (var i = 0; i < num_param_strings; ++i) {
+    var ps = param_strings[i];
+    var ie = ps.indexOf('=');
+    if (ie == -1) {
+      query.status_code = 400;  // bad request
+      query.error = "Can't decipher request parameter";
+      return query;
+    }
+    var key = ps.substr(0, ie);
+    var val = decodeURIComponent(ps.substr(ie+1).replace(/\+/g, ' '));
+    if (key == 'type') {
+      query.type = val;
+    }
+    else if (key == 'mml') {
+      query.type = 'mml';
+      query.src = val;
+    }
+    else if (key == 'q') {
+      query.q = val;
+    }
+    else if (key == 'width') {
+      query.width = parseInt(val) || null;
+    }
+    else {
+      query.status_code = 400;  // bad request
+      query.error = "Unrecognized parameter name";
+      return query;
+    }
+  }
+  if (!query.q) {   // no source math
+    query.status_code = 400;  // bad request
+    query.error = "No source math detected in input";
+    return query;
+  }
+
+  return query;
+}
+
+function listenLoop() {
+  // Set up the listener that will respond to every new request
+  service = server.listen('0.0.0.0:' + PORT, function(req, resp) {
+    var query = parse_request(req);
+    var request_num = query.num;
+    console.log(request_num + ': ' + "received: " + req.method + " " +
+        req.url.substr(0, 30) + " ..");
+
+    if (query.test_form) {
+      console.log(request_num + ": returning test form");
+      //if (test_form == null) {
+      //  test_form = "fleegle";
+      //}
+      resp.write(test_form);
+      resp.close();
+    }
+    else {
+      if (query.error) {
+        console.log(request_num + ": error: " + query.error);
+        resp.statusCode = query.status_code;
+        resp.write(query.error);
+        resp.close();
+      }
+
+      else {
+        // The following evaluates the function argument in the page's context,
+        // with query -> _query. That, in turn, calls the process() function in
+        // engine.js, which causes MathJax to render the math.  The callback is
+        // PhantomJS's callPhantom() function, which in turn calls page.onCallback(),
+        // above.  This just queues up the call, and will return at once.
+        activeRequests[request_num] = [resp, (new Date()).getTime()];
+        page.evaluate(function(_query) {
+          window.engine.process(_query, window.callPhantom);
+        }, query);
+      }
+    }
   });
 
   if (!service) {
     console.log("server failed to start on port " + PORT);
     phantom.exit(1);
-  } else {
-    console.log("server started on port " + PORT);
-    console.log("you can hit server with http://localhost:" + PORT + "/?2^n");
-    console.log(".. or by sending tex source in POST (not url encoded)");
   }
+  else {
+    console.log("Server started on port " + PORT);
+    console.log("You can hit the server with http://localhost:" + PORT + "/?q=2^n");
+    console.log(".. or by sending math source in POST.");
+  }
+}
+
+console.log("Loading bench page");
+page.open('index.html', listenLoop);
+
+/* These includeJs calls would allow us to specify the MathJax location as a
+   command-line parameter, but then you'd have to take the <script> tags out of
+   index.html, and we'd lose the ability to debug by loading that in a browser
+   directly.
+page.open('index.html', function (status) {
+  page.includeJs('mathjax/MathJax.js?config=TeX-AMS-MML_SVG', function() {
+    page.includeJs('engine.js', listenLoop);
+  });
 });
+*/
 
 
