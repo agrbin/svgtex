@@ -340,8 +340,7 @@ function listenLoop() {
   }
   else {
     console.log("Server started on port " + port);
-    console.log("You can hit the server with http://localhost:" + port + "/?q=2^n");
-    console.log(".. or by sending math source in POST.");
+    console.log("Point your brownser at http://localhost:" + port + " for a test form.");
   }
 }
 
