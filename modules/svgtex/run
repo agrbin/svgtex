@@ -1,0 +1,2 @@
+#!/bin/sh
+phantomjs main.js &

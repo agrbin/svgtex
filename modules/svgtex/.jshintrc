@@ -1,0 +1,36 @@
+{
+         /* Common */
+ 
+        // Enforcing
+        "camelcase": true,
+        "curly": true,
+        "eqeqeq": true,
+        "immed": true,
+        "latedef": true,
+        "newcap": true,
+        "noarg": true,
+        "noempty": true,
+        "nonew": true,
+        "quotmark": "single",
+        "trailing": true,
+        "undef": true,
+        "unused": true,
+        // Legacy
+        "onevar": true,
+
+        /* Local */
+        "supernew":true,
+ 
+        "predef": [
+                "window",
+                "console",
+                "phantom",
+                "MathJax",
+                "document",
+                "require",
+                "process",
+                "Buffer",
+                "module"
+
+        ]
+}
