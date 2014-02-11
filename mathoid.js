@@ -43,5 +43,5 @@ if (cluster.isMaster) {
 	});
 	// when running on appfog.com the listen port for the app
 	// is passed in an environment variable.  Most users can ignore this!
-	mathoidWorker.listen(process.env.VCAP_APP_PORT || 8010);
+	mathoidWorker.listen(process.env.MATHOID_PORT || 10042);
 }
