@@ -1,9 +1,6 @@
-.PHONY: all clean install
-
-all: install
-
-install:
+all:
 	npm install
 
+.PHONY: clean
 clean:
 	rm -rf node_modules

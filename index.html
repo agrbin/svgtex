@@ -5,12 +5,14 @@ This file is loaded from main.js (phantomjs).
   <head>
     <script type="text/javascript">
       MathJax = {
-        jax: ["input/TeX","output/SVG","output/NativeMML"],
-        extensions: ["tex2jax.js","toMathML.js","TeX/noErrors.js","TeX/noUndefined.js","TeX/AMSmath.js","TeX/AMSsymbols.js"],
+        jax: ["input/TeX",
+        "input/MathML","output/SVG","output/NativeMML"],
+        extensions: ["mml2jax.js",
+         "tex2jax.js","toMathML.js", "TeX/noErrors.js","TeX/noUndefined.js","TeX/AMSmath.js","TeX/AMSsymbols.js"],
         showProcessingMessages: false,
         messageStyle: "none",
         tex2jax: {
-          inlineMath: [["$","$"],["\\(","\\)"]]
+          inlineMath: [["$","$"]]
         }
       };
     </script>
@@ -21,4 +23,4 @@ This file is loaded from main.js (phantomjs).
   <body>
   <div id="math">${}$</div>
   </body>
-</html>
+  </html>

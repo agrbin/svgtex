@@ -93,9 +93,9 @@ app.get(/^\/robots.txt$/, function ( req, res ) {
 
 
 
-function handleRequest(req, res, tex) {
+function handleRequest(req, res, tex, inputMML) {
 	// do the backend request
-	var reqbody = new Buffer(querystring.stringify({tex: tex})),
+	var reqbody = new Buffer(querystring.stringify({tex: tex, inputMML: inputMML})),
 		options = {
 		method: 'POST',
 		uri: 'http://localhost:' + backendPort.toString() + '/',
@@ -154,13 +154,14 @@ handleRequests = function() {
 
 app.post(/^\/$/, function ( req, res ) {
 	// First some rudimentary input validation
-	if (!req.body.tex) {
+	if (!(req.body.tex||req.body.mml)) {
 		res.writeHead(400);
-		return res.end(JSON.stringify({error: "'tex' post parameter is missing!"}));
+		return res.end(JSON.stringify({error: "'tex' or 'mml' post parameter is missing!"}));
 	}
 	var tex = req.body.tex;
+	var inputMML = req.body.mml;
 
-	requestQueue.push(handleRequest.bind(null, req, res, tex));
+	requestQueue.push(handleRequest.bind(null, req, res, tex, inputMML));
 	// phantomjs only handles one request at a time. Enforce this.
 	if (requestQueue.length === 1) {
 		// Start this process

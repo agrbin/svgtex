@@ -28,7 +28,7 @@ page.onCallback = function(data) {
 	if ((typeof data[1]) === 'string') {
 		resp.statusCode = 200;
 		log = data[0].substr(0, 30) + '.. ' + data[0].length + 'B query, OK ' + data[1].length  + '/' + data[2].length  + 'B result' + t;
-		out = JSON.stringify({tex:data[0],svg:data[1],mml:data[2],'log':log, 'sucess':true});
+		out = JSON.stringify({input:data[0],svg:data[1],mml:data[2],'log':log, 'sucess':true});
 		resp.setHeader('Content-Type', 'application/json');
 		resp.setHeader('Content-Length', utf8Strlen(out).toString() );
 		resp.write(out);
@@ -53,16 +53,22 @@ page.open('index.html', function ( ) {
       // URL starts with /? and is urlencoded.
       query = decodeURI(req.url.substr(2));
     } else {
-      query = req.post.tex;
+    	if( req.post.inputMML ){
+    		query = [req.post.tex,"MathMl"];
+    	} else {
+    		query = [req.post.tex, "tex"];
+    	}
     }
+    alert('test');
 	if (query === undefined) {
 		return resp.close();
 	}
-    activeRequests[query] = [resp, (new Date()).getTime()];
-    // this is just queueing call, it will return at once.
-    page.evaluate(function(q) {
-      window.engine.process(q, window.callPhantom);
-    }, query);
+
+	activeRequests[query[0]] = [resp, (new Date()).getTime()];
+	    // this is just queueing call, it will return at once.
+	page.evaluate(function(q) {
+	      window.engine.process(q, window.callPhantom);
+	    }, query);
   });
 
   if (!service) {

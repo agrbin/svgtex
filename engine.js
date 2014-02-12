@@ -28,7 +28,7 @@ window.engine = (new (function() {
 	// point to our jax.
 	this.init = function() {
 		this.Q.Push(this.bind(function () {
-			this.math = MathJax.Hub.getAllJax('math')[0];
+			this.math = MathJax.Hub.getAllJax('mathInput')[0];
 			this.processBuffered();
 		}));
 	};
@@ -36,7 +36,7 @@ window.engine = (new (function() {
 	// receives input latex string and invokes cb
 	// function with svg result.
 	this.processCB = function(latex, cb) {
-		this.Q.Push(['Text', this.math, latex]);
+		this.Q.Push(['Text', this.math, latex[0]]);
 		this.Q.Push(this.bind(function() {
 			// then, this toSVG call will invoke cb(result).
 			cb(document.getElementsByTagName('svg')[1].cloneNode(true));
@@ -113,20 +113,26 @@ window.engine = (new (function() {
 	// if there is an error during the latex rendering then second
 	// element (instead of SVG output) will be array again with
 	// only one string element describing the error message.
-	this.process = function(latex, cb) {
+	this.process = function(input, cb) {
+		var value = input[0],
+			type  = input[1];
 		if (this.math === null) {
-			this.buffer.push( [latex, cb] );
+			this.buffer.push( [input, cb] );
 		} else {
 			try{
-				this.processCB(latex, this.bind(function( ) {
+				this.processCB(input, this.bind(function( ) {
 					var jax = MathJax.Hub.getAllJax(),
 						mergedSVG = this.merge(document.getElementsByTagName('svg')[1].cloneNode(true));
-					toMathML(jax[0],function (mml) {
-						cb([latex, mergedSVG, mml]);
-					});
+					if( input[1] == 'tex'){
+						toMathML(jax[0],function (mml) {
+							cb([input[0], mergedSVG, mml]);
+						});
+					} else {
+						cb([input[0], mergedSVG, input[0]]);
+					}
 				}));
 			} catch (err) {
-				cb([latex, err, err]);
+				cb([input[0], err, err]);
 			}
 		}
 	};
