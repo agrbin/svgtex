@@ -10,6 +10,7 @@ var express = require('express'),
 	http = require('http'),
 	fs = require('fs'),
 	child_process = require('child_process'),
+	request = require('request'),
 	querystring = require('querystring');
 
 var config;
@@ -40,28 +41,32 @@ console.log( ' - ' + instanceName + ' loading...' );
 var restarts = 10;
 
 var backend,
+	backendStarting = false,
 	backendPort,
 	requestQueue = [];
 
-var startBackend = function () {
+// forward declaration
+var handleRequests;
+
+var backendCB = function () {
+	backendStarting = false;
+	handleRequests();
+};
+
+var startBackend = function (cb) {
 	if (backend) {
-		backend.kill();
+		backend.removeAllListeners();
+		backend.kill('SIGKILL');
 	}
-	var backendCB = function (err, stdout, stderr) {
-		if (err) {
-			restarts--;
-			if (restarts > 0) {
-				startBackend();
-			}
-			console.error(err.toString());
-			process.exit(1);
-		}
-	};
 	backendPort = Math.floor(9000 + Math.random() * 50000);
 	console.error(instanceName + ': Starting backend on port ' + backendPort);
-	backend = child_process.exec('phantomjs main.js ' + backendPort, backendCB);
-	backend.stdout.pipe(process.stdout);
+	backend = child_process.spawn('phantomjs', ['main.js', backendPort]);
+	backend.stdout.pipe(process.stderr);
 	backend.stderr.pipe(process.stderr);
+	backend.on('close', startBackend);
+	backendStarting = true;
+	// give backend 1 seconds to start up
+	setTimeout(backendCB, 1000);
 };
 startBackend();
 
@@ -86,56 +91,66 @@ app.get(/^\/robots.txt$/, function ( req, res ) {
 	res.end( "User-agent: *\nDisallow: /\n" );
 });
 
-var handleRequests = function() {
-	// Call the next request on the queue
-	if (requestQueue.length) {
-		requestQueue[0]();
-	}
-};
 
 
 function handleRequest(req, res, tex) {
 	// do the backend request
-	var query = new Buffer(querystring.stringify({tex:tex})),
+	var reqbody = new Buffer(querystring.stringify({tex: tex})),
 		options = {
-			hostname: 'localhost',
-			port: backendPort.toString(),
-			path: '/',
-			method: 'POST',
-			headers: {
-				'Content-Length': query.length,
-				'Content-Type': 'application/x-www-form-urlencoded',
-				'Connection': 'close'
-			},
-			agent: false
-		};
-	var chunks = [];
-	//console.log(options);
-	var httpreq = http.request(options, function(httpres) {
-		httpres.on('data', function(chunk) {
-			chunks.push(chunk);
-		});
-		httpres.on('end', function() {
-			var buf = Buffer.concat(chunks);
-			res.writeHead(200,
-			{
-				'Content-type': 'application/json',
-				'Content-length': buf.length
-			});
-			res.write(buf);
-			res.end();
+		method: 'POST',
+		uri: 'http://localhost:' + backendPort.toString() + '/',
+		body: reqbody,
+		// Work around https://github.com/ariya/phantomjs/issues/11421 by
+		// setting explicit upper-case headers (request sends them lowercase
+		// by default) and manually encoding the body.
+		headers: {
+			'Content-Length': reqbody.length,
+			'Content-Type': 'application/x-www-form-urlencoded'
+		},
+		timeout: 2000
+	};
+	request(options, function (err, response, body) {
+		body = new Buffer(body);
+		if (err || response.statusCode !== 200) {
+			var errBuf;
+			if (err) {
+				errBuf = new Buffer(JSON.stringify({
+					tex: tex,
+					log: err.toString(),
+					success: false
+				}));
+			} else {
+				errBuf = body;
+			}
+			res.writeHead(500,
+				{
+					'Content-Type': 'application/json',
+					'Content-Length': errBuf.length
+				});
+			res.end(errBuf);
+			// don't retry the request
 			requestQueue.shift();
-			handleRequests();
-		});
+			startBackend();
+			return handleRequests();
+		}
+		res.writeHead(200,
+			{
+				'Content-Type': 'application/json',
+				'Content-length': body.length
+			});
+		res.end(body);
+		requestQueue.shift();
+		handleRequests();
 	});
-	httpreq.on('error', function(err) {
-		console.log('error', err.toString());
-		res.writeHead(500);
-		return res.end(JSON.stringify({error: "Backend error: " + err.toString()}));
-	});
-
-	httpreq.end(query);
 }
+
+handleRequests = function() {
+	// Call the next request on the queue
+	if (!backendStarting && requestQueue.length) {
+		requestQueue[0]();
+	}
+};
+
 
 app.post(/^\/$/, function ( req, res ) {
 	// First some rudimentary input validation

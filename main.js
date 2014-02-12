@@ -39,7 +39,8 @@ page.onCallback = function(data) {
 		data[0].length + 'B query, ERR ' + data[1][0] + t;
 		out = JSON.stringify({err:data[1][0],svg:data[1],mml:data[2],'log':log,'sucess':false});
 		resp.write(out);
-		//console.log(log);
+		console.log(log);
+		phantom.exit(1);
 	}
 	resp.close();
 };
