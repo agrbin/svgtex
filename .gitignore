@@ -1,3 +1,6 @@
 # npm package sources #
 ###################
-node_modules
+#node_modules
+Makefile
+debian/mathoid/
+debian/mathoid.postinst.debhelper 
