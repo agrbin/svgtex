@@ -9,14 +9,14 @@ var fs = require('fs');
 
 var usage =
   'Usage: phantomjs main.js [options]\n' +
-  'Options:\n' +
-  '  -h,--help            Print this usage message and exit\n' +
-  '  -v,--version         Print the version number and exit\n' +
-  '  -p,--port <port>     IP port on which to start the server\n' +
-  '  -r,--requests <num>  Process this many requests and then exit.  -1 means \n' +
-  '                       never stop.\n' +
-  '  -b,--bench <page>    Use alternate bench page (default is index.html)\n' +
-  '  -d,--debug           Enable verbose debug messages\n';
+'Options:\n' +
+    '  -h,--help            Print this usage message and exit\n' +
+    '  -v,--version         Print the version number and exit\n' +
+    '  -p,--port <port>     IP port on which to start the server\n' +
+    '  -r,--requests <num>  Process this many requests and then exit.  -1 means \n' +
+    '                       never stop.\n' +
+    '  -b,--bench <page>    Use alternate bench page (default is index.html)\n' +
+'  -d,--debug           Enable verbose debug messages\n';
 
 var port = 16000;
 var requests_to_serve = -1;
@@ -159,32 +159,66 @@ function utf8_strlen(str) {
 // text, and either the converted svg, or an array of one element
 // that holds an error message.
 page.onCallback = function(data) {
-  var num = data[0],
-      src = data[1],
-      svg_or_error = data[2],
+  var query = data[0],
+      num = query.num,
+      src = query.q,
+      svg_or_error = data[1],
+      mml = data[2],
       record = activeRequests[num],
       resp = record[0],
       start_time = record[1],
       duration = (new Date()).getTime() - start_time,
-      duration_msg = ', took ' + duration + 'ms.';
-
+      duration_msg = ', took ' + duration + 'ms.',
+      log ,
+      validRequest = false,
+      success = false;
+    if( (typeof svg_or_error) === 'string'){
+        validRequest = true;
+        log = num + ': ' + src.substr(0, 30) + '.. ' +
+            src.length + 'B query, OK ' + svg_or_error.length + 'B result' +
+            duration_msg;
+    } else {
+        log = src.substr(0, 30) + '.. ' +
+            src.length + 'B query, error: ' + svg_or_error[0] + duration_msg;
+    }
+  if(query.format == 'json'){
+      if ( validRequest ) {
+          resp.statusCode = 200;
+          out = JSON.stringify({input:src,
+              svg:svg_or_error,
+              mml:mml,
+              log:log,
+              success:true});
+          resp.setHeader('Content-Type', 'application/json');
+          resp.setHeader('Content-Length', utf8_strlen(out).toString() );
+          resp.write(out);
+      } else {
+          resp.statusCode = 400;
+          out = JSON.stringify({input:src,
+              err:svg_or_error[0],
+              mml:mml,
+              log:log,
+              success:false});
+          //out = JSON.stringify({err:data[1][0],svg:data[1],mml:data[2],'log':log,'sucess':false});
+          resp.write(out);
+          console.log(log);
+          phantom.exit(1);
+      }
+  } else {
   if ((typeof svg_or_error) === 'string') {
     resp.statusCode = 200;
     resp.setHeader("Content-Type", "image/svg+xml; charset=utf-8");
     resp.setHeader("Content-Length", utf8_strlen(svg_or_error));
     resp.write(svg_or_error);
-    console.log(num + ': ' + src.substr(0, 30) + '.. ' +
-        src.length + 'B query, OK ' + svg_or_error.length + 'B result' +
-        duration_msg);
+    console.log(log);
   }
   else {
     resp.statusCode = 400;    // bad request
     resp.write(svg_or_error[0]);
-    console.log(num, src.substr(0, 30) + '.. ' +
-        src.length + 'B query, error: ' + svg_or_error[0] + duration_msg);
+    console.log(num, log);
   }
   resp.close();
-
+  }
   delete(activeRequests[num]);
 
   if (!(--requests_to_serve)) {
@@ -206,7 +240,8 @@ function parse_request(req) {
   var query = {
     num: request_num++,
     type: 'tex',
-    width: null
+    width: null,
+    format: 'svg' //possible svg or json
   };
 
   if (debug) {
@@ -284,9 +319,12 @@ function parse_request(req) {
     else if (key == 'width') {
       query.width = parseInt(val) || null;
     }
+    else if (key == 'format') {
+        query.format = val;
+    }
     else {
       query.status_code = 400;  // bad request
-      query.error = "Unrecognized parameter name";
+      query.error = "Unrecognized parameter name: "+key;
       return query;
     }
   }

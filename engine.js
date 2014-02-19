@@ -6,6 +6,18 @@ window.engine = (new (function() {
   this.mml = null;
   this.buffer = [];
 
+    //jax to MathML
+    function toMathML(jax,callback) {
+        var mml;
+        try {
+            mml = jax.root.toMathML('');
+        } catch(err) {
+            if (!err.restart) {throw err;} // an actual error
+            return MathJax.Callback.After([toMathML,jax,callback],err.restart);
+        }
+        MathJax.Callback(callback)(mml);
+    }
+
   // bind helper.
   this.bind = function(method) {
     var engine = this;
@@ -106,6 +118,7 @@ window.engine = (new (function() {
 
       var q = query.q,
           width = query.width,
+          format = query.format,
           t = this[type],
           div = t.div,
           jax = t.jax;
@@ -152,8 +165,16 @@ window.engine = (new (function() {
         if (!ret) {    // no error
           ret = this._merge(svg_elem.cloneNode(true));
         }
+        if ( format == 'json' ){
+           toMathML(jax,function (mml) {
+                    cb([query, ret, mml]);
+                });
+            }
+          else {
+            cb([query, ret, '']);
+        }
 
-        cb([query.num, query.q, ret]);
+
       }));
     }
   };
