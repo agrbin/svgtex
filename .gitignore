@@ -2,5 +2,11 @@
 ###################
 #node_modules
 Makefile
+debian/mathoid.debhelper.log
 debian/mathoid/
-debian/mathoid.postinst.debhelper 
+debian/files
+debian/mathoid.postinst.debhelper
+debian/mathoid.preinst.debhelper
+debian/mathoid.prerm.debhelper
+debian/mathoid.substvars
+ 
