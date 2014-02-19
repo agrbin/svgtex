@@ -60,7 +60,7 @@ var startBackend = function (cb) {
 	}
 	backendPort = Math.floor(9000 + Math.random() * 50000);
 	console.error(instanceName + ': Starting backend on port ' + backendPort);
-	backend = child_process.spawn('phantomjs', ['main.js', '-p', backendPort]);
+	backend = child_process.spawn('phantomjs', ['main.js', backendPort]);
 	backend.stdout.pipe(process.stderr);
 	backend.stderr.pipe(process.stderr);
 	backend.on('close', startBackend);
@@ -93,9 +93,9 @@ app.get(/^\/robots.txt$/, function ( req, res ) {
 
 
 
-function handleRequest(req, res, q, type) {
+function handleRequest(req, res, tex, inputMML) {
 	// do the backend request
-        var reqbody = new Buffer(querystring.stringify({q: q, type: type, format: "json"})),
+	var reqbody = new Buffer(querystring.stringify({tex: tex, inputMML: inputMML})),
 		options = {
 		method: 'POST',
 		uri: 'http://localhost:' + backendPort.toString() + '/',
@@ -110,16 +110,12 @@ function handleRequest(req, res, q, type) {
 		timeout: 2000
 	};
 	request(options, function (err, response, body) {
-        try{
-            body = new Buffer(body);
-        } catch ( e ) {
-            body = new Buffer(e.message.toString());
-        }
+		body = new Buffer(body);
 		if (err || response.statusCode !== 200) {
 			var errBuf;
 			if (err) {
 				errBuf = new Buffer(JSON.stringify({
-					tex: q,
+					tex: tex,
 					log: err.toString(),
 					success: false
 				}));
@@ -158,16 +154,14 @@ handleRequests = function() {
 
 app.post(/^\/$/, function ( req, res ) {
 	// First some rudimentary input validation
-	if (!(req.body.q)) {
+	if (!(req.body.tex||req.body.mml)) {
 		res.writeHead(400);
-		return res.end(JSON.stringify({error: "q (query) post parameter is missing!"}));
+		return res.end(JSON.stringify({error: "'tex' or 'mml' post parameter is missing!"}));
 	}
-	var q = req.body.q;
-    var type = req.body.type;
-    if (!(req.body.type) ){
-        type = 'tex';
-    }
-	requestQueue.push(handleRequest.bind(null, req, res, q, type));
+	var tex = req.body.tex;
+	var inputMML = req.body.mml;
+
+	requestQueue.push(handleRequest.bind(null, req, res, tex, inputMML));
 	// phantomjs only handles one request at a time. Enforce this.
 	if (requestQueue.length === 1) {
 		// Start this process
