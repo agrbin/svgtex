@@ -1,0 +1,12 @@
+# npm package sources #
+###################
+#node_modules
+Makefile
+debian/mathoid.debhelper.log
+debian/mathoid/
+debian/files
+debian/mathoid.postinst.debhelper
+debian/mathoid.preinst.debhelper
+debian/mathoid.prerm.debhelper
+debian/mathoid.substvars
+ 
