@@ -6,6 +6,22 @@ window.engine = (new (function() {
   this.mml = null;
   this.buffer = [];
 
+    //jax to MathML
+    function toMathML(jax,callback) {
+        var mml,
+            success = false;
+        try {
+            mml = jax.root.toMathML('');
+            if( mml.indexOf('<mtext mathcolor="red">') == -1 ){
+                success = true;
+            }
+        } catch(err) {
+            if (!err.restart) {throw err;} // an actual error
+            return MathJax.Callback.After([toMathML,jax,callback],err.restart);
+        }
+        MathJax.Callback(callback)(mml,success);
+    }
+
   // bind helper.
   this.bind = function(method) {
     var engine = this;
@@ -106,9 +122,11 @@ window.engine = (new (function() {
 
       var q = query.q,
           width = query.width,
+          format = query.format,
           t = this[type],
           div = t.div,
-          jax = t.jax;
+          jax = t.jax,
+          success = false;
 
       if (width === null) {
         //div.removeAttribute('style');
@@ -139,8 +157,15 @@ window.engine = (new (function() {
         var ret = null;
         if (!svg_elem) {
           ret = ['MathJax error'];
+          cb([query, ret, '', false]);
+        } else {
+            ret = this._merge(svg_elem.cloneNode(true));
+            toMathML(jax,function (mml,success) {
+                cb([query, ret, mml, success]);
+            })
         }
-        else {
+          //This does not work (for the WMF setup)
+/**        else {
           var texts = svg_elem.getElementsByTagName("text");
           for (var i = 0; i < texts.length; ++i) {
             if (this._text_is_error(texts[i])) {
@@ -148,12 +173,8 @@ window.engine = (new (function() {
               break;
             }
           }
-        }
-        if (!ret) {    // no error
-          ret = this._merge(svg_elem.cloneNode(true));
-        }
-
-        cb([query.num, query.q, ret]);
+        }*/
+;
       }));
     }
   };
