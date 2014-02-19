@@ -171,7 +171,7 @@ page.onCallback = function(data) {
       duration_msg = ', took ' + duration + 'ms.',
       log ,
       validRequest = false,
-      success = false;
+      success = data[3];
     if( (typeof svg_or_error) === 'string'){
         validRequest = true;
         log = num + ': ' + src.substr(0, 30) + '.. ' +
@@ -188,7 +188,7 @@ page.onCallback = function(data) {
               svg:svg_or_error,
               mml:mml,
               log:log,
-              success:true});
+              success:success});
           resp.setHeader('Content-Type', 'application/json');
           resp.setHeader('Content-Length', utf8_strlen(out).toString() );
           resp.write(out);
@@ -198,7 +198,7 @@ page.onCallback = function(data) {
               err:svg_or_error[0],
               mml:mml,
               log:log,
-              success:false});
+              success:success});
           //out = JSON.stringify({err:data[1][0],svg:data[1],mml:data[2],'log':log,'sucess':false});
           resp.write(out);
           console.log(log);
