@@ -205,20 +205,21 @@ function parse_request(req) {
   // Set any defaults here:
   var query = {
     num: request_num++,
-    type: 'tex',
+    type: 'auto',
     width: null
   };
 
   if (debug) {
     if (req.method == 'POST') {
       console.log("  req.postRaw = '" + req.postRaw + "'");
+      console.log("  req.post.q = '" + req.post.q + "'");
     }
     else {
       console.log("  req.url = '" + req.url + "'");
     }
   }
 
-  var qs;   // will store the content of the (tex or mml) math
+  var qs;   // query string, or x-www-form-urlencoded post data
   if (req.method == 'GET') {
     var url = req.url;
 
@@ -276,6 +277,10 @@ function parse_request(req) {
     var key = ps.substr(0, ie);
     var val = decodeURIComponent(ps.substr(ie+1).replace(/\+/g, ' '));
     if (key == 'type') {
+      if (val != 'mml' && val != 'tex' && val != 'auto') {
+        query.status_code = 400;  // bad request
+        query.error = "Invalid value for type: " + val;
+      }
       query.type = val;
     }
     else if (key == 'q') {
@@ -284,9 +289,11 @@ function parse_request(req) {
     else if (key == 'width') {
       query.width = parseInt(val) || null;
     }
+    else if (key == 'file') { // file name, discard
+    }
     else {
       query.status_code = 400;  // bad request
-      query.error = "Unrecognized parameter name";
+      query.error = "Unrecognized parameter name: " + key;
       return query;
     }
   }
@@ -295,7 +302,37 @@ function parse_request(req) {
     query.error = "No source math detected in input";
     return query;
   }
+  
 
+
+  // Implement auto-detect.  We assume that any XML tag that has the name 'math',
+  // regardless of whether or not it is in a namespace, is mathml
+  var equations = [];
+  if (query.type == 'auto') {
+    var q = query.q;
+    var mml_stag = new RegExp('<([A-Za-z_]+:)?math', 'm');
+    var segs = q.split(mml_stag);
+    var num_segs = segs.length;
+
+    if (num_segs > 1) {
+      if (debug) { console.log("Auto-detected MathML"); }
+      query.type = 'mml';
+
+      // Have to find multiple equations
+      for (var i = 1; i < num_segs; i += 2) {
+        var prefix = typeof(segs[i]) == 'undefined' ? '' : segs[i];
+        var eq_seg = "<" + prefix + "math" + segs[i+1];
+        var eq = eq_seg.replace(/([\s\S]*?<\/([A-Za-z_]+:)?math>)[\s\S]*/, '$1');
+        console.log("eq = '" + eq + "'");
+        equations.push(eq);
+      }
+
+      query.q = equations[0];
+    }
+    else {
+      query.type = 'tex';
+    }
+  }
   return query;
 }
 

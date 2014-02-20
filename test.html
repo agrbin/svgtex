@@ -8,8 +8,25 @@
         m.on('change', function() {
           $('#form').attr('method', m.val());
         });
+        // Check that browser supports the File API
+        if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
+          alert('Your browser doesn\'t seem to support the HTML File API, so you won\'t be able ' +
+                'to upload files.');
+        }
+
+        $('#file').on('change', function(evt) {
+          var file = evt.target.files[0];
+          console.log("file = %o", file);
+          var reader = new FileReader();
+          reader.onload = function(evt) {
+            console.log("finished reading the file");
+            $('#q').val(evt.target.result);
+          };
+          reader.readAsText(file);
+        });
       });
     </script>
+    <!-- <script type='text/javascript' src='test.js'></script> -->
     <style type='text/css'>
       tr {
         vertical-align: top
@@ -18,39 +35,51 @@
   </head>
   <body>
     <h1>svgtex tester</h1>
-    <form id='form' method='GET' action='/'>
+    <form id='form' method='POST' action='/'>
+
       <table>
-        <tr>
-          <td>method</td>
-          <td>
-            <select id='method'>
-              <option value='GET' selected='selected'>GET</option>
-              <option value='POST'>POST</option>
-            </select>
-          </td>
-        </tr>
 
         <tr>
-          <td>type</td>
+          <td>Math format</td>
           <td>
             <select name='type'>
-              <option value='tex'>tex</option>
-              <option value='mml'>mml</option>
+              <option value='auto' selected='selected'>Auto-detect</option>
+              <option value='mml'>MathML</option>
+              <option value='tex'>TeX</option>
             </select>
           </td>
         </tr>
         <tr>
-          <td>q</td>
-          <td>
-            <textarea name='q' rows='20' cols='100'></textarea>
+          <td colspan='2'>
+            <input type="file" id='file' name="file" />
           </td>
         </tr>
         <tr>
-          <td>width</td>
+          <td>Content</td>
+          <td>
+            <textarea name='q' id='q' rows='20' cols='100'></textarea>
+          <!--
+            <input type='hidden' name='q' id='q' value='fleegle'>
+          -->
+          </td>
+        </tr>
+        <tr>
+          <td>Maximum width</td>
           <td>
             <input type='text' name='width'/>
           </td>
         </tr>
+
+        <tr>
+          <td>HTTP method</td>
+          <td>
+            <select id='method'>
+              <option value='POST' selected='selected'>POST</option>
+              <option value='GET'>GET</option>
+            </select>
+          </td>
+        </tr>
+
       </table>
       <input type='submit'/>
     </form>
