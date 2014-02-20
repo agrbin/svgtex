@@ -9,7 +9,7 @@ phantomjs and MathJax into memory with every call, the service is exposed via HT
 Detailed usage instructions are on the [GitHub wiki](https://github.com/agrbin/svgtex/wiki).
 For quick-start instructions, keep reading.
 
-
+First, clone this repository, and `cd` into the project directory.
 Then, start the server:
 
 ```
@@ -21,18 +21,21 @@ Point your brownser at http://localhost:16000 for a test form.
 ```
 
 Try it out by pointing your browser at http://localhost:16000/, and using the test form
-to enter an equation in either TeX or MathML.
+to enter an equation in either TeX or MathML.  For example,
 
+* TeX:  `n^2`
+* MathML: `<math><mfrac><mi>y</mi><mn>2</mn></mfrac></math>`
+
+You can use the test form to generate either GET or POST requests.
 Or, from a different console, use curl:
 
 ```
-$ curl localhost:16000/?q=x
-
+$ curl localhost:16000/?q=n%5E2
 <svg xmlns:xlink="http://www.w3.org/1999/xlink" style="width: 1.34ex; height: 1.099ex; ...
+
+$ curl http://localhost:16000/?q=%3Cmath%3E%3Cmfrac%3E%3Cmi%3Ey%3C%2Fmi%3E%3Cmn%3E2%3C%2Fmn%3E%3C%2Fmfrac%3E%3C%2Fmath%3E
 ```
 
-Or, try this MathML example:
-http://localhost:16000/?type=mml&q=%3Cmath%3E%3Cmfrac%3E%3Cmi%3Ey%3C%2Fmi%3E%3Cmn%3E2%3C%2Fmn%3E%3C%2Fmfrac%3E%3C%2Fmath%3E.
 
 
 Loading MathJax from the CDN vs locally

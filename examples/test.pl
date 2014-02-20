@@ -43,18 +43,24 @@ while (my $arg = shift @ARGV) {
 
 # Read in the list of example files
 my @test_files = (<*.tex>, <*.mml>, <*.html>);
+
+# We'll run two tests for each of these files
+plan tests => @test_files * 2 + 1;
 foreach my $test_file (@test_files) {
     if ($run_all || $run_tests{$test_file}) {
         test_one($test_file);
     }
 }
-# We'll run two tests for each of these files
-plan tests => @test_files * 2;
+
+# Test an error response
+test_one('error-tex.txt', 400);
 
 
 # Run one test
 sub test_one {
     my $filename = shift;
+    my $expect_error = shift;
+
     # Set the type from the filename extenstion, either 'tex', 'mml', or 'auto'
     (my $ext = $filename) =~ s/^.*\.//;
     my $type = $ext eq 'tex' || $ext eq 'mml' ? $ext : 'auto';
@@ -73,21 +79,30 @@ sub test_one {
         'type' => $type,
         'q' => $q,
     });
-    ok (!$response->is_error(), "Good response for $filename") or
-        diag("  Response status line was '" . $response->status_line . "'");
 
-    my $svg  = $response->decoded_content();
-    if ($verbose) {
-        print "  returned svg='" . string_start($svg) . "'\n\n";
+    if ($expect_error) {
+        ok ($response->is_error(), "Expected error response for $filename");
     }
-    like ($svg, qr/^<svg/, "Response for $filename looks like SVG");
-    if ($writesvg) {
-        my $svg_filename = "$filename.svg";
-        open my $svg_file, ">", $svg_filename or die "Can't open $svg_filename for writing";
-        print $svg_file $svg;
-        close $svg_file;
+    else {
+        ok (!$response->is_error(), "Good response for $filename") or
+            diag("  Response status line was '" . $response->status_line . "'");
+
+        my $svg  = $response->decoded_content();
+        if ($verbose) {
+            print "  returned svg='" . string_start($svg) . "'\n\n";
+        }
+        like ($svg, qr/^<svg/, "Response for $filename looks like SVG");
+        if ($writesvg) {
+            my $svg_filename = "$filename.svg";
+            open my $svg_file, ">", $svg_filename or die "Can't open $svg_filename for writing";
+            print $svg_file $svg;
+            close $svg_file;
+        }
     }
 }
+
+
+
 
 # This is for printing out a long string.  If it is > 100 characters, it is
 # truncated, and an ellipsis ("...") is added.

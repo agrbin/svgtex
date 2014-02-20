@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <script type='text/javascript'
@@ -34,7 +35,7 @@
     </style>
   </head>
   <body>
-    <h1>svgtex tester</h1>
+    <h1>Math Tool 2</h1>
     <form id='form' method='POST' action='/'>
 
       <table>
@@ -61,6 +62,16 @@
           <!--
             <input type='hidden' name='q' id='q' value='fleegle'>
           -->
+          </td>
+        </tr>
+        <tr>
+          <td>Output format</td>
+          <td>
+            <select name='out'>
+              <option value='svg-single' selected='selected'>SVG (single)</option>
+              <option value='svg-multi'>SVG (multi)</option>
+              <option value='orig-mathjax'>Client rendering</option>
+            </select>
           </td>
         </tr>
         <tr>

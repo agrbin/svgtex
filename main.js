@@ -144,6 +144,27 @@ var activeRequests = {};
 var test_form_filename = 'test.html';
 var test_form = null;
 
+// Similarly, this will hold the client template HTML file.  But this is read right
+// away, on startup.  client_template will either be null, or an object with 'start'
+// and 'end' keys.
+var client_template_filename = 'client-template.html';
+var client_template = (function() {
+  if (fs.isReadable(client_template_filename)) {
+    var ct = fs.read(client_template_filename);
+    var sep = '<!--sep-->';
+    var sepi = ct.indexOf(sep);
+    return {
+      start: ct.substr(0, sepi),
+      end: ct.substr(sepi + sep.length)
+    };
+  }
+  else {
+    console.error("Can't find " + client_template_filename + ".\n" +
+                  "orig-mathjax rendering will be disabled.");
+    return null;
+  }
+})();
+
 var service = null;
 
 // thanks to:
@@ -206,7 +227,8 @@ function parse_request(req) {
   var query = {
     num: request_num++,
     type: 'auto',
-    width: null
+    width: null,
+    out: 'svg-single'
   };
 
   if (debug) {
@@ -223,8 +245,8 @@ function parse_request(req) {
   if (req.method == 'GET') {
     var url = req.url;
 
+    // Implement the test form
     if (url == '' || url == '/') {
-      // User has requested the test form
       if (test_form == null && fs.isReadable(test_form_filename)) {
         test_form = fs.read(test_form_filename);  // set the global variable
       }
@@ -280,6 +302,7 @@ function parse_request(req) {
       if (val != 'mml' && val != 'tex' && val != 'auto') {
         query.status_code = 400;  // bad request
         query.error = "Invalid value for type: " + val;
+        return query;
       }
       query.type = val;
     }
@@ -290,6 +313,19 @@ function parse_request(req) {
       query.width = parseInt(val) || null;
     }
     else if (key == 'file') { // file name, discard
+    }
+    else if (key == 'out') {
+      if (val != 'svg-single' && val != 'svg-multi' && val != 'orig-mathjax') {
+        query.status_code = 400;  // bad request
+        query.error = "Invalid value for out: " + val;
+        return query;
+      }
+      if (val == 'orig-mathjax' && client_template == null) {
+        query.status_code = 400;  // bad request
+        query.error = "orig-mathjax rendering is disabled";
+        return query;
+      }
+      query.out = val;
     }
     else {
       query.status_code = 400;  // bad request
@@ -323,11 +359,12 @@ function parse_request(req) {
         var prefix = typeof(segs[i]) == 'undefined' ? '' : segs[i];
         var eq_seg = "<" + prefix + "math" + segs[i+1];
         var eq = eq_seg.replace(/([\s\S]*?<\/([A-Za-z_]+:)?math>)[\s\S]*/, '$1');
+        eq = eq.replace(new RegExp(prefix, "g"), '');
         console.log("eq = '" + eq + "'");
         equations.push(eq);
       }
 
-      query.q = equations[0];
+      query.q = equations.length == 1 ? equations[0] : equations;
     }
     else {
       query.type = 'tex';
@@ -344,30 +381,46 @@ function listenLoop() {
     console.log(request_num + ': ' + "received: " + req.method + " " +
         req.url.substr(0, 30) + " ..");
 
-    if (query.test_form) {
+    if (query.error) {
+      console.log(request_num + ": error: " + query.error);
+      resp.statusCode = query.status_code;
+      resp.write(query.error);
+      resp.close();
+    }
+    else if (query.test_form) {
       console.log(request_num + ": returning test form");
       resp.write(test_form);
       resp.close();
     }
-    else {
-      if (query.error) {
-        console.log(request_num + ": error: " + query.error);
-        resp.statusCode = query.status_code;
-        resp.write(query.error);
-        resp.close();
-      }
 
-      else {
-        // The following evaluates the function argument in the page's context,
-        // with query -> _query. That, in turn, calls the process() function in
-        // engine.js, which causes MathJax to render the math.  The callback is
-        // PhantomJS's callPhantom() function, which in turn calls page.onCallback(),
-        // above.  This just queues up the call, and will return at once.
-        activeRequests[request_num] = [resp, (new Date()).getTime()];
-        page.evaluate(function(_query) {
-          window.engine.process(_query, window.callPhantom);
-        }, query);
+    else if (query.out == 'orig-mathjax') {
+      console.log(request_num + ": returning client template");
+      var equations = query.q;
+      var rows = '';
+      if (typeof equations === 'string') {
+        rows = make_row(equations);
       }
+      else {
+        equations.forEach(function(eq) {
+          rows += make_row(eq);
+        });
+      }
+      
+      var page = client_template.start + rows + client_template.end;
+      resp.write(page);
+      resp.close();
+    }
+
+    else {
+      // The following evaluates the function argument in the page's context,
+      // with query -> _query. That, in turn, calls the process() function in
+      // engine.js, which causes MathJax to render the math.  The callback is
+      // PhantomJS's callPhantom() function, which in turn calls page.onCallback(),
+      // above.  This just queues up the call, and will return at once.
+      activeRequests[request_num] = [resp, (new Date()).getTime()];
+      page.evaluate(function(_query) {
+        window.engine.process(_query, window.callPhantom);
+      }, query);
     }
   });
 
@@ -379,6 +432,11 @@ function listenLoop() {
     console.log("Server started on port " + port);
     console.log("Point your brownser at http://localhost:" + port + " for a test form.");
   }
+}
+
+/* Make one row of the table */
+function make_row(eq) {
+  return "<tr><td></td><td></td><td>" + eq + "</td></tr>";
 }
 
 console.log("Loading bench page " + bench_page);
