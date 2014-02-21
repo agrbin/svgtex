@@ -234,7 +234,7 @@ function parse_request(req) {
   if (debug) {
     if (req.method == 'POST') {
       console.log("  req.postRaw = '" + req.postRaw + "'");
-      console.log("  req.post.q = '" + req.post.q + "'");
+      //console.log("  req.post.q = '" + req.post.q + "'");
     }
     else {
       console.log("  req.url = '" + req.url + "'");
@@ -338,7 +338,6 @@ function parse_request(req) {
     query.error = "No source math detected in input";
     return query;
   }
-  
 
 
   // Implement auto-detect.  We assume that any XML tag that has the name 'math',
@@ -380,6 +379,7 @@ function listenLoop() {
     var request_num = query.num;
     console.log(request_num + ': ' + "received: " + req.method + " " +
         req.url.substr(0, 30) + " ..");
+    resp.setHeader("X-XSS-Protection", 0);
 
     if (query.error) {
       console.log(request_num + ": error: " + query.error);
@@ -389,6 +389,15 @@ function listenLoop() {
     }
     else if (query.test_form) {
       console.log(request_num + ": returning test form");
+      /*
+        console.log("resp.headers = {");
+        for (var k in resp.headers) {
+          if (resp.headers.hasOwnProperty(k)) {
+            console.log("  '" + k + "': '" + resp.headers[k] + "'");
+          }
+        }
+        console.log("}");
+      */
       resp.write(test_form);
       resp.close();
     }
@@ -406,12 +415,13 @@ function listenLoop() {
         });
       }
       
-      var page = client_template.start + rows + client_template.end;
-      resp.write(page);
+      var resp_page = client_template.start + rows + client_template.end;
+      resp.write(resp_page);
       resp.close();
     }
 
     else {
+      console.log(request_num + ": sending to MathJax");
       // The following evaluates the function argument in the page's context,
       // with query -> _query. That, in turn, calls the process() function in
       // engine.js, which causes MathJax to render the math.  The callback is
