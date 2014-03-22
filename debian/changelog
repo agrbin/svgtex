@@ -1,3 +1,11 @@
+mathoid (0.2.3) precise; urgency=low
+
+  * Update README.md
+  * Fix: Remove MathML out if used as input
+  * Remove windows style line endings
+
+ -- Moritz Schubotz (Physikerwelt) <wiki@physikerwelt.de>  Sat, 22 Mar 2014 02:15:12 +0000
+
 mathoid (0.2.2) precise; urgency=low
 
   * Fix: Math-folder was missing in Build 0.2.1
