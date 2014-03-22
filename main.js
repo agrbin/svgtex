@@ -184,6 +184,12 @@ page.onCallback = function(data) {
   if(query.format == 'json'){
       if ( validRequest ) {
           resp.statusCode = 200;
+          //Temporary fix for BUG 62921
+          if (query.type == 'mml'){
+              mml = '';
+              src = 'mathml';
+          }
+          //End of fix
           out = JSON.stringify({input:src,
               svg:svg_or_error,
               mml:mml,
