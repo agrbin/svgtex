@@ -17,6 +17,17 @@ API Description
 
 to be written
 
+## Create a new release
+
+Checkout the latest version and switch to the master branch:
+* git-dch -R -N version
+* git-buildpackage --git-tag -S 
+
+see also https://wikitech.wikimedia.org/wiki/Git-buildpackage
+
+publish as ppa
+* dput ppa:physikerwelt/mathoid ../version.changes
+
 
 Testing
 -------
