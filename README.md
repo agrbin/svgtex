@@ -3,6 +3,9 @@ svgtex
 
 Using MathJax and PhantomJS to create SVGs on server side with minimum overhead.
 
+This is just an idea, algorithm and it's proof of concept.
+If you want to use such system in production, take a look at this fork too: https://github.com/gwicke/mathoid !
+
 MathJax is a great tool! Why not use it on a server side too?  To avoid loading the whole
 phantomjs and MathJax into memory with every call, the service is exposed via HTTP.
 
