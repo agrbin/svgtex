@@ -1,3 +1,62 @@
+mathoid (0.2.4) precise; urgency=low
+
+  [ Jacob Elder ]
+  * Add support for deploying on Heroku
+
+  [ Maloney, Christopher ]
+  * Add ability to process MathML
+  * Adding ability to parse query-string params; got post working again
+  * Add width param
+  * Fix activeRequests hash
+  * Add error checking, so server doesn't crash if there's a latex syntax error
+  * Flatten _process() - why is it necessary to have an extra layer?
+  * Flatten _process() - why is it necessary to have an extra layer?
+  * Move error checking out of _merge()
+  * Add MathML examples
+  * Readme -> markdown
+  * Add index.html to see svg example results
+  * Update README
+  * Set default width to 1000
+  * Update master README
+  * Fix query string parameter names per argbin requests
+  * Switch back to using CDN by default, update README, etc.
+  * Add simple.mml example
+  * Add test perl script, and utf8 example
+  * All tests working, update svg output
+  * Tweaks to main.js for query strings and charset header
+  * Remove render_examples.sh - doesn't work, anymore
+  * Add a test form that can be used to enter math.
+  * Add 'method' field to the test form, fix width so that empty value is the same as no value
+  * Add ping-test
+  * Add echo test
+  * Added command-line argument parsing, fixed but with post
+  * minor: change wording of startup message
+  * Update README to match
+  * minor: no hyperlink
+
+  [ Anton Grbin ]
+  * change from @physikerwelt, without \r\n
+
+  [ Moritz Schubotz ]
+  * Add documentation
+
+  [ Gabriel Wicke ]
+  * Copy only a single copy of each path
+  * Copy only a single copy of each path
+
+  [ Dan Allen ]
+  * add support for AsciiMath input
+
+  [ physikerwelt (Moritz Schubotz) ]
+  * Fix: Correct link to Math submodule
+
+  [ Gabriel Wicke ]
+  * Fix form, improve startup message
+
+  [ Moritz Schubotz ]
+
+ -- Moritz Schubotz (Physikerwelt) <wiki@physikerwelt.de>  Wed, 07 May 2014 17:12:30 +0200
+
 mathoid (0.2.3) precise; urgency=low
 
   * Update README.md
