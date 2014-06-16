@@ -306,6 +306,7 @@ function listenLoop() {
     var request_num = query.num;
     console.log(request_num + ': ' + "received: " + req.method + " " +
         req.url.substr(0, 30) + " ..");
+    console.log(request_num + ': ' + "test test test");
 
     if (query.test_form) {
       console.log(request_num + ": returning test form");
