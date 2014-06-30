@@ -1,9 +1,8 @@
 /*
- * Storoid worker.
+ * Mathoid worker.
  *
  * Configure in storoid.config.json.
  */
-
 // global includes
 var express = require('express'),
 	cluster = require('cluster'),
@@ -12,6 +11,10 @@ var express = require('express'),
 	child_process = require('child_process'),
 	request = require('request'),
 	querystring = require('querystring');
+var mjAPI = require("./MathJax-node/lib/mj-single.js");
+
+var format = "TeX";
+var font = "TeX";
 
 var config;
 
@@ -24,6 +27,9 @@ try {
 			"storoid.config.json.example");
 	process.exit(1);
 }
+
+mjAPI.config({MathJax: {SVG: {font: font}}});
+mjAPI.start();
 
 /**
  * The name of this instance.
@@ -53,22 +59,6 @@ var backendCB = function () {
 	handleRequests();
 };
 
-var startBackend = function (cb) {
-	if (backend) {
-		backend.removeAllListeners();
-		backend.kill('SIGKILL');
-	}
-	backendPort = Math.floor(9000 + Math.random() * 50000);
-	console.error(instanceName + ': Starting backend on port ' + backendPort);
-	backend = child_process.spawn('phantomjs', ['main.js', '-p', backendPort]);
-	backend.stdout.pipe(process.stderr);
-	backend.stderr.pipe(process.stderr);
-	backend.on('close', startBackend);
-	backendStarting = true;
-	// give backend 1 seconds to start up
-	setTimeout(backendCB, 1000);
-};
-startBackend();
 
 /* -------------------- Web service --------------------- */
 
@@ -94,63 +84,41 @@ app.get(/^\/robots.txt$/, function ( req, res ) {
 
 
 function handleRequest(req, res, q, type) {
-	// do the backend request
-        var reqbody = new Buffer(querystring.stringify({q: q, type: type, format: "json"})),
-		options = {
-		method: 'POST',
-		uri: 'http://localhost:' + backendPort.toString() + '/',
-		body: reqbody,
-		// Work around https://github.com/ariya/phantomjs/issues/11421 by
-		// setting explicit upper-case headers (request sends them lowercase
-		// by default) and manually encoding the body.
-		headers: {
-			'Content-Length': reqbody.length,
-			'Content-Type': 'application/x-www-form-urlencoded'
-		},
-		timeout: 2000
-	};
-	request(options, function (err, response, body) {
-        try{
-            body = new Buffer(body);
-        } catch ( e ) {
-            body = new Buffer(e.message.toString());
-        }
-		if (err || response.statusCode !== 200) {
-			var errBuf;
-			if (err) {
-				errBuf = new Buffer(JSON.stringify({
-					tex: q,
-					log: err.toString(),
-					success: false
-				}));
-			} else {
-				errBuf = body;
-			}
-			res.writeHead(500,
-				{
-					'Content-Type': 'application/json',
-					'Content-Length': errBuf.length
-				});
-			res.end(errBuf);
-			// don't retry the request
-			requestQueue.shift();
-			startBackend();
-			return handleRequests();
-		}
+	var mml =true;
+	//Keep format variables constant
+	if(type == "tex"){
+		type = "TeX"
+	}
+	if(type == "mml" || type == "MathML"){
+		type = "MathML"
+		mml = false;
+	}
+	if(type == "ascii" || type == "asciimath" ){
+		type = "AsciiMath"
+	}	
+	mjAPI.typeset({math:q, format:type, svg:true, img:true, mml:mml}, function (data) {
+		if(data.errors){
+			data.success = false;
+		} else {
+			data.success = true;
+		}	
+		var jsonData = JSON.stringify(data);
+		errBuf = new Buffer(jsonData);
 		res.writeHead(200,
 			{
 				'Content-Type': 'application/json',
-				'Content-length': body.length
+				'Content-length': errBuf.length
 			});
-		res.end(body);
+		res.end(errBuf);
+
 		requestQueue.shift();
-		handleRequests();
-	});
+		handleRequests();//*/
+});
 }
 
 handleRequests = function() {
 	// Call the next request on the queue
-	if (!backendStarting && requestQueue.length) {
+	if (requestQueue.length) {
 		requestQueue[0]();
 	}
 };
@@ -170,7 +138,6 @@ app.post(/^\/$/, function ( req, res ) {
 	requestQueue.push(handleRequest.bind(null, req, res, q, type));
 	// phantomjs only handles one request at a time. Enforce this.
 	if (requestQueue.length === 1) {
-		// Start this process
 		handleRequests();
 	}
 

@@ -3,4 +3,4 @@
 # node modules
 node_modules/ usr/lib/mathoid/
 #MathJax
-Math/ usr/lib/mathoid/
+MathJax-node/ usr/lib/mathoid/
