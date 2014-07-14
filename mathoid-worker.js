@@ -11,7 +11,7 @@ var express = require('express'),
 	child_process = require('child_process'),
 	request = require('request'),
 	querystring = require('querystring');
-var mjAPI = require("./MathJax-node/lib/mj-single.js");
+var mjAPI = require("./MathJaxNode/mj-single.js");
 
 var format = "TeX";
 var font = "TeX";

@@ -57,7 +57,7 @@ var defaults = {
   timeout: 5 * 1000,              // 5 second timeout before restarting MathJax
 };
 
-var MathJaxPath = "file://"+dirname(dirname(require.resolve("./mj-single.js")))+"/mathjax/unpacked";
+var MathJaxPath = "file://"+dirname(dirname(require.resolve("./mj-single.js")))+"/MathJax/unpacked";
 var MathJaxConfig;         // configuration for when starting MathJax
 var MathJax;   // filled in once MathJax is loaded
 var serverStarted = false; // true when the MathJax DOM has been created
