@@ -1,11 +1,11 @@
 {
 	"name": "Mathoid",
-	"description": "Render tex to SVG and MathML using MathJax, Phantom. Based on svgtex.",
-	"version": "0.0.1",
+	"description": "Render tex to SVG and MathML using MathJax. Based on svgtex.",
+	"version": "0.2.5",
 	"dependencies": {
-		"querystring": "0.x.x",
-		"express": "2.5.x",
-		"request": "2.x.x",
-		"jsdom": "*"
+    "querystring": "0.x.x",
+    "express": "2.5.x",
+    "request": "2.x.x",
+		"jsdom": "0.11.1"
 	}
 }
