@@ -1,13 +1,19 @@
 /**
  * From https://en.wikipedia.org/wiki/User:Nageh/mathJax/config/TeX-AMS-texvc_HTML.js
  */
+MathJax.Extension["TeX/texvc"] = {
+  version: "2.3",
+};
 
 MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
   var VERSION = "1.0";
 
   var MML = MathJax.ElementJax.mml;
 
-  MathJax.Hub.Insert(MathJax.InputJax.TeX.Definitions,{
+  var TEX = MathJax.InputJax.TeX;
+  var TEXDEF = TEX.Definitions;
+  
+  TEXDEF.Add({
 
     mathchar0mi: {
       // Lowercase Greek letters
@@ -113,7 +119,7 @@ MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
       '\\dArr':           '21D3',  // Downarrow
       '\\rang':           '27E9',  // rangle
       '\\lang':           '27E8'   // langle
-    },
+    }, 
 
     macros: {
       sgn:                'NamedFn',
@@ -127,10 +133,10 @@ MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {
       vline:              ['Macro','\\smash{\\large\\lvert}',0],
       image:              ['Macro','\\Im']
     }
+  },null,true);
 
-  });
+ MathJax.Hub.Startup.signal.Post("TeX texvc Ready");
+  
 });
-
-MathJax.Hub.Startup.signal.Post("TeX texvc Ready");
 
 MathJax.Ajax.loadComplete("[MathJax]/extensions/TeX/texvc.js");

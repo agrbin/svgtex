@@ -117,7 +117,7 @@ function ConfigureMathJax() {
     //
     jax: ["input/TeX", "input/MathML", "input/AsciiMath", "output/SVG"],
     extensions: ["tex2jax.js","mml2jax.js","asciimath2jax.js","toMathML.js"],
-    TeX: {extensions: window.Array("AMSmath.js","AMSsymbols.js","autoload-all.js")},
+    TeX: {extensions: window.Array("AMSmath.js","AMSsymbols.js","autoload-all.js","texvc.js")}, //
     tex2jax: {inlineMath: [['$','$'],['\\(','\\)']], preview:"none"},
     mml2jax: {preview:"none"},
     asciimath2jax: {preview:"none"},
