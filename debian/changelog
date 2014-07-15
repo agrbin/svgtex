@@ -1,3 +1,9 @@
+mathoid (0.2.5ubuntu1) precise; urgency=low
+
+  * remove phantomjs 
+
+ -- Moritz Schubotz (Physikerwelt) <wiki@physikerwelt.de>  Tue, 15 Jul 2014 01:10:30 +0000
+
 mathoid (0.2.4ubuntu1) trusty; urgency=low
 
   * 
