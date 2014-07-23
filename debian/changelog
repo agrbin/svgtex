@@ -1,3 +1,9 @@
+mathoid (0.2.5ubuntu2) trusty; urgency=medium
+
+  * Update npm modules to ubuntu14
+
+ -- Moritz Schubotz (Physikerwelt) <wiki@physikerwelt.de>  Wed, 23 Jul 2014 19:21:40 +0000
+
 mathoid (0.2.5ubuntu1) precise; urgency=low
 
   * remove phantomjs 
