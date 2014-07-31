@@ -82,26 +82,27 @@ app.get(/^\/robots.txt$/, function ( req, res ) {
 });
 
 
-
 function handleRequest(req, res, q, type) {
-	var mml =true;
+	var mml = true;
 	//Keep format variables constant
-	if(type == "tex"){
+	if (type == "tex") {
 		type = "TeX"
 	}
-	if(type == "mml" || type == "MathML"){
+	if (type == "mml" || type == "MathML") {
 		type = "MathML"
 		mml = false;
 	}
-	if(type == "ascii" || type == "asciimath" ){
+	if (type == "ascii" || type == "asciimath") {
 		type = "AsciiMath"
-	}	
-	mjAPI.typeset({math:q, format:type, svg:true, img:true, mml:mml}, function (data) {
-		if(data.errors){
+	}
+	mjAPI.typeset({math: q, format: type, svg: true, img: true, mml: mml}, function (data) {
+		if (data.errors) {
 			data.success = false;
+			data.log = "Error:" + JSON.stringify(data.errors);
 		} else {
 			data.success = true;
-		}	
+			data.log = "success";
+		}
 		var jsonData = JSON.stringify(data);
 		errBuf = new Buffer(jsonData);
 		res.writeHead(200,
@@ -112,8 +113,8 @@ function handleRequest(req, res, q, type) {
 		res.end(errBuf);
 
 		requestQueue.shift();
-		handleRequests();//*/
-});
+		handleRequests();
+	});
 }
 
 handleRequests = function() {
