@@ -11,7 +11,7 @@ var express = require('express'),
 	child_process = require('child_process'),
 	request = require('request'),
 	querystring = require('querystring');
-var mjAPI = require("./MathJaxNode/mj-single.js");
+var mjAPI = require("./MathJaxNode/lib/mj-single.js");
 
 var format = "TeX";
 var font = "TeX";
@@ -28,7 +28,7 @@ try {
 	process.exit(1);
 }
 
-mjAPI.config({MathJax: {SVG: {font: font}}});
+mjAPI.config({MathJax: {SVG: {font: font}}, displayError: true});
 mjAPI.start();
 
 /**
@@ -38,26 +38,6 @@ mjAPI.start();
 var instanceName = cluster.isWorker ? 'worker(' + process.pid + ')' : 'master';
 
 console.log( ' - ' + instanceName + ' loading...' );
-
-
-
-/*
- * Backend setup
- */
-var restarts = 10;
-
-var backend,
-	backendStarting = false,
-	backendPort,
-	requestQueue = [];
-
-// forward declaration
-var handleRequests;
-
-var backendCB = function () {
-	backendStarting = false;
-	handleRequests();
-};
 
 
 /* -------------------- Web service --------------------- */
@@ -85,15 +65,15 @@ app.get(/^\/robots.txt$/, function ( req, res ) {
 function handleRequest(req, res, q, type) {
 	var mml = true;
 	//Keep format variables constant
-	if (type == "tex") {
-		type = "TeX"
+	if (type === "tex") {
+		type = "TeX";
 	}
-	if (type == "mml" || type == "MathML") {
-		type = "MathML"
+	if (type === "mml" || type === "MathML") {
+		type = "MathML";
 		mml = false;
 	}
-	if (type == "ascii" || type == "asciimath") {
-		type = "AsciiMath"
+	if (type === "ascii" || type === "asciimath") {
+		type = "AsciiMath";
 	}
 	mjAPI.typeset({math: q, format: type, svg: true, img: true, mml: mml}, function (data) {
 		if (data.errors) {
@@ -103,26 +83,13 @@ function handleRequest(req, res, q, type) {
 			data.success = true;
 			data.log = "success";
 		}
-		var jsonData = JSON.stringify(data);
-		errBuf = new Buffer(jsonData);
 		res.writeHead(200,
 			{
-				'Content-Type': 'application/json',
-				'Content-length': errBuf.length
+				'Content-Type': 'application/json'
 			});
-		res.end(errBuf);
-
-		requestQueue.shift();
-		handleRequests();
+		res.end(JSON.stringify(data));
 	});
 }
-
-handleRequests = function() {
-	// Call the next request on the queue
-	if (requestQueue.length) {
-		requestQueue[0]();
-	}
-};
 
 
 app.post(/^\/$/, function ( req, res ) {
@@ -136,11 +103,7 @@ app.post(/^\/$/, function ( req, res ) {
     if (!(req.body.type) ){
         type = 'tex';
     }
-	requestQueue.push(handleRequest.bind(null, req, res, q, type));
-	// phantomjs only handles one request at a time. Enforce this.
-	if (requestQueue.length === 1) {
-		handleRequests();
-	}
+	handleRequest(req, res, q, type);
 
 });
 
