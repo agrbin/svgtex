@@ -11,7 +11,7 @@
  *
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2009-2013 The MathJax Consortium
+ *  Copyright (c) 2009-2014 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ MathJax.ElementJax.mml = MathJax.ElementJax({
   mimeType: "jax/mml"
 },{
   id: "mml",
-  version: "2.3",
+  version: "2.4.0",
   directory: MathJax.ElementJax.directory + "/mml",
   extensionDir: MathJax.ElementJax.extensionDir + "/mml",
   optableDir: MathJax.ElementJax.directory + "/mml/optable"
@@ -600,6 +600,38 @@ MathJax.ElementJax.mml.Augment({
     },
     isEmbellished: function () {return true},
     hasNewline: function () {return (this.Get("linebreak") === MML.LINEBREAK.NEWLINE)},
+    CoreParent: function () {
+      var parent = this;
+      while (parent && parent.isEmbellished() &&
+             parent.CoreMO() === this && !parent.isa(MML.math)) {parent = parent.Parent()}
+      return parent;
+    },
+    CoreText: function (parent) {
+      if (!parent) {return ""}
+      if (parent.isEmbellished()) {return parent.CoreMO().data.join("")}
+      while ((((parent.isa(MML.mrow) || parent.isa(MML.TeXAtom) ||
+                parent.isa(MML.mstyle) || parent.isa(MML.mphantom)) &&
+                parent.data.length === 1) || parent.isa(MML.munderover)) &&
+                parent.data[0]) {parent = parent.data[0]}
+      if (!parent.isToken) {return ""} else {return parent.data.join("")}
+    },
+    remapChars: {
+      '*':"\u2217",
+      '"':"\u2033",
+      "\u00B0":"\u2218",
+      "\u00B2":"2",
+      "\u00B3":"3",
+      "\u00B4":"\u2032",
+      "\u00B9":"1"
+    },
+    remap: function (text,map) {
+      text = text.replace(/-/g,"\u2212");
+      if (map) {
+        text = text.replace(/'/g,"\u2032").replace(/`/g,"\u2035");
+        if (text.length === 1) {text = map[text]||text}
+      }
+      return text;
+    },
     setTeXclass: function (prev) {
       var values = this.getValues("form","lspace","rspace","fence"); // sets useMMLspacing
       if (this.useMMLspacing) {this.texClass = MML.TEXCLASS.NONE; return this}
@@ -757,7 +789,7 @@ MathJax.ElementJax.mml.Augment({
         // <mrow> came from \left...\right
         // so treat as subexpression (tex class INNER)
         //
-        this.getPrevClass(prev);
+        this.getPrevClass(prev); prev = null;
         for (i = 0; i < m; i++)
           {if (this.data[i]) {prev = this.data[i].setTeXclass(prev)}}
         this.texClass = MML.TEXCLASS.INNER;

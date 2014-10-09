@@ -2,7 +2,7 @@
  * From https://en.wikipedia.org/wiki/User:Nageh/mathJax/config/TeX-AMS-texvc_HTML.js
  */
 MathJax.Extension["TeX/texvc"] = {
-  version: "2.3",
+  version: "2.4",
 };
 
 MathJax.Hub.Register.StartupHook("TeX Jax Ready",function () {

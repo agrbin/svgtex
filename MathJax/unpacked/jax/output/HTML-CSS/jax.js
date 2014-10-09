@@ -11,7 +11,7 @@
  *  
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2009-2013 The MathJax Consortium
+ *  Copyright (c) 2009-2014 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-
 
 (function (AJAX,HUB,HTMLCSS) {
   var MML, isMobile = HUB.Browser.isMobile;
@@ -177,6 +176,7 @@
     loadWebFont: function (font) {
       HUB.Startup.signal.Post("HTML-CSS Jax - Web-Font "+HTMLCSS.fontInUse+"/"+font.directory);
       var n = MESSAGE(["LoadWebFont","Loading web-font %1",HTMLCSS.fontInUse+"/"+font.directory]);
+      if (HTMLCSS.noReflows) return;
       var done = MathJax.Callback({}); // called when font is loaded
       var callback = MathJax.Callback(["loadComplete",this,font,n,done]);
       AJAX.timer.start(AJAX,[this.checkWebFont,font,callback],0,this.timeout);
@@ -384,10 +384,8 @@
     FONTDATA: {
       TeX_factor: 1, baselineskip: 1.2, lineH: .8, lineD: .2, ffLineH: .8,
       FONTS: {},
-      VARIANT: {
-        "normal": {fonts:[]}, "-generic-variant": {fonts:[]},
-        "-largeOp": {fonts:[]}, "-smallOp": {fonts:[]}
-      }, RANGES: [], DELIMITERS: {}, RULECHAR: 0x2D, REMAP: {}
+      VARIANT: {"normal": {fonts:[]}, "-generic-variant": {}, "-largeOp": {}, "-smallOp": {}},
+      RANGES: [], DELIMITERS: {}, RULECHAR: 0x2D, REMAP: {}
     },
 
     Config: function () {
@@ -785,7 +783,10 @@
         var id = (jax.root.id||"MathJax-Span-"+jax.root.spanID)+"-zoom";
         var child = document.getElementById(id).firstChild;
         while (child && child.style.width !== width) {child = child.nextSibling}
-        if (child) {child.style.width = "100%"}
+        if (child) {
+          var cwidth = child.offsetWidth; child.style.width = "100%";
+          if (cwidth > Mw) {span.style.width = (cwidth+100)+"px"}
+        }
       }
       //
       //  Get height and width of zoomed math and original math
@@ -831,6 +832,7 @@
     },
     
     getHD: function (span) {
+      if (span.bbox && this.config.noReflows) {return {h:span.bbox.h, d:span.bbox.d}}
       var position = span.style.position;
       span.style.position = "absolute";
       this.HDimg.style.height = "0px";
@@ -844,6 +846,7 @@
       return HD;
     },
     getW: function (span) {
+      if (span.bbox && this.config.noReflows) {return span.bbox.w}
       var W, H, w = (span.bbox||{}).w, start = span;
       if (span.bbox && span.bbox.exactW) {return w}
       if ((span.bbox && w >= 0 && !this.initialSkipBug && !this.msieItalicWidthBug) ||
@@ -885,7 +888,7 @@
       for (i = 0, m = SPANS.length; i < m; i++) {
         span = SPANS[i]; if (!span) continue;
         bbox = span.bbox; parent = this.parentNode(span);
-        if (bbox.exactW || bbox.width || bbox.w === 0 || bbox.isMultiline) {
+        if (bbox.exactW || bbox.width || bbox.w === 0 || bbox.isMultiline || this.config.noReflows) {
           if (!parent.bbox) {parent.bbox = bbox}
           continue;
         }
@@ -1076,7 +1079,8 @@
                 width:0, height:H, verticalAlign:D},
         bbox: {h:h, d:d, w:w, rw:w, lw:0, exactW:true}, noAdjust:true, HH:h+d, isMathJax:true
       });
-      if (w > 0 && rule.offsetWidth == 0) {rule.style.width = this.Em(w)}
+      // ### FIXME:  figure out which IE has this bug and make a flag for it
+      if (w > 0 && !this.noReflows && rule.offsetWidth == 0) {rule.style.width = this.Em(w)}
       if (span.isBox || span.className == "mspace") {span.bbox = rule.bbox, span.HH = h+d}
       return rule;
     },
@@ -1391,7 +1395,10 @@
           span.style.top = this.Em(-h);
         } else {
           span.style.verticalAlign = this.Em(h);
-          if (HTMLCSS.ffVerticalAlignBug) {HTMLCSS.createRule(span.parentNode,span.bbox.h,0,0)}
+	  if (HTMLCSS.ffVerticalAlignBug) {
+	    HTMLCSS.createRule(span.parentNode,span.bbox.h,0,0);
+	    delete span.parentNode.bbox;
+	  }
         }
       }
     },
@@ -1481,7 +1488,8 @@
 
     handleFont: function (span,font,force) {
       span.style.fontFamily = font.family;
-      if (!font.directory) {span.style.fontSize = Math.floor(100/HTMLCSS.scale+.5) + "%"}
+      if (!font.directory)
+        {span.style.fontSize = Math.floor(HTMLCSS.config.scale/HTMLCSS.scale+.5) + "%"}
       if (!(HTMLCSS.FontFaceBug && font.isWebFont)) {
         var style  = font.style  || "normal", weight = font.weight || "normal";
         if (style !== "normal"  || force) {span.style.fontStyle  = style}
@@ -1702,6 +1710,11 @@
         if (this.HTMLlineBreaks(span)) {span = this.HTMLmultiline(span)}
 	this.HTMLhandleSpace(span);
 	this.HTMLhandleColor(span);
+        if (this.data.length === 1 && this.data[0]) {
+          // copy skew data from accented character
+          var bbox = this.data[0].HTMLspanElement().bbox;
+          if (bbox.skew) span.bbox.skew = bbox.skew;
+        }
 	return span;
       },
       HTMLlineBreaks: function () {return false},
@@ -2032,7 +2045,7 @@
         var text = this.data.join("").replace(/[\u2061-\u2064]/g,""); // remove invisibles
         if (remap) {text = remap(text,chars)}
         if (variant.fontInherit) {
-          var scale = Math.floor(100/HTMLCSS.scale+.5) + "%";
+          var scale = Math.floor(HTMLCSS.config.scale/HTMLCSS.scale+.5) + "%";
           HTMLCSS.addElement(span,"span",{style:{"font-size":scale}},[text]);
           if (variant.bold)   {span.lastChild.style.fontWeight = "bold"}
           if (variant.italic) {span.lastChild.style.fontStyle = "italic"}
@@ -2048,7 +2061,7 @@
         var text = this.toString().replace(/[\u2061-\u2064]/g,""); // remove invisibles
         if (remap) {text = remap(text,chars)}
         if (variant.fontInherit) {
-          var scale = Math.floor(100/HTMLCSS.scale+.5) + "%";
+          var scale = Math.floor(HTMLCSS.config.scale/HTMLCSS.scale+.5) + "%";
           HTMLCSS.addElement(span,"span",{style:{"font-size":scale}},[text]);
           if (variant.bold)   {span.lastChild.style.fontWeight = "bold"}
           if (variant.italic) {span.lastChild.style.fontStyle = "italic"}
@@ -2113,7 +2126,7 @@
         //
         var parent = this.CoreParent(),
             isScript = (parent && parent.isa(MML.msubsup) && this !== parent.data[parent.base]),
-            mapchars = (isScript?this.HTMLremapChars:null);
+            mapchars = (isScript?this.remapChars:null);
         if (text.length === 1 && parent && parent.isa(MML.munderover) &&
             this.CoreText(parent.data[parent.base]).length === 1) {
           var over = parent.data[parent.over], under = parent.data[parent.under];
@@ -2129,7 +2142,7 @@
         //  Typeset contents
         //
 	for (var i = 0, m = this.data.length; i < m; i++)
-          {if (this.data[i]) {this.data[i].toHTML(span,variant,this.HTMLremap,mapchars)}}
+          {if (this.data[i]) {this.data[i].toHTML(span,variant,this.remap,mapchars)}}
 	if (!span.bbox) {span.bbox = this.HTMLzeroBBox()}
 	if (text.length !== 1) {delete span.bbox.skew}
         //
@@ -2169,37 +2182,6 @@
 	this.HTMLhandleColor(span);
         this.HTMLhandleDir(span);
 	return span;
-      },
-      CoreParent: function () {
-        var parent = this;
-        while (parent && parent.isEmbellished() &&
-               parent.CoreMO() === this && !parent.isa(MML.math)) {parent = parent.Parent()}
-        return parent;
-      },
-      CoreText: function (parent) {
-        if (!parent) {return ""}
-        if (parent.isEmbellished()) {return parent.CoreMO().data.join("")}
-        while ((parent.isa(MML.mrow) || parent.isa(MML.TeXAtom) ||
-                parent.isa(MML.mstyle) || parent.isa(MML.mphantom)) &&
-                parent.data.length === 1 && parent.data[0]) {parent = parent.data[0]}
-        if (!parent.isToken) {return ""} else {return parent.data.join("")}
-      },
-      HTMLremapChars: {
-        '*':"\u2217",
-        '"':"\u2033",
-        "\u00B0":"\u2218",
-        "\u00B2":"2",
-        "\u00B3":"3",
-        "\u00B4":"\u2032",
-        "\u00B9":"1"
-      },
-      HTMLremap: function (text,map) {
-        text = text.replace(/-/g,"\u2212");
-        if (map) {
-          text = text.replace(/'/g,"\u2032").replace(/`/g,"\u2035");
-          if (text.length === 1) {text = map[text]||text}
-        }
-        return text;
       },
       HTMLcanStretch: function (direction) {
 	if (!this.Get("stretchy")) {return false}
@@ -2616,6 +2598,7 @@
 			   this.data[i].HTMLcanStretch("Horizontal"));
 	    } else {
 	      stretch[i] = this.data[i].HTMLcanStretch("Horizontal");
+              children[i].style.paddingLeft = children[i].style.paddingRight = "";
 	    }
           }
         }
@@ -2630,7 +2613,11 @@
 	if (D == null && HW != null) {W = HW} else if (W == -HTMLCSS.BIGDIMEN) {W = WW}
         for (i = WW = 0, m = this.data.length; i < m; i++) {if (this.data[i]) {
           box = boxes[i];
-          if (stretch[i]) {box.bbox = this.data[i].HTMLstretchH(box,W).bbox}
+          if (stretch[i]) {
+            box.bbox = this.data[i].HTMLstretchH(box,W).bbox;
+            if (i !== this.base)
+              {children[i].style.paddingLeft = children[i].style.paddingRight = ""}
+          }
           if (box.bbox.w > WW) {WW = box.bbox.w}
         }}
 	var t = HTMLCSS.TeX.rule_thickness * this.mscale, factor = HTMLCSS.FONTDATA.TeX_factor;
@@ -2653,7 +2640,10 @@
 	    if (i == this.over) {
 	      if (accent) {
 		k = Math.max(t * scale * factor,2.5/this.em); z3 = 0;
-		if (base.bbox.skew) {x += base.bbox.skew}
+		if (base.bbox.skew) {
+                  x += base.bbox.skew; span.bbox.skew = base.bbox.skew;
+                  if (x+box.bbox.w > WW) {span.bbox.skew += (WW-box.bbox.w-x)/2}
+                }
 	      } else {
 		z1 = HTMLCSS.TeX.big_op_spacing1 * scale * factor;
 		z2 = HTMLCSS.TeX.big_op_spacing3 * scale * factor;
@@ -2763,6 +2753,7 @@
     MML.mtable.Augment({toHTML: MML.mbase.HTMLautoload});
     
     MML["annotation-xml"].Augment({toHTML: MML.mbase.HTMLautoload});
+    MML.annotation.Augment({toHTML: function (span) {return this.HTMLcreateSpan(span)}});
     
     MML.math.Augment({
       toHTML: function (span,node) {
@@ -2801,8 +2792,8 @@
 	span.bbox.lw *= f; span.bbox.rw *= f;
 	if (math && math.bbox.width != null) {
           span.style.minWidth = (math.bbox.minWidth || span.style.width);
-	  span.style.width = stack.style.width = math.bbox.width;
-	  box.style.width = "100%";
+	  span.style.width = math.bbox.width;
+	  box.style.width = stack.style.width = "100%";
 	}
 	//
 	//  Add color (if any)
@@ -2928,7 +2919,7 @@
               (HUB.config.root+"/").substr(0,root.length) === root) {webFonts = "otf"}
         }
         HTMLCSS.Augment({
-          ffVerticalAlignBug: true,
+          ffVerticalAlignBug: !browser.versionAtLeast("20.0"),  // not sure when this bug was fixed
           AccentBug: true,
           allowWebFonts: webFonts
         });
@@ -2962,6 +2953,7 @@
           safariVerticalAlignBug: !v3p1,
           safariTextNodeBug: !v3p0,
           forceReflow: true,
+          FontFaceBug: true,
           allowWebFonts: (v3p1 && !forceImages ? "otf" : false)
         });
         if (trueSafari) {

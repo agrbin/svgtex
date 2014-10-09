@@ -28,12 +28,15 @@
 
 var http = require('http');
 var fs = require('fs');
-var dirname = require('path').dirname;
-var jsdom = require("jsdom").jsdom;
+var path = require('path');
+var fmt = require('util').format;
+var jsdom = require('jsdom').jsdom;
 var exec = require('child_process').exec;
+var speech = require('speech-rule-engine');
 
 var displayMessages = false;      // don't log Message.Set() calls
 var displayErrors = true;         // show error messages on the console
+var undefinedChar = false;        // unknown characters are not saved in the error array
 
 var defaults = {
   ex: 6,                          // ex-size in pixels
@@ -51,13 +54,15 @@ var defaults = {
   svg: false,                     // return svg output?
   img: false,                     // return img tag for remote image?
   png: false,                     // return png image (as data: URL)?
+  dpi: 144,                       // dpi for png image
 
   speakText: false,               // add spoken annotations to svg output?
 
   timeout: 5 * 1000,              // 5 second timeout before restarting MathJax
 };
 
-var MathJaxPath = "file://"+dirname(dirname(require.resolve("./mj-single.js")))+"/MathJax/unpacked";
+var MathJaxPath = "file://"+path.resolve(__dirname,'..','mathjax/unpacked/MathJax.js');
+var BatikRasterizerPath = path.resolve(__dirname,'..','batik/batik-rasterizer.jar');
 var MathJaxConfig;         // configuration for when starting MathJax
 var MathJax;   // filled in once MathJax is loaded
 var serverStarted = false; // true when the MathJax DOM has been created
@@ -116,8 +121,8 @@ function ConfigureMathJax() {
     //    (users can override that)
     //
     jax: ["input/TeX", "input/MathML", "input/AsciiMath", "output/SVG"],
-    extensions: ["tex2jax.js","mml2jax.js","asciimath2jax.js","toMathML.js"],
-    TeX: {extensions: window.Array("AMSmath.js","AMSsymbols.js","autoload-all.js","texvc.js")}, //
+    extensions: ["tex2jax.js","mml2jax.js","asciimath2jax.js","toMathML.js","texvc.js"],
+    TeX: {extensions: window.Array("AMSmath.js","AMSsymbols.js","autoload-all.js")},
     tex2jax: {inlineMath: [['$','$'],['\\(','\\)']], preview:"none"},
     mml2jax: {preview:"none"},
     asciimath2jax: {preview:"none"},
@@ -164,7 +169,7 @@ function ConfigureMathJax() {
       });
       MathJax.Hub.Register.MessageHook("SVG Jax - unknown char",function (message) {
         AddError("SVG - Unknown character: U+"+message[1].toString(16).toUpperCase()+
-                    " in "+(message[2].fonts||["unknown"]).join(","));
+                    " in "+(message[2].fonts||["unknown"]).join(","),!undefinedChar);
       });
       MathJax.Hub.Register.MessageHook("MathML Jax - unknown node type",function (message) {
         AddError("MathML - Unknown node type: "+message[1]);
@@ -313,7 +318,7 @@ function Insert(dst,src) {
 //
 function StartMathJax() {
   var script = document.createElement("script");
-  script.src = MathJaxPath+"/MathJax.js";
+  script.src = MathJaxPath;
   document.head.appendChild(script);
 }
 
@@ -324,16 +329,15 @@ function StartMathJax() {
 //
 function ReportError(message,currentCallback) {
   AddError(message);
-  currentCallback = ( typeof currentCallback === "undefined") ? callback : currentCallback;
-  if (currentCallback) {currentCallback({errors: errors})}
+  (currentCallback||callback)({errors: errors});
 }
 
 //
 //  Add an error to the error list and display it on the console
 //
-function AddError(message) {
+function AddError(message,nopush) {
   if (displayErrors) console.error(message);
-  errors.push(message);
+  if (!nopush) errors.push(message);
 }
 
 
@@ -344,9 +348,9 @@ function AddError(message) {
 //  into account)
 //
 function GetMML(result) {
-  if (!data.mml) return;
+  if (!data.mml && !data.speakText) return;
   var mml, jax = MathJax.Hub.getAllJax()[0];
-  try {result.mml = jax.root.toMathML('')} catch(err) {
+  try {result.mml = jax.root.toMathML('',jax)} catch(err) {
     if (!err.restart) {throw err;} // an actual error
     return MathJax.Callback.After(window.Array(GetMML,result),err.restart);
   }
@@ -356,16 +360,19 @@ function GetMML(result) {
 //  Create SVG output and PNG output, if requested
 //
 function GetSVG(result) {
-  var jax = MathJax.Hub.getAllJax()[0];
-  if (!jax) return;
+  if (!data.svg && !data.png && !data.img) return;
+  var jax = MathJax.Hub.getAllJax()[0]; if (!jax) return;
   var script = jax.SourceElement(),
       svg = script.previousSibling.getElementsByTagName("svg")[0];
   svg.setAttribute("xmlns","http://www.w3.org/2000/svg");
 
   //
-  //  Add the speach elements, if needed
+  //  Add the speech elements, if needed
   //
-  if (data.speakText) {GetSpeach(svg)}
+  if (data.speakText) {
+    GetSpeech(svg,result.mml);
+    if (!data.mml) {delete result.mml}
+  }
 
   //
   //  SVG data is modified to add linebreaks for readability,
@@ -395,7 +402,8 @@ function GetSVG(result) {
   if (data.png) {
     var callback = MathJax.Callback(function () {}); // for synchronization with MathJax
     fs.writeFileSync(tmpfile+".svg",svgfile);
-    exec("java -jar batik/batik-rasterizer.jar "+tmpfile+".svg",function (err,stdout,stderr) {
+    var batikCommand = fmt("java -jar %s -dpi %d '%s.svg'",BatikRasterizerPath,data.dpi,tmpfile);
+    exec(batikCommand, function (err,stdout,stderr) {
       if (err) {AddError(err)} else {
         var buffer = fs.readFileSync(tmpfile+".png");
         result.png = "data:image/png;base64," + buffer.toString('base64');
@@ -408,15 +416,16 @@ function GetSVG(result) {
 }
 
 //
-//  Add the speach text and mark the SVG appropriately
+//  Add the speech text and mark the SVG appropriately
 //
-function GetSpeach(svg) {
+function GetSpeech(svg,mml) {
   ID++; var id = "MathJax-SVG-"+ID;
+  var speak = speech.processExpression(mml);
   svg.setAttribute("role","math");
   svg.setAttribute("aria-labelledby",id+"-Title "+id+"-Desc");
   for (var i=0, m=svg.childNodes.length; i < m; i++)
     {svg.childNodes[i].setAttribute("aria-hidden",true)}
-  var node = MathJax.HTML.Element("desc",{id:id+"-Desc"},["This will be the ChromeVox output"]);
+  var node = MathJax.HTML.Element("desc",{id:id+"-Desc"},[speak]);
   svg.insertBefore(node,svg.firstChild);
   node = MathJax.HTML.Element("title",{id:id+"-Title"},["Equation"]);
   svg.insertBefore(node,svg.firstChild);
@@ -594,7 +603,8 @@ exports.start = function () {RestartMathJax()}
 //     });
 //
 exports.config = function (config) {
-  if (config.displayMessages != null) {displayMessages = config.displayMessages}
-  if (config.displayErrors != null)   {displayErrors   = config.displayErrors}
+  if (config.displayMessages != null)    {displayMessages = config.displayMessages}
+  if (config.displayErrors != null)      {displayErrors   = config.displayErrors}
+  if (config.undefinedCharError != null) {undefinedChar   = config.undefinedCharError}
   if (config.MathJax) {MathJaxConfig = config.MathJax}
 }

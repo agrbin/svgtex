@@ -9,7 +9,7 @@
  *
  *  ---------------------------------------------------------------------
  *  
- *  Copyright (c) 2011-2013 The MathJax Consortium
+ *  Copyright (c) 2011-2014 The MathJax Consortium
  * 
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@
  */
 
 MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
-  var VERSION = "2.3";
+  var VERSION = "2.4.0";
   var MML = MathJax.ElementJax.mml,
       SVG = MathJax.OutputJax.SVG,
       BBOX = SVG.BBOX;
@@ -164,7 +164,7 @@ MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
       var Y, fY, n = "";
       if (typeof(values.align) !== "string") {values.align = String(values.align)}
       if (values.align.match(/(top|bottom|center|baseline|axis)( +(-?\d+))?/))
-        {n = RegExp.$3; values.align = RegExp.$1} else {values.align = this.defaults.align}
+        {n = RegExp.$3||""; values.align = RegExp.$1} else {values.align = this.defaults.align}
       if (n !== "") {
         //
         //  Find the height of the given row
