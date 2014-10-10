@@ -83,6 +83,9 @@ function handleRequest(req, res, q, type) {
 			data.success = true;
 			data.log = "success";
 		}
+		if (data.mml) {
+			data.mml = data.mml.replace(/displaystyle="true" (?=displaystyle)/, '');
+		}
 		res.writeHead(200,
 			{
 				'Content-Type': 'application/json'
