@@ -7,17 +7,17 @@
  *
  *  Implements the NativeMML OutputJax that displays mathematics
  *  using a browser's native MathML capabilities (if any).
- *  
+ *
  *  ---------------------------------------------------------------------
- *  
+ *
  *  Copyright (c) 2010-2014 The MathJax Consortium
- * 
+ *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,11 +27,11 @@
 
 (function (nMML,HUB,AJAX,HTML) {
   var MML, isMSIE = HUB.Browser.isMSIE;
-  
+
   var EVENT, TOUCH, HOVER, ZOOM; // filled in later
 
   HUB.Register.StartupHook("MathZoom Ready",function () {ZOOM = MathJax.Extension.MathZoom});
-  
+
   var NOPADDING = function (side,obj) {
     var span = HTML.Element("span"); side = "padding"+side;
     if (obj) {
@@ -41,7 +41,7 @@
       }
     }
   };
-  
+
   var CELLSPACING = function (obj,rowSpacing,columnSpacing) {
     //
     // Webkit default padding on mtd cells is simply
@@ -79,7 +79,7 @@
       obj.setAttribute("style",span.style.cssText);
     }
   };
- 
+
   nMML.Augment({
     //
     //  User can configure styles
@@ -105,15 +105,15 @@
           "min-width": 0, "min-height": 0,
           border: 0, padding: 0, margin: 0
         },
-        
+
         "span.MathJax_MathML": {
           display: "inline!important"
         },
-        
+
         "div.MathJax_MathML": {
           display: "block!important"
         },
-        
+
         ".MathJax_mmlExBox": {
           display:"block!important", overflow:"hidden",
           height:"1px", width:"60ex",
@@ -126,7 +126,7 @@
     settings: HUB.config.menuSettings,
     ex: 1, scale: 1,  // filled in later
     adjustWidths: [], // array of elements to have their widths adjusted
-    
+
     Config: function () {
       this.SUPER(arguments).Config.call(this);
       if (this.settings.scale) {this.config.scale = this.settings.scale}
@@ -221,7 +221,7 @@
         document.body.removeChild(this.EmExSpan);
       }
     },
-    
+
     preTranslate: function (state) {
       var scripts = state.jax[this.id], i, m = scripts.length,
           script, prev, span, test, math, jax, ex, mex, scale;
@@ -286,7 +286,7 @@
 
     //
     //  Add a SPAN to use as a container, and render the math into it
-    //  
+    //
     Translate: function (script) {
       if (!script.parentNode) return;
       //
@@ -343,7 +343,7 @@
         sheet.disabled = true; sheet.disabled = false;
       }
     },
-    
+
     //
     //  Remove MathML preceeding the script
     //
@@ -540,13 +540,13 @@
         return math;
       }
     });
-    
+
     MML.mrow.Augment({
       //
       //  Make inferred rows not include an mrow tag
       //
       toNativeMML: function (parent) {
-        var i, m; 
+        var i, m;
 	if (this.inferred  && this.parent.inferRow) {
 	  for (i = 0, m = this.data.length; i < m; i++) {
 	    if (this.data[i]) {this.data[i].toNativeMML(parent)}
@@ -827,7 +827,7 @@
           parent.appendChild(mtr);
         }
       });
-      
+
       MML.mtd.Augment({
         toNativeMML: function (parent) {
           var tag = parent.appendChild(this.NativeMMLelement(this.type));
@@ -842,7 +842,7 @@
           }
         }
       });
-      
+
       MML.mspace.Augment({
         toNativeMML: function (parent) {
           this.SUPER(arguments).toNativeMML.call(this,parent);
@@ -915,7 +915,7 @@
         });
       }
     }
-    
+
     MML.math.Augment({
       toNativeMML: function (parent,jax) {
         var tag = this.NativeMMLelement(this.type), math = tag;
@@ -975,7 +975,7 @@
         parent.appendChild(math);
         //
         //  Firefox can't seem to get the width of <math> elements right, so
-        //  use an <mrow> to get the actual width and set the style on the 
+        //  use an <mrow> to get the actual width and set the style on the
         //  parent element to match.  Even if we set the <math> width properly,
         //  it doesn't seem to propagate up to the <span> correctly.
         //
@@ -1086,7 +1086,7 @@
         if (!isOpera) {
           //
           // Append the opening fence
-          // 
+          //
           operator = this.NativeMMLelement("mo");
           operator.setAttribute("fence", "true");
           operator.textContent = values.open;
@@ -1152,7 +1152,7 @@
 	parent.appendChild(document.createTextNode(this.toString()));
       }
     });
-    
+
     MML.xml.Augment({
       //
       //  Insert the XML verbatim
@@ -1312,7 +1312,7 @@
     //
     setTimeout(MathJax.Callback(["loadComplete",nMML,"jax.js"]),0);
   });
-  
+
 
   //
   //  Determine browser characteristics
@@ -1362,7 +1362,7 @@
       nMML.mmultiscriptsBug = true;
     }
   });
-  
+
 
   HUB.Register.StartupHook("End Cookie",function () {
     if (HUB.config.menuSettings.zoom !== "None")
