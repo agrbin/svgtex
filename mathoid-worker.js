@@ -83,9 +83,18 @@ function handleRequest(req, res, q, type) {
 			data.success = true;
 			data.log = "success";
 		}
+
+		// Temporary work-around for a duplicate attribute (invalid XML)
+		// returned by MathJax.
 		if (data.mml) {
 			data.mml = data.mml.replace(/displaystyle="true" (?=displaystyle)/, '');
 		}
+
+		// Strip some styling returned by MathJax
+		if (data.svg) {
+			data.svg = data.svg.replace(/(style="[^"]*)(?:margin|position):[^;]+;/, '$1');
+		}
+
 		res.writeHead(200,
 			{
 				'Content-Type': 'application/json'
