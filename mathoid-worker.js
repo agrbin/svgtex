@@ -87,7 +87,7 @@ function handleRequest(req, res, q, type) {
 		// Temporary work-around for a duplicate attribute (invalid XML)
 		// returned by MathJax.
 		if (data.mml) {
-			data.mml = data.mml.replace(/displaystyle="true" (?=displaystyle)/, '');
+			data.mml = data.mml.replace(/<mstyle displaystyle="[^"]+" (?=displaystyle)/g, '<mstyle ');
 		}
 
 		// Strip some styling returned by MathJax
