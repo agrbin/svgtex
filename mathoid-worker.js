@@ -92,7 +92,11 @@ function handleRequest(req, res, q, type) {
 
 		// Strip some styling returned by MathJax
 		if (data.svg) {
-			data.svg = data.svg.replace(/(style="[^"]*)(?:margin|position):[^;]+;/, '$1');
+			data.svg = data.svg.replace(/style="([^"]+)"/, function(match, style) {
+					return 'style="'
+						+ style.replace(/(?:margin(?:-[a-z]+)?|position):[^;]+; */g, '')
+						+ '"';
+			});
 		}
 
 		res.writeHead(200,
