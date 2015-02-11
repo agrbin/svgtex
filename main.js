@@ -190,8 +190,17 @@ page.onCallback = function(data) {
   if (!(--requests_to_serve)) {
     phantom.exit();
   }
-}
+};
 
+function isJson(data) {
+    var str = JSON.stringify(data);
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
 
 // Parse the request and return an object with the parsed values.
 // It will either have an error indication, e.g.
@@ -248,6 +257,14 @@ function parse_request(req) {
   }
 
   else if (req.method == 'POST') {
+    if (isJson(req.post)) {
+      var data = JSON.parse(req.post);
+      query.type = data.type;
+      query.width = data.width;
+      query.status_code = 200;
+      query.q = data.expression;
+      return query;
+    }
     if (typeof req.postRaw !== 'string') {   // which can happen
       query.status_code = 400;  // bad request
       query.error = "Missing post content";
