@@ -6,6 +6,119 @@ window.engine = (new (function() {
   this.mml = null;
   this.buffer = [];
 
+MathJax.Hub.Config({
+  displayAlign: "left",
+  displayIndent:"3em",
+  tex2jax: {
+    preview: ["[math]"],
+    processEscapes: true,
+    ignoreClass: ['xis-eDocBody'],
+    processClass: ['math'],
+    inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    skipTags: ["script","noscript","style","textarea","pre","code"]
+  },
+  TeX: {
+    noUndefined: {disabled: true},
+    Macros: {
+      Argument: ['\\mmlToken{mtext}[mathvariant="sans-serif-italic"]{#1}',1],
+      Code:     ['{\\mathtt{#1}}',1],
+      Emph:     ['{\\mathit{#1}}', 1],
+      Keyword:  ['{\\mathsf{\\mathbf{#1}}}', 1],
+      Label:    ['{}', 1],
+      Mathtext: ['{\\mathrm{#1}}',1],
+      Procname: ['{}', 1],
+      Quotes:   ['{#1}', 1],
+      Squotes:  ['{#1}', 1],
+      Strong:   ['{\\mathbf{#1}}',1],
+      Variable: ['{\\mathsf{#1}}',1],
+      bA:'{\\mathbf{A}}',
+      bB:'{\\mathbf{B}}',
+      bC:'{\\mathbf{C}}',
+      bD:'{\\mathbf{D}}',
+      bDelta:'\\boldsymbol{\\Delta}',
+      bE:'{\\mathbf{E}}',
+      bF:'{\\mathbf{F}}',
+      bG:'{\\mathbf{G}}',
+      bGamma:'\\boldsymbol{\\Gamma}',
+      bH:'{\\mathbf{H}}',
+      bI:'{\\mathbf{I}}',
+      bJ:'{\\mathbf{J}}',
+      bK:'{\\mathbf{K}}',
+      bL:'{\\mathbf{L}}',
+      bLambda:'\\boldsymbol{\\Lambda}',
+      bM:'{\\mathbf{M}}',
+      bN:'{\\mathbf{N}}',
+      bO:'{\\mathbf{O}}',
+      bOmega: '\\boldsymbol{\\Omega}',
+      bP:'{\\mathbf{P}}',
+      bPhi:'\\boldsymbol{\\Phi}',
+      bPi:'\\boldsymbol{\\Pi}',
+      bPsi:'\\boldsymbol{\\Psi}',
+      bQ:'{\\mathbf{Q}}',
+      bR:'{\\mathbf{R}}',
+      bS:'{\\mathbf{S}}',
+      bSigma: '\\boldsymbol{\\Sigma}',
+      bT:'{\\mathbf{T}}',
+      bTheta: '\\boldsymbol{\\Theta}',
+      bU:'{\\mathbf{U}}',
+      bUpsilon:'\\boldsymbol{\\Upsilon}',
+      bV:'{\\mathbf{V}}',
+      bW:'{\\mathbf{W}}',
+      bX:'{\\mathbf{X}}',
+      bXi:    '\\boldsymbol{\\Xi}',
+      bY:'{\\mathbf{Y}}',
+      bZ:'{\\mathbf{Z}}',
+      balpha: '\\boldsymbol{\\alpha}',
+      bbeta: '\\boldsymbol{\\beta}',
+      bchi:   '\\boldsymbol{\\chi}',
+      bdelta: '\\boldsymbol{\\delta}',
+      bepsilon: '\\boldsymbol{\\epsilon}',
+      bgamma: '\\boldsymbol{\\gamma}',
+      big: ['{#1}',1],
+      biota:  '\\boldsymbol{\\iota}',
+      bkappa: '\\boldsymbol{\\kappa}',
+      blambda:'\\boldsymbol{\\lambda}',
+      bm: ['{\\boldsymbol{#1}}',1],
+      bmu:    '\\boldsymbol{\\mu}',
+      bnu:    '\\boldsymbol{\\nu}',
+      bomega: '\\boldsymbol{\\omega}',
+      bphi:   '\\boldsymbol{\\phi}',
+      bpi:    '\\boldsymbol{\\pi}',
+      bpsi:   '\\boldsymbol{\\psi}',
+      brho:   '\\boldsymbol{\\rho}',
+      bsigma: '\\boldsymbol{\\sigma}',
+      btau:   '\\boldsymbol{\\tau}',
+      btheta: '\\boldsymbol{\\theta}',
+      bupsilon:'\\boldsymbol{\\upsilon}',
+      bxi:    '\\boldsymbol{\\xi}',
+      bzeta:  '\\boldsymbol{\\zeta}',
+      emph: ['\\mathit{#1}', 1],
+      hdots: '{\\ldots}',
+      lefteqn: ["\\rlap{\\displaystyle{#1}}",1],
+      mb:['{\\mathbf{#1}}',1],
+      mbox: ['{\\text{#1}}',1],
+      mc: ['{\\mathcal{#1}}',1],
+      mi: ['{\\mathit{#1}}',1],
+      mr: ['{\\mathrm{#1}}',1],
+      ms: ['{\\mathsf{#1}}',1],
+      mt: ['{\\mathtt{#1}}',1],
+      rule: ['{}',2],
+      slash:'/',
+      textunderscore:'\\mathrm{\\_}',
+      textup:   ['{\\mathrm{#1}}',1]
+    }
+  }
+});
+
+
+
+
+
+
+
+
+
   // bind helper.
   this.bind = function(method) {
     var engine = this;
