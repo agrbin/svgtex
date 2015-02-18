@@ -70,7 +70,9 @@ window.engine = (new (function() {
       defs.appendChild(
         document.getElementById(id.substr(1)).cloneNode(true)
       );
-      uses[k].setAttribute("xlink:href", id);
+      if (uses[k]["href"] === undefined) {
+        uses[k].setAttribute("xlink:href", id);
+      }
     }
 
     svg.style.position = "static";
