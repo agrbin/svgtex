@@ -9,7 +9,8 @@
     "docker-start": "./scripts/docker.js",
     "docker-test": "./scripts/docker.js --test",
     "docker-cover": "./scripts/docker.js --cover",
-    "coverage": "istanbul cover _mocha -- -R spec"
+    "coverage": "istanbul cover _mocha -- -R spec",
+    "coveralls": "cat ./coverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",
@@ -59,6 +60,7 @@
     "istanbul": "^0.3.6",
     "mocha": "^2.1.0",
     "mocha-jshint": "0.0.9",
-    "mocha-lcov-reporter": "0.0.1"
+    "mocha-lcov-reporter": "0.0.1",
+    "coveralls": "2.11.2"
   }
 }

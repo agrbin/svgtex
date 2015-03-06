@@ -5,3 +5,4 @@ node_js:
     - "0.12"
     - "iojs"
 
+script: npm run-script coverage && (npm run-script coveralls || exit 0)
