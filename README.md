@@ -157,10 +157,6 @@ In a lot of cases when there is an issue with node it helps to recreate the `nod
 ```
 rm -r node_modules
 npm install
-```
-
-Enjoy!
-
 
 [NPM1]: https://nodei.co/npm/mathoid.svg
 [NPM2]: https://nodei.co/npm/mathoid/
