@@ -51,7 +51,12 @@ function initApp(options) {
     // serve static files from static/
     app.use('/static', express.static(__dirname + '/static'));
 
-    mjAPI.config({MathJax: {SVG: {font: "TeX"}}});
+    mjAPI.config({
+        MathJax: {
+            SVG: {font: "TeX"}//,
+            //TeX: {extensions: ["mediawiki-texvc.js"]}
+        }
+    });
     mjAPI.start();
 
     app.mjAPI = mjAPI;
