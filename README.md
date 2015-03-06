@@ -161,3 +161,13 @@ npm install
 
 Enjoy!
 
+
+[NPM1]: https://nodei.co/npm/mathoid.svg
+[NPM2]: https://nodei.co/npm/mathoid/
+
+[1]: https://travis-ci.org/physikerwelt/service-template-node.svg
+[2]: https://travis-ci.org/physikerwelt/service-template-node
+[3]: https://david-dm.org/physikerwelt/service-template-node.svg
+[4]: https://david-dm.org/physikerwelt/service-template-node
+[5]: https://david-dm.org/physikerwelt/service-template-node/dev-status.svg
+[6]: https://david-dm.org/physikerwelt/service-template-node#info=devDependencies
