@@ -25,29 +25,5 @@ describe('express app', function() {
         });
     });
 
-    it('should get static content gzipped', function() {
-        return preq.get({
-            uri: server.config.uri + 'static/index.html',
-            headers: {
-                'accept-encoding': 'gzip, deflate'
-            }
-        }).then(function(res) {
-            // check that the response is gzip-ed
-            assert.deepEqual(res.headers['content-encoding'], 'gzip', 'Expected gzipped contents!');
-        });
-    });
-
-    it('should get static content uncompressed', function() {
-        return preq.get({
-            uri: server.config.uri + 'static/index.html',
-            headers: {
-                'accept-encoding': ''
-            }
-        }).then(function(res) {
-            // check that the response is gzip-ed
-            assert.deepEqual(res.headers['content-encoding'], undefined, 'Did not expect gzipped contents!');
-        });
-    });
-
 });
 

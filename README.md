@@ -27,7 +27,7 @@ ln -s config.dev.yaml config.yaml
 
 You are now ready to get to work!
 
-* Inspect/modify/configure `app.js`
+* Inspect/modify/configure `mathoid.js`
 * Add routes by placing files in `routes/` (look at the files there for examples)
 
 ## Running the examples

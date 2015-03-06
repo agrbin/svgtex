@@ -23,13 +23,13 @@ metrics:
   port: 8125
 
 services:
-  - name: service-template-node
+  - name: mathoid
     # a relative path or the name of an npm package, if different from name
-    module: ./app.js
+    module: ./mathoid.js
     # optionally, a version constraint of the npm package
     # version: ^0.4.0
     # per-service config
     conf:
-      port: 6927
+      port: 10042
       # interface: localhost # uncomment to only listen on localhost
       # more per-service config settings
