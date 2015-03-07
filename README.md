@@ -3,7 +3,7 @@ Mathoid-server
 ==============
 [![NPM][NPM1]][NPM2]
 
-[![Build Status][1]][2] [![dependency status][3]][4] [![dev dependency status][5]][6] [![Coverage Status] [7] [8]]
+[![Build Status][1]][2] [![dependency status][3]][4] [![dev dependency status][5]][6] [![Coverage Status][7]][8]
 
 Mathoid-server is a service that uses MathJax and PhantomJS to create SVGs and MathML on server side.
 Mathoid-server is a based on svgtex - https://github.com/agrbin/svgtex.

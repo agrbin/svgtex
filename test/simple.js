@@ -70,6 +70,7 @@ describe('Simple Mathoid API tests', function () {
     describe('Standard input / output pairs', function () {
         testData.forEach(function (data) {
             it(data.query.q, function () {
+                this.timeout(15000);
                 return preq.post({
                     uri: baseURL,
                     body: data.query
