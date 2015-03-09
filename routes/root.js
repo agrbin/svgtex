@@ -29,7 +29,7 @@ router.get('/robots.txt', function(req, res) {
 
 });
 
-function handleRequest(req, res, q, type) {
+function handleRequest(res, q, type) {
     var mml = true;
     var sanitizedTex;
     //Keep format variables constant
@@ -49,7 +49,6 @@ function handleRequest(req, res, q, type) {
                 log: sanitizationOutput.status + ': ' + sanitizationOutput.details
             }));
         }
-
     }
     if (type === "mml" || type === "MathML") {
         type = "MathML";
@@ -95,8 +94,9 @@ router.post(/^\/$/, function(req, res) {
 
     // First some rudimentary input validation
     if (!(req.body.q)) {
-        res.writeHead(400);
-        //TODO: Can we simply use res.json?
+        res.writeHead(400, {
+            'Content-Type': 'application/json'
+        });
         return res.end(JSON.stringify({error: "q (query) post parameter is missing!"}));
     }
     var q = req.body.q;
@@ -104,7 +104,7 @@ router.post(/^\/$/, function(req, res) {
     if (!(req.body.type) ){
         type = 'tex';
     }
-    handleRequest(req, res, q, type);
+    handleRequest(res, q, type);
 
 });
 

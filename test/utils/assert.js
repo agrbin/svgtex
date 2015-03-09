@@ -100,4 +100,5 @@ module.exports.isDeepEqual    = isDeepEqual;
 module.exports.notDeepEqual   = notDeepEqual;
 module.exports.contentType    = contentType;
 module.exports.status         = status;
+module.exports.throws         = assert.throws;
 
