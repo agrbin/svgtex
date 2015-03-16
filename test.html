@@ -6,9 +6,12 @@
     <script type='text/javascript'>
       $(function() {
         var m = $('#method');
-        m.on('change', function() {
+        function setMethod() {
           $('#form').attr('method', m.val());
-        });
+        }
+        setMethod();
+        m.on('change', setMethod);
+
         // Check that browser supports the File API
         if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
           alert('Your browser doesn\'t seem to support the HTML File API, so you won\'t be able ' +
@@ -36,10 +39,17 @@
   </head>
   <body>
     <h1>Math Tool 2</h1>
+    <p>
+      Enter MathML or TeX in the content box below, or select a file containing equations.
+    </p>
     <form id='form' method='POST' action='/'>
 
       <table>
-
+        <tr>
+          <td colspan='2'>
+            <input type="file" id='file' name="file" />
+          </td>
+        </tr>
         <tr>
           <td>Math format</td>
           <td>
@@ -48,11 +58,6 @@
               <option value='mml'>MathML</option>
               <option value='tex'>TeX</option>
             </select>
-          </td>
-        </tr>
-        <tr>
-          <td colspan='2'>
-            <input type="file" id='file' name="file" />
           </td>
         </tr>
         <tr>
@@ -90,9 +95,16 @@
             </select>
           </td>
         </tr>
+        <tr>
+          <td colspan='2'>
+            <div style='float: right'>
+              <input type='reset' value='Reset'/>
+            </div>
+            <input type='submit'/>
+          </td>
+        </tr>
 
       </table>
-      <input type='submit'/>
     </form>
   </body>
 </html>
