@@ -286,7 +286,7 @@ function parse_request(req) {
     }
     else {
       query.status_code = 400;  // bad request
-      query.error = "Unrecognized parameter name";
+      query.error = "Unrecognized parameter name: " + key;
       return query;
     }
   }
