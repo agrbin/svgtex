@@ -122,14 +122,14 @@ while (arg_num < args.length) {
   break;
 }
 
-/*
+///*
   console.log(
     'port = ' + port + ", " +
     'requests_to_serve = ' + requests_to_serve + ", " +
     'bench_page = ' + bench_page + ", " +
     'debug = ' + debug + "\n"
   );
-*/
+//*/
 
 // activeRequests holds information about any active MathJax requests.  It is
 // a hash, with a sequential number as the key.  request_num gets incremented
@@ -159,7 +159,7 @@ var client_template = (function() {
     };
   }
   else {
-    console.error("Can't find " + client_template_filename + ".\n" +
+    console.error("Can't find " + client_template_filename + " ... " +
                   "orig-mathjax rendering will be disabled.");
     return null;
   }
@@ -197,6 +197,9 @@ page.onCallback = function(data) {
     console.log(num + ': ' + src.substr(0, 30) + '.. ' +
         src.length + 'B query, OK ' + svg_or_error.length + 'B result' +
         duration_msg);
+    if (debug) {
+      console.log("  svg: " + svg_or_error);
+    }
   }
   else {
     resp.statusCode = 400;    // bad request
