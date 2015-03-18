@@ -65,35 +65,10 @@
   description: Lorenz equations
   filename: lorentz.tex
 
-- name: mathml-one-nons
-  format: jats
-  description: JATS file with one MathML formula, no namespace prefix
-  filename: mathml-one-nons.nxml
-
-- name: mathml-one-ns
-  format: jats
-  description: JATS file with one MathML formula, with namespace prefix
-  filename: mathml-one-ns.nxml
-
-- name: mathml-two-nons
-  format: jats
-  description: JATS file with multiple MathML formulas, no namespace prefix
-  filename: mathml-two-nons.nxml
-
-- name: mathml-two-ns
-  format: jats
-  description: JATS file with multiple MathML formula, with namespace prefix
-  filename: mathml-two-ns.nxml
-
 - name: maxwell
   format: tex
   description: Maxwell's equations
   filename: maxwell.tex
-
-- name: nxml-3-mathml
-  format: jats
-  description: JATS file with three equations
-  filename: nxml-3-mathml.nxml
 
 - name: quadratic
   format: mml
@@ -114,6 +89,31 @@
   format: mml
   description: Standard deviation
   filename: standard-deviation.mml
+
+- name: mathml-one-nons
+  format: jats
+  description: JATS file with one MathML formula, no namespace prefix
+  filename: mathml-one-nons.nxml
+
+- name: mathml-one-ns
+  format: jats
+  description: JATS file with one MathML formula, with namespace prefix
+  filename: mathml-one-ns.nxml
+
+- name: mathml-two-nons
+  format: jats
+  description: JATS file with multiple MathML formulas, no namespace prefix
+  filename: mathml-two-nons.nxml
+
+- name: mathml-two-ns
+  format: jats
+  description: JATS file with multiple MathML formula, with namespace prefix
+  filename: mathml-two-ns.nxml
+
+- name: nxml-3-mathml
+  format: jats
+  description: JATS file with three equations
+  filename: nxml-3-mathml.nxml
 
 
 

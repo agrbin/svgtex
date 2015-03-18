@@ -1,0 +1,152 @@
+# PMC Math Tool 2 tests
+
+# Implement defaults?
+# For each test, the default expected values are:
+#   response: 200
+#   format: svg
+
+- name: simple-tex
+  example: simple-tex
+  request:
+    type: tex
+  expected:
+    response-code: 200
+    format: svg
+
+- name: simple-mml
+  example: simple-mml
+  request:
+    type: mml
+  expected:
+    response-code: 200
+    format: svg
+
+
+- name: cauchy-integral
+  example: cauchy-integral
+  request:
+    type: mml
+  expected:
+    response-code: 200
+    format: svg
+  
+- name: cauchy-schwarz
+  example: cauchy-schwarz
+  request:
+    type: tex
+  expected:
+    response-code: 200
+    format: svg
+  
+- name: christoffel-symbols
+  example: christoffel-symbols
+  request:
+    type: mml
+  expected:
+    response-code: 200
+    format: svg
+  
+- name: coins
+  example: coins
+  request:
+    type: tex
+  expected:
+    response-code: 200
+    format: svg
+  
+- name: cosines
+  example: cosines
+  request:
+    type: mml
+  expected:
+    response-code: 200
+    format: svg
+  
+- name: cross-product
+  example: cross-product
+  request:
+    type: tex
+  expected:
+    response-code: 200
+    format: svg
+  
+- name: curl-vector-field
+  example: curl-vector-field
+  request:
+    type: mml
+  expected:
+    response-code: 200
+    format: svg
+  
+- name: gauss-divergence
+  example: gauss-divergence
+  request:
+    type: mml
+  expected:
+    response-code: 200
+    format: svg
+  
+- name: sum
+  example: sum
+  request:
+    type: tex
+  expected:
+    response-code: 200
+    format: svg
+  
+- name: sum-displaystyle
+  example: sum-displaystyle
+  request:
+    type: tex
+  expected:
+    response-code: 200
+    format: svg
+  
+- name: lorentz
+  example: lorentz
+  request:
+    type: tex
+  expected:
+    response-code: 200
+    format: svg
+  
+- name: maxwell
+  example: maxwell
+  request:
+    type: tex
+  expected:
+    response-code: 200
+    format: svg
+  
+- name: quadratic
+  example: quadratic
+  request:
+    type: mml
+  expected:
+    response-code: 200
+    format: svg
+  
+- name: ramanujan
+  example: ramanujan
+  request:
+    type: tex
+  expected:
+    response-code: 200
+    format: svg
+  
+- name: rogers-rmanujan
+  example: rogers-rmanujan
+  request:
+    type: tex
+  expected:
+    response-code: 200
+    format: svg
+  
+- name: standard-deviation
+  example: standard-deviation
+  request:
+    type: mml
+  expected:
+    response-code: 200
+    format: svg
+  

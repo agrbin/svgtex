@@ -18,7 +18,7 @@ var usage =
   '  -b,--bench <page>    Use alternate bench page (default is index.html)\n' +
   '  -d,--debug           Enable verbose debug messages\n';
 
-var port = 16003;
+var port = 16000;
 var requests_to_serve = -1;
 var bench_page = 'index.html';
 var debug = false;

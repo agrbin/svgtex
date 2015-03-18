@@ -7,10 +7,14 @@ use open ':encoding(utf8)';
 binmode STDOUT, ':utf8';
 
 use Test::More;
+use YAML;
 use LWP::UserAgent;
 use HTTP::Request::Common qw{ POST };
 use Getopt::Long;
 use Data::Dumper;
+
+my $examples_dir = 'examples';
+my $default_service_url = 'http://localhost:16000/';
 
 my %options;
 my $opts_ok = GetOptions(\%options,
@@ -23,12 +27,12 @@ if (!$opts_ok) {
           "Options\n" .
           "  --verbose - output verbose messages\n" .
           "  --writesvg - write the svg results from each test case to a file\n" .
-          "  --url=[url] - the URL of the service; defaults to http://localhost:16000/\n";
+          "  --url=[url] - the URL of the service; defaults to $default_service_url/\n";
     exit 1;
 }
 my $verbose = $options{verbose} || 0;
 my $writesvg = $options{writesvg} || 0;
-my $url = $options{url} || 'http://localhost:16000/';
+my $url = $options{url} || $default_service_url;
 
 my $ua      = LWP::UserAgent->new();
 print "Testing service at $url\n";
@@ -41,29 +45,48 @@ while (my $arg = shift @ARGV) {
     $run_tests{$arg} = 1;
 }
 
+
+
 # Read in the list of example files
-my @test_files = (<*.tex>, <*.mml>, <*.html>);
+my $examples = Load(do {
+    local $/ = undef;
+    my $fn = "$examples_dir/examples.yaml";
+    open my $F, "<", $fn or die "Can't read $fn";
+    <$F>;
+});
+my %examples_by_name = map { $_->{name} => $_ } @$examples;
+#print Dumper(\%examples_by_name);
+
+# Read in the list of tests
+my $tests = Load(do {
+    local $/ = undef;
+    my $fn = "tests.yaml";
+    open my $F, "<", $fn or die "Can't read $fn";
+    <$F>;
+});
+print Dumper($tests);
+
+
+#my @test_files = (<examples/*.tex>, <examples/*.mml>, <examples/*.html>);
 
 # We'll run two tests for each of these files
-plan tests => @test_files * 2 + 1;
-foreach my $test_file (@test_files) {
-    if ($run_all || $run_tests{$test_file}) {
-        test_one($test_file);
+plan tests => @$tests * 2;
+
+foreach my $test (@$tests) {
+    if ($run_all || $run_tests{$test->{name}}) {
+        test_one($test);
     }
 }
-
-# Test an error response
-test_one('error-tex.txt', 400);
 
 
 # Run one test
 sub test_one {
-    my $filename = shift;
-    my $expect_error = shift;
+    my $test = shift;
+    my $example = $examples_by_name{$test->{example}};
+    my $filename = $examples_dir . '/' . $example->{filename};
+    my $request = $test->{request};
+    my $expected = $test->{expected};
 
-    # Set the type from the filename extenstion, either 'tex', 'mml', or 'auto'
-    (my $ext = $filename) =~ s/^.*\.//;
-    my $type = $ext eq 'tex' || $ext eq 'mml' ? $ext : 'auto';
     my $q = do {  # slurp the file
         local $/ = undef;
         open my $f, "<", $filename or die "Can't open $filename for reading";
@@ -72,32 +95,31 @@ sub test_one {
 
     if ($verbose) {
         print "Testing $filename:\n";
-        print "  type=$type\n" .
+        print "  " . join("\n  ", map {"$_=$request->{$_}"} keys %$request) . "\n" .
+              #"  type=$type\n" .
               "  q='" . string_start($q) . "'\n";
     }
     my $response = $ua->post($url, {
-        'type' => $type,
+        %$request,
+        #'type' => $type,
         'q' => $q,
     });
 
-    if ($expect_error) {
-        ok ($response->is_error(), "Expected error response for $filename");
-    }
-    else {
-        ok (!$response->is_error(), "Good response for $filename") or
-            diag("  Response status line was '" . $response->status_line . "'");
+    ok ($response->code() == $expected->{"response-code"}, "Got expected response code");
 
-        my $svg  = $response->decoded_content();
-        if ($verbose) {
-            print "  returned svg='" . string_start($svg) . "'\n\n";
-        }
-        like ($svg, qr/^<svg/, "Response for $filename looks like SVG");
-        if ($writesvg) {
-            my $svg_filename = "$filename.svg";
-            open my $svg_file, ">", $svg_filename or die "Can't open $svg_filename for writing";
-            print $svg_file $svg;
-            close $svg_file;
-        }
+    #ok (!$response->is_error(), "Good response for $filename") or
+    #    diag("  Response status line was '" . $response->status_line . "'");
+
+    my $svg  = $response->decoded_content();
+    if ($verbose) {
+        print "  returned svg='" . string_start($svg) . "'\n\n";
+    }
+    like ($svg, qr/^<svg/, "Response for $filename looks like SVG");
+    if ($writesvg) {
+        my $svg_filename = "$filename.svg";
+        open my $svg_file, ">", $svg_filename or die "Can't open $svg_filename for writing";
+        print $svg_file $svg;
+        close $svg_file;
     }
 }
 
@@ -108,6 +130,7 @@ sub test_one {
 # truncated, and an ellipsis ("...") is added.
 sub string_start {
     my $s = shift;
+    chomp $s;
     return substr($s, 0, 100) . (length($s) > 100 ? "..." : "");
 }
 
