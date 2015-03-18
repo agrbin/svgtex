@@ -6,44 +6,23 @@
   <head>
     <script type='text/javascript'
             src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.js'></script>
-    <script type='text/javascript'>
-      $(function() {
-        var m = $('#method');
-        function setMethod() {
-          $('#form').attr('method', m.val());
-        }
-        setMethod();
-        m.on('change', setMethod);
+    <script type='text/javascript'
+            src='//cdnjs.cloudflare.com/ajax/libs/js-yaml/3.2.7/js-yaml.min.js'></script>
 
-        // Check that browser supports the File API
-        if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
-          alert('Your browser doesn\'t seem to support the HTML File API, so you won\'t be able ' +
-                'to upload files.');
-        }
-
-        $('#file').on('change', function(evt) {
-          var file = evt.target.files[0];
-          console.log("file = %o", file);
-          var reader = new FileReader();
-          reader.onload = function(evt) {
-            console.log("finished reading the file");
-            $('#q').val(evt.target.result);
-          };
-          reader.readAsText(file);
-        });
-      });
-    </script>
-    <!-- <script type='text/javascript' src='test.js'></script> -->
+    <script type='text/javascript' src='resources/test.js'></script>
     <style type='text/css'>
       tr {
-        vertical-align: top
+        vertical-align: top;
+      }
+      .disabled {
+        color: #AAA;
       }
     </style>
   </head>
   <body>
     <h1>Math Tool 2</h1>
     <p>
-      Enter MathML or TeX in the content box below, or select a file containing equations.
+      Enter MathML or LaTeX in the content box below, or select a file containing equations.
     </p>
     <form id='form' method='POST' action='/'>
 
@@ -54,17 +33,23 @@
           </td>
         </tr>
         <tr>
-          <td>Math format</td>
+          <td><label for='math-format-select'>Math format</label></td>
           <td>
-            <select name='type'>
+            <select id='math-format-select' name='type'>
               <option value='auto' selected='selected'>Auto-detect</option>
               <option value='mml'>MathML</option>
-              <option value='tex'>TeX</option>
+              <option value='tex'>LaTeX</option>
+            </select>
+            &#160;&#160;&#160;
+            <label id='latex-style-label' for='latex-style-select'>LaTeX style:</label>
+            <select id='latex-style-select' name='latex-style'>
+              <option value='display' selected='selected'>display (block)</option>
+              <option value='text' selected='selected'>text (inline)</option>
             </select>
           </td>
         </tr>
         <tr>
-          <td>Content</td>
+          <td><label for='q'>Content</label></td>
           <td>
             <textarea name='q' id='q' rows='20' cols='100'></textarea>
           <!--
@@ -73,24 +58,23 @@
           </td>
         </tr>
         <tr>
-          <td>Output format</td>
+          <td><label for='output-format-select'>Output format</label></td>
           <td>
-            <select name='out'>
-              <option value='svg-single' selected='selected'>SVG (single)</option>
-              <option value='svg-multi'>SVG (multi)</option>
+            <select id='output-format-select' name='out'>
+              <option value='svg-single' selected='selected'>SVG</option>
               <option value='orig-mathjax'>Client rendering</option>
             </select>
           </td>
         </tr>
         <tr>
-          <td>Maximum width</td>
+          <td><label for='max-width-input'>Maximum width</label></td>
           <td>
-            <input type='text' name='width'/>
+            <input id='max-width-input' type='text' name='width'/>
           </td>
         </tr>
 
         <tr>
-          <td>HTTP method</td>
+          <td><label for='method'>HTTP method</label></td>
           <td>
             <select id='method'>
               <option value='POST' selected='selected'>POST</option>
@@ -109,5 +93,11 @@
 
       </table>
     </form>
+
+    <h2>Examples</h2>
+    <div id='examples-div'>
+      <ul />
+    </div>
+
   </body>
 </html>

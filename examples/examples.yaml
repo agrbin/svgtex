@@ -1,0 +1,119 @@
+# PMC Math Tool 2 example files
+
+- name: simple-tex
+  format: tex
+  description: Very simple LaTeX ("2^x")
+  filename: simple-tex.tex
+
+- name: simple-mml
+  format: mml
+  description: Very simple MathML ("1/N")
+  filename: simple-mml.mml
+
+- name: cauchy-integral
+  format: mml
+  description: Cauchy's integral formula
+  filename: cauchy-integral.mml
+
+- name: cauchy-schwarz
+  format: tex
+  description: The Cauchy-Schwarz inequality
+  filename: cauchy-schwarz.tex
+
+- name: christoffel-symbols
+  format: mml
+  description: Definition of Christoffel symbols
+  filename: christoffel-symbols.mml
+
+- name: coins
+  format: tex
+  description: The Lorentz equations
+  filename: coins.tex
+
+- name: cosines
+  format: mml
+  description: Double angle formula for Cosines
+  filename: cosines.mml
+
+- name: cross-product
+  format: tex
+  description: Cross product formula
+  filename: cross-product.tex
+
+- name: curl-vector-field
+  format: mml
+  description: Curl of a vector field
+  filename: curl-vector-field.mml
+
+- name: gauss-divergence
+  format: mml
+  description: Gauss' divergence theorem
+  filename: gauss-divergence.mml
+
+- name: sum
+  format: tex
+  description: Summation
+  filename: sum.tex
+
+- name: sum-displaystyle
+  format: tex
+  description: Summation, display style
+  filename: sum-displaystyle.tex
+
+- name: lorentz
+  format: tex
+  description: Lorenz equations
+  filename: lorentz.tex
+
+- name: mathml-one-nons
+  format: jats
+  description: JATS file with one MathML formula, no namespace prefix
+  filename: mathml-one-nons.nxml
+
+- name: mathml-one-ns
+  format: jats
+  description: JATS file with one MathML formula, with namespace prefix
+  filename: mathml-one-ns.nxml
+
+- name: mathml-two-nons
+  format: jats
+  description: JATS file with multiple MathML formulas, no namespace prefix
+  filename: mathml-two-nons.nxml
+
+- name: mathml-two-ns
+  format: jats
+  description: JATS file with multiple MathML formula, with namespace prefix
+  filename: mathml-two-ns.nxml
+
+- name: maxwell
+  format: tex
+  description: Maxwell's equations
+  filename: maxwell.tex
+
+- name: nxml-3-mathml
+  format: jats
+  description: JATS file with three equations
+  filename: nxml-3-mathml.nxml
+
+- name: quadratic
+  format: mml
+  description: Quadratic formula
+  filename: quadratic.mml
+
+- name: ramanujan
+  format: tex
+  description: An identity of Ramanujan
+  filename: ramanujan.tex
+
+- name: rogers-rmanujan
+  format: tex
+  description: A Rogers-Ramanujan identity
+  filename: rogers-rmanujan.tex
+
+- name: standard-deviation
+  format: mml
+  description: Standard deviation
+  filename: standard-deviation.mml
+
+
+

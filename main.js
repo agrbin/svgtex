@@ -220,8 +220,10 @@ page.onCallback = function(data) {
 // Parse the request and return an object with the parsed values.
 // It will either have an error indication, e.g.
 //   { num: 5, status_code: 400, error: "message" }
-// Or indicate that the test form should be returned, e.g.
+// or indicate that the test form should be returned, e.g.
 //   { num: 5, test_form: 1 }
+// or a static file:
+//   { num: 5, static_file: 'examples/examples.yaml' }
 // or a valid request, e.g.
 //   { num: 5, type: 'tex', q: 'n^2', width: '500' }
 
@@ -260,6 +262,18 @@ function parse_request(req) {
         query.status_code = 500;  // Internal server error
         query.error = "Can't find test form";
       }
+      return query;
+    }
+
+    // Static pages must start with '/examples/' or '/resources/'
+    if (url.substr(0, 10) == '/examples/' || url.substr(0, 11) == '/resources/') {
+      var static_file = url.substr(1);
+      console.log("Got a request for an example: " + static_file);
+      query.static_file = static_file;
+      //if (!fs.isReadable(url)) {
+      //  query.status_code = 404;   // Not found
+      //  query.error = "Can't find that file";
+      //}
       return query;
     }
 
@@ -330,6 +344,10 @@ function parse_request(req) {
       }
       query.out = val;
     }
+    else if (key == 'latex-style') {
+      console.log("latex-style: " + val);
+      query.latex_style = val;
+    }
     else {
       query.status_code = 400;  // bad request
       query.error = "Unrecognized parameter name: " + key;
@@ -344,7 +362,7 @@ function parse_request(req) {
 
 
   // Implement auto-detect.  We assume that any XML tag that has the name 'math',
-  // regardless of whether or not it is in a namespace, is mathml
+  // regardless of whether or not it is in a namespace, is mathml.
   var equations = [];
   if (query.type == 'auto') {
     var q = query.q;
@@ -370,6 +388,8 @@ function parse_request(req) {
     }
     else {
       query.type = 'tex';
+      query.q = '\\' + (query.latex_style == 'text' ? 'text' : 'display') +
+                'style{' + q + '}';
     }
   }
   return query;
@@ -402,6 +422,30 @@ function listenLoop() {
         console.log("}");
       */
       resp.write(test_form);
+      resp.close();
+    }
+    else if (query.static_file) {
+      var static_file = query.static_file;
+      console.log(request_num + ": returning " + static_file);
+
+      // I was going to set a content-type, depending on extension, for all of the
+      // examples. But, the test page works better if we always use 'text/plain', because
+      // (for example) we don't have to worry about the browser trying to parse known-bad
+      // examples.
+      var extension = static_file.replace(/.*\.(.*)/, "$1");
+      var media_types = {
+        'js': 'application/javascript'
+      //  'html': 'text/html; charset=utf-8',
+      //  'tex': 'application/x-tex; charset=utf-8',
+      //  'mml': 'application/mathml+xml; charset=utf-8',
+      //  'nxml': 'application/jats+xml; charset=utf-8'
+      };
+      var media_type = media_types[extension] ? media_types[extension] : 'text/plain';
+
+      resp.setHeader('Content-type', media_type);
+      
+      var file_contents = fs.read(static_file);
+      resp.write(file_contents);
       resp.close();
     }
 
