@@ -49,16 +49,6 @@ window.engine = (function() {
     };
 
 
-    // FIXME: do we still need this?  It seems brittle.
-    // This helper function determines whether or not a <text> node inside the SVG
-    // output from MathJax is an error message.  It uses the default error message
-    // fill color.  Note that the constant #C00 could be overriden by the MathJax
-    // config!!
-    //var _text_is_error = function(txt) {
-    //    return txt.getAttribute("fill") == "#C00" &&
-    //           txt.getAttribute("stroke") == "none";
-    //};
-
     // Serialize an (svg) element
     var _serialize = function(svg) {
         var tmpDiv = document.createElement('div');
@@ -170,15 +160,6 @@ window.engine = (function() {
                     ret = ['MathJax error'];
                 }
                 else {
-                //    var texts = svg_elem.getElementsByTagName("text");
-                //    for (var i = 0; i < texts.length; ++i) {
-                //        if (_text_is_error(texts[i])) {
-                //            ret = [texts[i].textContent];
-                //            break;
-                //        }
-                //    }
-                //}
-                //if (!ret) {    // no error
                     ret = _merge_svgs(svg_elem.cloneNode(true));
                 }
             }
@@ -198,7 +179,6 @@ window.engine = (function() {
         error_message: error_message,
         _init: _init,
         _process_buffered: _process_buffered,
-        //_text_is_error: _text_is_error,
         _serialize: _serialize,
         _merge_svgs: _merge_svgs,
         process: process
