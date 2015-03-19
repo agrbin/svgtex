@@ -31,8 +31,9 @@ window.engine = (function() {
 
             // Capture all error signals
             MathJax.Hub.signal.Interest(function(message) {
-                if (message[0].match("TeX Jax")) {
-                    error_message = message[0];
+                var m = message[0];
+                if (m.match("^TeX Jax") || m.match("^MathML Jax")) {
+                    error_message = message[0] + ": " + message[1];
                 }
             });
         });
@@ -53,10 +54,10 @@ window.engine = (function() {
     // output from MathJax is an error message.  It uses the default error message
     // fill color.  Note that the constant #C00 could be overriden by the MathJax
     // config!!
-    var _text_is_error = function(txt) {
-        return txt.getAttribute("fill") == "#C00" &&
-               txt.getAttribute("stroke") == "none";
-    };
+    //var _text_is_error = function(txt) {
+    //    return txt.getAttribute("fill") == "#C00" &&
+    //           txt.getAttribute("stroke") == "none";
+    //};
 
     // Serialize an (svg) element
     var _serialize = function(svg) {
@@ -135,8 +136,6 @@ window.engine = (function() {
             else {
                 div.setAttribute('style', 'width: ' + width + 'px');
             }
-            // Clear any error message
-            error_message = '';
         });
 
         // Possible dispositions:
@@ -146,9 +145,11 @@ window.engine = (function() {
         // - if q is not the same, call Text()
 
         if (t.last_q == q && t.last_width !== width) {
+            //error_message = '';
             Q.Push(["Rerender", jax]);
         }
         else if (t.last_q != q) {
+            error_message = '';
             Q.Push(["Text", jax, q]);
         }
         t.last_q = q;
@@ -157,12 +158,11 @@ window.engine = (function() {
         // Push a callback function onto the queue. This will get called after
         // everything else in the queue is done.
         Q.Push(function() {
+            var ret = null;
+
             if (error_message) {
                 ret = [error_message];
-                cb([query.num, query.q, [error_message]]);
-                return;
             }
-
             else {
                 var svg_elem = div.getElementsByTagName("svg")[0];
                 var ret = null;
@@ -170,15 +170,15 @@ window.engine = (function() {
                     ret = ['MathJax error'];
                 }
                 else {
-                    var texts = svg_elem.getElementsByTagName("text");
-                    for (var i = 0; i < texts.length; ++i) {
-                        if (_text_is_error(texts[i])) {
-                            ret = [texts[i].textContent];
-                            break;
-                        }
-                    }
-                }
-                if (!ret) {    // no error
+                //    var texts = svg_elem.getElementsByTagName("text");
+                //    for (var i = 0; i < texts.length; ++i) {
+                //        if (_text_is_error(texts[i])) {
+                //            ret = [texts[i].textContent];
+                //            break;
+                //        }
+                //    }
+                //}
+                //if (!ret) {    // no error
                     ret = _merge_svgs(svg_elem.cloneNode(true));
                 }
             }
@@ -198,7 +198,7 @@ window.engine = (function() {
         error_message: error_message,
         _init: _init,
         _process_buffered: _process_buffered,
-        _text_is_error: _text_is_error,
+        //_text_is_error: _text_is_error,
         _serialize: _serialize,
         _merge_svgs: _merge_svgs,
         process: process
