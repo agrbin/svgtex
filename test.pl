@@ -23,7 +23,7 @@ my $opts_ok = GetOptions(\%options,
     'url=s',
 );
 if (!$opts_ok) {
-    print "Usage:  test.pl [--verbose] [--out] [--url=http://base.url:port] [test_name]\n" .
+    print "Usage:  test.pl [options] [test_name]\n" .
           "Options\n" .
           "  --verbose - output verbose messages\n" .
           "  --writesvg - write the svg results from each test case to a file\n" .
@@ -64,7 +64,7 @@ my $tests = Load(do {
     open my $F, "<", $fn or die "Can't read $fn";
     <$F>;
 });
-print Dumper($tests);
+#print Dumper($tests);
 
 
 #my @test_files = (<examples/*.tex>, <examples/*.mml>, <examples/*.html>);
@@ -99,26 +99,27 @@ sub test_one {
               #"  type=$type\n" .
               "  q='" . string_start($q) . "'\n";
     }
-    my $response = $ua->post($url, {
-        %$request,
-        #'type' => $type,
+    my $params = {
         'q' => $q,
-    });
+        ($request ? %$request : ())
+    };
+    print Dumper($params);
+    my $response = $ua->post($url, $params);
 
     ok ($response->code() == $expected->{"response-code"}, "Got expected response code");
 
     #ok (!$response->is_error(), "Good response for $filename") or
     #    diag("  Response status line was '" . $response->status_line . "'");
 
-    my $svg  = $response->decoded_content();
+    my $content  = $response->decoded_content();
     if ($verbose) {
-        print "  returned svg='" . string_start($svg) . "'\n\n";
+        print "  returned '" . string_start($content) . "'\n\n";
     }
-    like ($svg, qr/^<svg/, "Response for $filename looks like SVG");
+    like ($content, qr/^<svg/, "Response for $filename looks like SVG");
     if ($writesvg) {
         my $svg_filename = "$filename.svg";
         open my $svg_file, ">", $svg_filename or die "Can't open $svg_filename for writing";
-        print $svg_file $svg;
+        print $svg_file $content;
         close $svg_file;
     }
 }

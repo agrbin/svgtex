@@ -8,10 +8,35 @@
 - name: simple-tex
   example: simple-tex
   request:
+  expected:
+    response-code: 200
+    format: svg
+
+- name: simple-tex-auto
+  example: simple-tex
+  request:
+    type: auto
+  expected:
+    response-code: 200
+    format: svg
+
+- name: simple-tex-tex
+  example: simple-tex
+  request:
     type: tex
   expected:
     response-code: 200
     format: svg
+
+- name: simple-tex-mml
+  example: simple-tex
+  request:
+    type: mml
+  expected:
+    response-code: 200
+    format: svg
+
+
 
 - name: simple-mml
   example: simple-mml

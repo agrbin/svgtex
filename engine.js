@@ -1,4 +1,8 @@
-// perfect singleton
+// Perfect singleton.
+// JavaScript refresher: the `new` keyword here causes a new object to be created,
+// and then the anonymous function to be called as a *constructor*, with the `this`
+// keyword referring to the new object.
+
 window.engine = (new (function() {
 
   this.Q = MathJax.Hub.queue;
@@ -6,7 +10,8 @@ window.engine = (new (function() {
   this.mml = null;
   this.buffer = [];
 
-  // bind helper.
+  // bind helper -- this just makes sure that `this` refers to the same thing
+  // (the *engine*) in every function defined here.
   this.bind = function(method) {
     var engine = this;
     return function() {
@@ -30,6 +35,13 @@ window.engine = (new (function() {
         last_q: ''
       }
       this._process_buffered();
+
+      // Capture all error signals
+      MathJax.Hub.signal.Interest(this.bind(function(message) {
+        if (message[0].match("TeX Jax")) {
+          this.error_message = message[0];
+        }
+      }));
     }));
   };
 
@@ -89,9 +101,13 @@ window.engine = (new (function() {
     this.buffer = [];
   };
 
+
+  // The process() function is called from main.js's listenLoop, when it gets
+  // a request that requires MathJax.
   // When process() is finished, the callback cb will be invoked with an
-  // array [<q string>, <svg out>].
-  // If there is an error during the rendering then the second
+  // array [<q string>, <svg out>]. That, in turn, causes the page's onCallback
+  // function to be called (in main.js), which sends the response to the client.
+  // If there is an error during the rendering, then the second
   // element, instead of a string, will be a nested array with
   // one string element giving the error message.
   this.process = function(query, cb) {
@@ -126,6 +142,9 @@ window.engine = (new (function() {
       // - if q is the same, but width is not, then Rerender() (calling
       //   Text() does not work)
       // - if q is not the same, call Text()
+      this.Q.Push(this.bind(function() {
+        this.error_message = '';
+      }));
 
       if (t.last_q == q && t.last_width !== width) {
         this.Q.Push(["Rerender", jax]);
@@ -136,23 +155,34 @@ window.engine = (new (function() {
       t.last_q = q;
       t.last_width = width;
 
+      // Push a callback function onto the queue. This will get called after
+      // everything else in the queue is done.
       this.Q.Push(this.bind(function() {
-        var svg_elem = div.getElementsByTagName("svg")[0];
-        var ret = null;
-        if (!svg_elem) {
-          ret = ['MathJax error'];
+        if (this.error_message) {
+          ret = [this.error_message];
+          cb([query.num, query.q, [this.error_message]]);
+          return;
         }
+
+
         else {
-          var texts = svg_elem.getElementsByTagName("text");
-          for (var i = 0; i < texts.length; ++i) {
-            if (this._text_is_error(texts[i])) {
-              ret = [texts[i].textContent];
-              break;
+          var svg_elem = div.getElementsByTagName("svg")[0];
+          var ret = null;
+          if (!svg_elem) {
+            ret = ['MathJax error'];
+          }
+          else {
+            var texts = svg_elem.getElementsByTagName("text");
+            for (var i = 0; i < texts.length; ++i) {
+              if (this._text_is_error(texts[i])) {
+                ret = [texts[i].textContent];
+                break;
+              }
             }
           }
-        }
-        if (!ret) {    // no error
-          ret = this._merge(svg_elem.cloneNode(true));
+          if (!ret) {    // no error
+            ret = this._merge(svg_elem.cloneNode(true));
+          }
         }
 
         cb([query.num, query.q, ret]);

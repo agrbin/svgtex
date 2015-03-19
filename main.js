@@ -15,12 +15,12 @@ var usage =
   '  -p,--port <port>     IP port on which to start the server\n' +
   '  -r,--requests <num>  Process this many requests and then exit.  -1 means \n' +
   '                       never stop.\n' +
-  '  -b,--bench <page>    Use alternate bench page (default is index.html)\n' +
+  '  -b,--bench <page>    Use alternate bench page (default is bench.html)\n' +
   '  -d,--debug           Enable verbose debug messages\n';
 
 var port = 16000;
 var requests_to_serve = -1;
-var bench_page = 'index.html';
+var bench_page = 'bench.html';
 var debug = false;
 
 // Parse command-line options.  This keeps track of which one we are on
@@ -395,8 +395,11 @@ function parse_request(req) {
   return query;
 }
 
+
+// This function is called back from page.open, below, after the bench page
+// has loaded.  It sets up the service listener that will respond to every new request.
+
 function listenLoop() {
-  // Set up the listener that will respond to every new request
   service = server.listen('0.0.0.0:' + port, function(req, resp) {
     var query = parse_request(req);
     var request_num = query.num;
@@ -468,12 +471,13 @@ function listenLoop() {
     }
 
     else {
-      console.log(request_num + ": sending to MathJax");
-      // The following evaluates the function argument in the page's context,
+      // We need to send the contents to MathJax.
+      // The following evaluates the function argument in the bench page's context,
       // with query -> _query. That, in turn, calls the process() function in
       // engine.js, which causes MathJax to render the math.  The callback is
       // PhantomJS's callPhantom() function, which in turn calls page.onCallback(),
       // above.  This just queues up the call, and will return at once.
+      console.log(request_num + ": sending to MathJax");
       activeRequests[request_num] = [resp, (new Date()).getTime()];
       page.evaluate(function(_query) {
         window.engine.process(_query, window.callPhantom);
@@ -496,12 +500,13 @@ function make_row(eq) {
   return "<tr><td></td><td></td><td>" + eq + "</td></tr>";
 }
 
+// Open the web page. Once loaded, it will invoke listenLoop.
 console.log("Loading bench page " + bench_page);
 page.open(bench_page, listenLoop);
 
 /* These includeJs calls would allow us to specify the MathJax location as a
    command-line parameter, but then you'd have to take the <script> tags out of
-   index.html, and we'd lose the ability to debug by loading that in a browser
+   bench.html, and we'd lose the ability to debug by loading that in a browser
    directly.
 page.open('index.html', function (status) {
   page.includeJs('mathjax/MathJax.js?config=TeX-AMS-MML_SVG', function() {
