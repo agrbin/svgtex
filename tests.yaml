@@ -33,8 +33,7 @@
   request:
     type: mml
   expected:
-    response-code: 200
-    format: svg
+    response-code: 400
 
 
 

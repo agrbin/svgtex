@@ -160,7 +160,7 @@ var client_template = (function() {
   }
   else {
     console.error("Can't find " + client_template_filename + " ... " +
-                  "orig-mathjax rendering will be disabled.");
+                  "client rendering will be disabled.");
     return null;
   }
 })();
@@ -332,14 +332,14 @@ function parse_request(req) {
     else if (key == 'file') { // file name, discard
     }
     else if (key == 'out') {
-      if (val != 'svg-single' && val != 'svg-multi' && val != 'orig-mathjax') {
+      if (val != 'svg-single' && val != 'svg-multi' && val != 'client') {
         query.status_code = 400;  // bad request
         query.error = "Invalid value for out: " + val;
         return query;
       }
-      if (val == 'orig-mathjax' && client_template == null) {
+      if (val == 'client' && client_template == null) {
         query.status_code = 400;  // bad request
-        query.error = "orig-mathjax rendering is disabled";
+        query.error = "client rendering is disabled";
         return query;
       }
       query.out = val;
@@ -437,8 +437,8 @@ function listenLoop() {
       // examples.
       var extension = static_file.replace(/.*\.(.*)/, "$1");
       var media_types = {
-        'js': 'application/javascript'
-      //  'html': 'text/html; charset=utf-8',
+        'js': 'application/javascript',
+        'html': 'text/html; charset=utf-8'
       //  'tex': 'application/x-tex; charset=utf-8',
       //  'mml': 'application/mathml+xml; charset=utf-8',
       //  'nxml': 'application/jats+xml; charset=utf-8'
@@ -452,16 +452,16 @@ function listenLoop() {
       resp.close();
     }
 
-    else if (query.out == 'orig-mathjax') {
+    else if (query.out == 'client') {
       console.log(request_num + ": returning client template");
       var equations = query.q;
       var rows = '';
       if (typeof equations === 'string') {
-        rows = make_row(equations);
+        rows = make_row(equations, query.type);
       }
       else {
         equations.forEach(function(eq) {
-          rows += make_row(eq);
+          rows += make_row(eq, query.type);
         });
       }
       
@@ -496,7 +496,8 @@ function listenLoop() {
 }
 
 /* Make one row of the table */
-function make_row(eq) {
+function make_row(eq, type) {
+  if (type == 'tex') eq = '\\(' + eq + '\\)';
   return "<tr><td></td><td></td><td>" + eq + "</td></tr>";
 }
 

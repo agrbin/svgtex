@@ -82,6 +82,7 @@ foreach my $test (@$tests) {
 # Run one test
 sub test_one {
     my $test = shift;
+    my $test_name = $test->{name};
     my $example = $examples_by_name{$test->{example}};
     my $filename = $examples_dir . '/' . $example->{filename};
     my $request = $test->{request};
@@ -103,10 +104,11 @@ sub test_one {
         'q' => $q,
         ($request ? %$request : ())
     };
-    print Dumper($params);
+    #print Dumper($params);
     my $response = $ua->post($url, $params);
 
-    ok ($response->code() == $expected->{"response-code"}, "Got expected response code");
+    ok ($response->code() == $expected->{"response-code"}, 
+        "Test $test_name: got expected response code");
 
     #ok (!$response->is_error(), "Good response for $filename") or
     #    diag("  Response status line was '" . $response->status_line . "'");
@@ -115,7 +117,9 @@ sub test_one {
     if ($verbose) {
         print "  returned '" . string_start($content) . "'\n\n";
     }
-    like ($content, qr/^<svg/, "Response for $filename looks like SVG");
+    if ($expected->{format} && $expected->{format} eq 'svg') {
+        like ($content, qr/^<svg/, "Test $test_name: response for $filename looks like SVG");
+    }
     if ($writesvg) {
         my $svg_filename = "$filename.svg";
         open my $svg_file, ">", $svg_filename or die "Can't open $svg_filename for writing";
