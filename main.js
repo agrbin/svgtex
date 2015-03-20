@@ -227,6 +227,9 @@ page.onCallback = function(data) {
 //   { num: 5, static_file: 'examples/examples.yaml' }
 // or a valid request, e.g.
 //   { num: 5, in_format: 'latex', q: 'n^2', width: '500' }
+//   { num: 5, in_format: 'mml', q: '<math>...</math>', width: '500' }
+//   { num: 5, in_format: 'jats', 
+//     q: [{id: 'M1', format: 'latex', q: 'n^2'}, {...}], width: '500' }
 
 function parse_request(req) {
   // Set any defaults here:
@@ -381,9 +384,14 @@ function parse_request(req) {
 
   // Implement auto-detect.  We assume that any XML tag that has the name 'math',
   // regardless of whether or not it is in a namespace, is mathml.
+  // Also look for the opening tag '<article', to determine whether or not this is 
+  // JATS.  If it's not JATS, and there are no MathML opening tags, then assume it
+  // is LaTeX.  If it is JATS, then we'll parse out all of the equations into the
+  // equations array.
   var equations = [];
   if (query.in_format == 'auto') {
     var q = query.q;
+    var jats_stag = new RegExp('<article\\s+');
     var mml_stag = new RegExp('<([A-Za-z_]+:)?math', 'm');
     var segs = q.split(mml_stag);
     var num_segs = segs.length;
