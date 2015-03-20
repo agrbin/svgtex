@@ -1,117 +1,117 @@
 # PMC Math Tool 2 example files
 
 - name: simple-tex
-  format: tex
+  in-format: tex
   description: Very simple LaTeX ("2^x")
   filename: simple-tex.tex
 
 - name: simple-mml
-  format: mml
+  in-format: mml
   description: Very simple MathML ("1/N")
   filename: simple-mml.mml
 
 - name: cauchy-integral
-  format: mml
+  in-format: mml
   description: Cauchy's integral formula
   filename: cauchy-integral.mml
 
 - name: cauchy-schwarz
-  format: tex
+  in-format: tex
   description: The Cauchy-Schwarz inequality
   filename: cauchy-schwarz.tex
 
 - name: christoffel-symbols
-  format: mml
+  in-format: mml
   description: Definition of Christoffel symbols
   filename: christoffel-symbols.mml
 
 - name: coins
-  format: tex
+  in-format: tex
   description: The Lorentz equations
   filename: coins.tex
 
 - name: cosines
-  format: mml
+  in-format: mml
   description: Double angle formula for Cosines
   filename: cosines.mml
 
 - name: cross-product
-  format: tex
+  in-format: tex
   description: Cross product formula
   filename: cross-product.tex
 
 - name: curl-vector-field
-  format: mml
+  in-format: mml
   description: Curl of a vector field
   filename: curl-vector-field.mml
 
 - name: gauss-divergence
-  format: mml
+  in-format: mml
   description: Gauss' divergence theorem
   filename: gauss-divergence.mml
 
 - name: sum
-  format: tex
+  in-format: tex
   description: Summation
   filename: sum.tex
 
 - name: sum-displaystyle
-  format: tex
+  in-format: tex
   description: Summation, display style
   filename: sum-displaystyle.tex
 
 - name: lorentz
-  format: tex
+  in-format: tex
   description: Lorenz equations
   filename: lorentz.tex
 
 - name: maxwell
-  format: tex
+  in-format: tex
   description: Maxwell's equations
   filename: maxwell.tex
 
 - name: quadratic
-  format: mml
+  in-format: mml
   description: Quadratic formula
   filename: quadratic.mml
 
 - name: ramanujan
-  format: tex
+  in-format: tex
   description: An identity of Ramanujan
   filename: ramanujan.tex
 
 - name: rogers-rmanujan
-  format: tex
+  in-format: tex
   description: A Rogers-Ramanujan identity
   filename: rogers-rmanujan.tex
 
 - name: standard-deviation
-  format: mml
+  in-format: mml
   description: Standard deviation
   filename: standard-deviation.mml
 
 - name: mathml-one-nons
-  format: jats
+  in-format: jats
   description: JATS file with one MathML formula, no namespace prefix
   filename: mathml-one-nons.nxml
 
 - name: mathml-one-ns
-  format: jats
+  in-format: jats
   description: JATS file with one MathML formula, with namespace prefix
   filename: mathml-one-ns.nxml
 
 - name: mathml-two-nons
-  format: jats
+  in-format: jats
   description: JATS file with multiple MathML formulas, no namespace prefix
   filename: mathml-two-nons.nxml
 
 - name: mathml-two-ns
-  format: jats
+  in-format: jats
   description: JATS file with multiple MathML formula, with namespace prefix
   filename: mathml-two-ns.nxml
 
 - name: nxml-3-mathml
-  format: jats
+  in-format: jats
   description: JATS file with three equations
   filename: nxml-3-mathml.nxml
 

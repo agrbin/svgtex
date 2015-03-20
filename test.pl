@@ -9,7 +9,8 @@ binmode STDOUT, ':utf8';
 use Test::More;
 use YAML;
 use LWP::UserAgent;
-use HTTP::Request::Common qw{ POST };
+use URI::Encode qw(uri_encode);
+#use HTTP::Request::Common qw{ POST };
 use Getopt::Long;
 use Data::Dumper;
 
@@ -70,7 +71,7 @@ my $tests = Load(do {
 #my @test_files = (<examples/*.tex>, <examples/*.mml>, <examples/*.html>);
 
 # We'll run two tests for each of these files
-plan tests => @$tests * 2;
+#plan tests => @$tests * 2;
 
 foreach my $test (@$tests) {
     if ($run_all || $run_tests{$test->{name}}) {
@@ -78,50 +79,82 @@ foreach my $test (@$tests) {
     }
 }
 
+done_testing();
+
 
 # Run one test
 sub test_one {
     my $test = shift;
     my $test_name = $test->{name};
-    my $example = $examples_by_name{$test->{example}};
-    my $filename = $examples_dir . '/' . $example->{filename};
-    my $request = $test->{request};
+    my $request = $test->{request} || {};
     my $expected = $test->{expected};
 
-    my $q = do {  # slurp the file
-        local $/ = undef;
-        open my $f, "<", $filename or die "Can't open $filename for reading";
-        <$f>;
-    };
-
-    if ($verbose) {
-        print "Testing $filename:\n";
-        print "  " . join("\n  ", map {"$_=$request->{$_}"} keys %$request) . "\n" .
-              #"  type=$type\n" .
-              "  q='" . string_start($q) . "'\n";
+    if ($request->{example}) {
+        my $example = $examples_by_name{$request->{example}};
+        my $filename = $examples_dir . '/' . $example->{filename};
+        $request->{q} = do {  # slurp the file
+            local $/ = undef;
+            open my $f, "<", $filename or die "Can't open $filename for reading";
+            <$f>;
+        };
+        delete $request->{example};
     }
-    my $params = {
-        'q' => $q,
-        ($request ? %$request : ())
-    };
-    #print Dumper($params);
-    my $response = $ua->post($url, $params);
+    my $request_method = 'POST';
+    if ($request->{method}) {
+        $request_method = $request->{method};
+        delete $request->{method};
+    }
 
-    ok ($response->code() == $expected->{"response-code"}, 
-        "Test $test_name: got expected response code");
+    print "\$request: " . Dumper($request) if $verbose;
+
+    # Execute the request; either GET or POST
+    my $response;
+    if ($request_method eq 'GET') {
+        # Construct the GET URL from the request parameters
+        my $get_url = $url . ((keys $request == 0) ? '' :
+            '?' . join('&', map {
+                $_ . '=' .uri_encode($request->{$_})
+            } keys $request));
+        print "Testing $test_name: $request_method: $get_url\n" if $verbose;
+        $response = $ua->get($get_url);
+    }
+    else {
+        if ($verbose) {
+            print "Testing $test_name: ". $request_method . ":\n";
+            print "  " . join("\n  ", map {
+                    "$_=" . ($_ eq 'q' ? string_start($request->{$_}) : $request->{$_})
+                } keys %$request) . "\n";
+        }
+        $response = $ua->post($url, $request);
+    }
+
+    my $expected_code = $expected->{code} || 200;
+    is ($response->code(), $expected_code, 
+        "Test $test_name: got expected response code $expected_code");
 
     #ok (!$response->is_error(), "Good response for $filename") or
     #    diag("  Response status line was '" . $response->status_line . "'");
 
     my $content  = $response->decoded_content();
     if ($verbose) {
-        print "  returned '" . string_start($content) . "'\n\n";
+        print "  returned '" . string_start($content) . "'\n";
     }
+
+    if ($expected->{'content-contains'}) {
+        ok (index($content, $expected->{'content-contains'}) != -1,
+            "Test $test_name: response contains expected string");
+    }
+
+    my $expected_content_type = $expected->{'content-type'} || 'image/svg+xml; charset=utf-8';
+    is ($response->header('content-type'), $expected_content_type,
+        "Test $test_name: expected content-type: " . $expected_content_type);
+
     if ($expected->{format} && $expected->{format} eq 'svg') {
-        like ($content, qr/^<svg/, "Test $test_name: response for $filename looks like SVG");
+        like ($content, qr/^<svg/, "Test $test_name: response looks like SVG");
     }
+
     if ($writesvg) {
-        my $svg_filename = "$filename.svg";
+        my $svg_filename = "$test_name.svg";
         open my $svg_file, ">", $svg_filename or die "Can't open $svg_filename for writing";
         print $svg_file $content;
         close $svg_file;
@@ -136,6 +169,8 @@ sub test_one {
 sub string_start {
     my $s = shift;
     chomp $s;
-    return substr($s, 0, 100) . (length($s) > 100 ? "..." : "");
+    my $ss = substr($s, 0, 100);
+    $ss =~ s/\n/\\n/gs;
+    return $ss . (length($s) > 100 ? "..." : "");
 }
 

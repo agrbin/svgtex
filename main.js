@@ -203,6 +203,7 @@ page.onCallback = function(data) {
   }
   else {
     resp.statusCode = 400;    // bad request
+    resp.setHeader("Content-Type", "text/plain; charset=utf-8");
     resp.write(svg_or_error[0]);
     console.log(num, src.substr(0, 30) + '.. ' +
         src.length + 'B query, error: ' + svg_or_error[0] + duration_msg);
@@ -225,15 +226,15 @@ page.onCallback = function(data) {
 // or a static file:
 //   { num: 5, static_file: 'examples/examples.yaml' }
 // or a valid request, e.g.
-//   { num: 5, format: 'latex', q: 'n^2', width: '500' }
+//   { num: 5, in_format: 'latex', q: 'n^2', width: '500' }
 
 function parse_request(req) {
   // Set any defaults here:
   var query = {
     num: request_num++,
-    format: 'auto',
+    in_format: 'auto',
     width: null,
-    out: 'svg-single'
+    out_format: 'svg'
   };
 
   if (debug) {
@@ -302,8 +303,12 @@ function parse_request(req) {
     return query;
   }
 
+  //console.log("qs = '" + qs + "'");
   var param_strings = qs.split(/&/);
   var num_param_strings = param_strings.length;
+  if (num_param_strings == 1 && param_strings[0] == '') {
+    num_param_strings = 0;
+  }
 
   for (var i = 0; i < num_param_strings; ++i) {
     var ps = param_strings[i];
@@ -315,13 +320,13 @@ function parse_request(req) {
     }
     var key = ps.substr(0, ie);
     var val = decodeURIComponent(ps.substr(ie+1).replace(/\+/g, ' '));
-    if (key == 'format') {
+    if (key == 'in-format') {
       if (val != 'mml' && val != 'latex' && val != 'auto') {
         query.status_code = 400;  // bad request
-        query.error = "Invalid value for format: " + val;
+        query.error = "Invalid value for in-format: " + val;
         return query;
       }
-      query.format = val;
+      query.in_format = val;
     }
     else if (key == 'q') {
       query.q = val;
@@ -331,10 +336,10 @@ function parse_request(req) {
     }
     else if (key == 'file') { // file name, discard
     }
-    else if (key == 'out') {
-      if (val != 'svg-single' && val != 'svg-multi' && val != 'client') {
+    else if (key == 'out-format') {
+      if (val != 'svg' && val != 'client') {
         query.status_code = 400;  // bad request
-        query.error = "Invalid value for out: " + val;
+        query.error = "Invalid value for out-format: " + val;
         return query;
       }
       if (val == 'client' && client_template == null) {
@@ -342,7 +347,7 @@ function parse_request(req) {
         query.error = "client rendering is disabled";
         return query;
       }
-      query.out = val;
+      query.out_format = val;
     }
     else if (key == 'latex-style') {
       console.log("latex-style: " + val);
@@ -364,7 +369,7 @@ function parse_request(req) {
   // Implement auto-detect.  We assume that any XML tag that has the name 'math',
   // regardless of whether or not it is in a namespace, is mathml.
   var equations = [];
-  if (query.format == 'auto') {
+  if (query.in_format == 'auto') {
     var q = query.q;
     var mml_stag = new RegExp('<([A-Za-z_]+:)?math', 'm');
     var segs = q.split(mml_stag);
@@ -372,7 +377,7 @@ function parse_request(req) {
 
     if (num_segs > 1) {
       if (debug) { console.log("Auto-detected MathML"); }
-      query.format = 'mml';
+      query.in_format = 'mml';
 
       // Have to find multiple equations
       for (var i = 1; i < num_segs; i += 2) {
@@ -387,7 +392,7 @@ function parse_request(req) {
       query.q = equations.length == 1 ? equations[0] : equations;
     }
     else {
-      query.format = 'latex';
+      query.in_format = 'latex';
       query.q = '\\' + (query.latex_style == 'text' ? 'text' : 'display') +
                 'style{' + q + '}';
     }
@@ -410,6 +415,7 @@ function listenLoop() {
     if (query.error) {
       console.log(request_num + ": error: " + query.error);
       resp.statusCode = query.status_code;
+      resp.setHeader('Content-type', 'text/plain; charset=utf-8');
       resp.write(query.error);
       resp.close();
     }
@@ -424,6 +430,7 @@ function listenLoop() {
         }
         console.log("}");
       */
+      resp.setHeader('Content-type', 'text/html; charset=utf-8');
       resp.write(test_form);
       resp.close();
     }
@@ -437,7 +444,7 @@ function listenLoop() {
       // examples.
       var extension = static_file.replace(/.*\.(.*)/, "$1");
       var media_types = {
-        'js': 'application/javascript',
+        'js': 'application/javascript; charset=utf-8',
         'html': 'text/html; charset=utf-8'
       //  'latex': 'application/x-tex; charset=utf-8',
       //  'mml': 'application/mathml+xml; charset=utf-8',
@@ -452,20 +459,21 @@ function listenLoop() {
       resp.close();
     }
 
-    else if (query.out == 'client') {
+    else if (query.out_format == 'client') {
       console.log(request_num + ": returning client template");
       var equations = query.q;
       var rows = '';
       if (typeof equations === 'string') {
-        rows = make_row(equations, query.format);
+        rows = make_row(equations, query.in_format);
       }
       else {
         equations.forEach(function(eq) {
-          rows += make_row(eq, query.format);
+          rows += make_row(eq, query.in_format);
         });
       }
       
       var resp_page = client_template.start + rows + client_template.end;
+      resp.setHeader('Content-type', 'text/html; charset=utf-8');
       resp.write(resp_page);
       resp.close();
     }

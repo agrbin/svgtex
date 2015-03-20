@@ -11,7 +11,7 @@
   // Set the latex-style to enabled or disabled, according to the 
   // currently selected value of math format
   function latex_display_control() {
-    if ($('#math-format-select').val() == 'mml') {
+    if ($('#math-in-format-select').val() == 'mml') {
       $('#latex-style-select').attr('disabled', 'disabled');
       $('#latex-style-label').attr('class', 'disabled');
     }
@@ -84,7 +84,7 @@
 
     // Event handlers
     $('#method').on('change', setMethod);
-    $('#math-format-select').on('change', latex_display_control);
+    $('#math-in-format-select').on('change', latex_display_control);
     $('#file').on('change', function(evt) {
       var file = evt.target.files[0];
       //console.log("file = %o", file);

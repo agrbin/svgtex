@@ -1,176 +1,209 @@
 # PMC Math Tool 2 tests
 
-# Implement defaults?
-# For each test, the default expected values are:
-#   response: 200
-#   format: svg
+# When composing the request, any parameter not given here will be absent in the
+# request. If request.example is given, then that example file will be read, and
+# stuffed into request.q. Default request.method is 'POST'.
+# Defaults:
+#   request.method: POST
+#   expected.code: 200
+#   expected.content-type: 'image/svg+xml; charset=utf-8'
+
+
+# GET request with no params, should get the test page
+- name: test-page
+  request:
+    method: GET
+  expected:
+    content-type: 'text/html; charset=utf-8'
+    content-contains: "PMC Math Tool 2"
+
+# GET request with some bad params
+- name: get-bad-params
+  request:
+    method: GET
+    foo: bar
+    baz: buzz
+  expected:
+    code: 400
+    content-type: 'text/plain; charset=utf-8'
+    content-contains: "Unrecognized parameter name"
+
+# POST request with no params, should get an error
+- name: post-no-params
+  expected:
+    code: 400
+    content-type: 'text/plain; charset=utf-8'
+    content-contains: "No source math detected in input"
+
+# POST request with some bad params
+- name: post-bad-params
+  request:
+    foo: bar
+    baz: buzz
+  expected:
+    code: 400
+    content-type: 'text/plain; charset=utf-8'
+    content-contains: "Unrecognized parameter name"
+
+
+
+
+
+
+
 
 - name: simple-tex
-  example: simple-tex
   request:
+    example: simple-tex
   expected:
-    response-code: 200
     format: svg
 
 - name: simple-tex-auto
-  example: simple-tex
   request:
-    type: auto
+    example: simple-tex
+    in-format: auto
   expected:
-    response-code: 200
     format: svg
 
 - name: simple-tex-tex
-  example: simple-tex
   request:
-    type: tex
+    example: simple-tex
+    in-format: latex
   expected:
-    response-code: 200
     format: svg
 
 - name: simple-tex-mml
-  example: simple-tex
   request:
-    type: mml
+    example: simple-tex
+    in-format: mml
   expected:
-    response-code: 400
+    code: 400
+    content-type: 'text/plain; charset=utf-8'
+    content-contains: "Error parsing MathML"
+
+
+
+
 
 
 
 - name: simple-mml
-  example: simple-mml
   request:
-    type: mml
+    example: simple-mml
+    in-format: mml
   expected:
-    response-code: 200
     format: svg
 
 
 - name: cauchy-integral
-  example: cauchy-integral
   request:
-    type: mml
+    example: cauchy-integral
+    in-format: mml
   expected:
-    response-code: 200
     format: svg
   
 - name: cauchy-schwarz
-  example: cauchy-schwarz
   request:
-    type: tex
+    example: cauchy-schwarz
+    in-format: latex
   expected:
-    response-code: 200
     format: svg
   
 - name: christoffel-symbols
-  example: christoffel-symbols
   request:
-    type: mml
+    example: christoffel-symbols
+    in-format: mml
   expected:
-    response-code: 200
     format: svg
   
 - name: coins
-  example: coins
   request:
-    type: tex
+    example: coins
+    in-format: latex
   expected:
-    response-code: 200
     format: svg
   
 - name: cosines
-  example: cosines
   request:
-    type: mml
+    example: cosines
+    in-format: mml
   expected:
-    response-code: 200
     format: svg
   
 - name: cross-product
-  example: cross-product
   request:
-    type: tex
+    example: cross-product
+    in-format: latex
   expected:
-    response-code: 200
     format: svg
   
 - name: curl-vector-field
-  example: curl-vector-field
   request:
-    type: mml
+    example: curl-vector-field
+    in-format: mml
   expected:
-    response-code: 200
     format: svg
   
 - name: gauss-divergence
-  example: gauss-divergence
   request:
-    type: mml
+    example: gauss-divergence
+    in-format: mml
   expected:
-    response-code: 200
     format: svg
   
 - name: sum
-  example: sum
   request:
-    type: tex
+    example: sum
+    in-format: latex
   expected:
-    response-code: 200
     format: svg
   
 - name: sum-displaystyle
-  example: sum-displaystyle
   request:
-    type: tex
+    example: sum-displaystyle
+    in-format: latex
   expected:
-    response-code: 200
     format: svg
   
 - name: lorentz
-  example: lorentz
   request:
-    type: tex
+    example: lorentz
+    in-format: latex
   expected:
-    response-code: 200
     format: svg
   
 - name: maxwell
-  example: maxwell
   request:
-    type: tex
+    example: maxwell
+    in-format: latex
   expected:
-    response-code: 200
     format: svg
   
 - name: quadratic
-  example: quadratic
   request:
-    type: mml
+    example: quadratic
+    in-format: mml
   expected:
-    response-code: 200
     format: svg
   
 - name: ramanujan
-  example: ramanujan
   request:
-    type: tex
+    example: ramanujan
+    in-format: latex
   expected:
-    response-code: 200
     format: svg
   
 - name: rogers-rmanujan
-  example: rogers-rmanujan
   request:
-    type: tex
+    example: rogers-rmanujan
+    in-format: latex
   expected:
-    response-code: 200
     format: svg
   
 - name: standard-deviation
-  example: standard-deviation
   request:
-    type: mml
+    example: standard-deviation
+    in-format: mml
   expected:
-    response-code: 200
     format: svg
   

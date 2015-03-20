@@ -3,39 +3,37 @@
 window.engine = (function() {
 
     var Q = MathJax.Hub.queue;
-    var types = {
-        latex: null,
-        mml: null
-    };
+    var in_formats = ["latex", "mml"];
+    var types = {};
+    var current_type;
     var buffer = [];
-    var error_message;
 
 
     // Initialize the engine. This is pushed onto the MathJax queue to make sure
     // it is called after MathJax initialization is done.
     var _init = function() {
         Q.Push(function () {
-            types.latex = {
-                div: document.getElementById("math-latex"),
-                jax: MathJax.Hub.getAllJax("math-latex")[0],
-                last_width: null,
-                last_q: ''
-            }
-            types.mml = {
-                div: document.getElementById("math-mml"),
-                jax: MathJax.Hub.getAllJax("math-mml")[0],
-                last_width: null,
-                last_q: ''
-            }
-            _process_buffered();
+            in_formats.forEach(function(format) {
+                var id = "math-" + format;
+                var div = document.getElementById(id);
+                var jax = MathJax.Hub.getAllJax(id)[0];
+                types[format] = {
+                    div: div,
+                    jax: jax,
+                    script_elem: document.getElementById(jax.inputID),
+                    error_message: ''
+                }
+            });
 
             // Capture all error signals
             MathJax.Hub.signal.Interest(function(message) {
                 var m = message[0];
                 if (m.match("^TeX Jax") || m.match("^MathML Jax")) {
-                    error_message = message[0] + ": " + message[1];
+                    current_type.error_message = message[0] + ": " + message[1];
                 }
             });
+
+            _process_buffered();
         });
     };
 
@@ -100,9 +98,9 @@ window.engine = (function() {
         //cb([query.num, query.q, ["debug message"]]);
         //return;
 
-        var t = types[query.format];
+        var t = types[query.in_format];
         if (typeof t === 'undefined') {
-            cb([query.num, query.q, ["Invalid format: '" + query.format + "'"]]);
+            cb([query.num, query.q, ["Invalid in-format: '" + query.in_format + "'"]]);
             return;
         }
 
@@ -115,57 +113,53 @@ window.engine = (function() {
         var q = query.q,
             width = query.width,
             div = t.div,
-            jax = t.jax;
+            jax = t.jax,
+            script_elem = t.script_elem;
 
-        // Initialize, get ready to process the equation
-        Q.Push(function() {
-            if (width === null) {
-                // Let's just use a default width of 1000 (arbitrary)
-                div.setAttribute('style', 'width: 1000px');
-            }
-            else {
-                div.setAttribute('style', 'width: ' + width + 'px');
-            }
-        });
+        // We'll push three functions onto the queue: initialization, mathjax processing,
+        // and then evaluating the results. They're all pushed at the same time, making sure
+        // they get executed sequentially, with no intervening functions.
 
-        // Possible dispositions:
-        // - if q and width are the same as last time, no need to Rerender
-        // - if q is the same, but width is not, then Rerender() (calling
-        //   Text() does not work)
-        // - if q is not the same, call Text()
-
-        if (t.last_q == q && t.last_width !== width) {
-            //error_message = '';
-            Q.Push(["Rerender", jax]);
-        }
-        else if (t.last_q != q) {
-            error_message = '';
-            Q.Push(["Text", jax, q]);
-        }
-        t.last_q = q;
-        t.last_width = width;
-
-        // Push a callback function onto the queue. This will get called after
-        // everything else in the queue is done.
-        Q.Push(function() {
-            var ret = null;
-
-            if (error_message) {
-                ret = [error_message];
-            }
-            else {
-                var svg_elem = div.getElementsByTagName("svg")[0];
-                var ret = null;
-                if (!svg_elem) {
-                    ret = ['MathJax error'];
+        Q.Push(
+    
+            // Initialize, get ready to process the equation
+            function() {
+                if (width === null) {
+                    // Let's just use a default width of 1000 (arbitrary)
+                    div.setAttribute('style', 'width: 1000px');
                 }
                 else {
-                    ret = _merge_svgs(svg_elem.cloneNode(true));
+                    div.setAttribute('style', 'width: ' + width + 'px');
                 }
-            }
+                current_type = t;
+                current_type.error_message = '';
+                script_elem.removeChild(script_elem.firstChild);
+                script_elem.appendChild(document.createTextNode(q));
+            },
 
-            cb([query.num, query.q, ret]);
-        });
+            // (Re)process the equation
+            ["Reprocess", jax],
+
+            // Evaluate the results
+            function() {
+                var ret = null;
+
+                if (current_type.error_message) {
+                    ret = [current_type.error_message];
+                }
+                else {
+                    var svg_elem = div.getElementsByTagName("svg")[0];
+                    if (!svg_elem) {
+                        ret = ['MathJax error'];
+                    }
+                    else {
+                        ret = _merge_svgs(svg_elem.cloneNode(true));
+                    }
+                }
+
+                cb([query.num, query.q, ret]);
+            }
+        );
     };
 
     _init();
@@ -176,7 +170,7 @@ window.engine = (function() {
         Q: Q,
         types: types,
         buffer: buffer,
-        error_message: error_message,
+        current_type: current_type,
         _init: _init,
         _process_buffered: _process_buffered,
         _serialize: _serialize,
