@@ -90,6 +90,17 @@
   description: Standard deviation
   filename: standard-deviation.mml
 
+
+
+# This one is good
+- name: jats-no-equations
+  in-format: jats
+  description: JATS file without any equations
+  filename: jats-no-equations.nxml
+
+
+
+# Haven't checked the following:
 - name: mathml-one-nons
   in-format: jats
   description: JATS file with one MathML formula, no namespace prefix
@@ -110,10 +121,11 @@
   description: JATS file with multiple MathML formula, with namespace prefix
   filename: mathml-two-ns.nxml
 
-- name: nxml-3-mathml
+# This one is good
+- name: jats-mathml-2
   in-format: jats
-  description: JATS file with three equations
-  filename: nxml-3-mathml.nxml
+  description: JATS file with two equations
+  filename: jats-mathml-2.nxml
 
 
 

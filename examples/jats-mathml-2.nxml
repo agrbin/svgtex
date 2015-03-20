@@ -1,0 +1,102 @@
+<!DOCTYPE article PUBLIC "-//NLM//DTD Journal Archiving and Interchange DTD v2.3 20070202//EN" "archivearticle.dtd">
+<article xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML"
+  article-type="research-article" xml:lang="EN">
+  <front>
+    <article-meta/>
+  </front>
+  <body>
+    <sec>
+      <title>Stuff and nonsense</title>
+      <p>Here's an equation: 
+        <inline-formula>
+          <mml:math id="M1">
+            <mml:mi>&#x003d5;</mml:mi>
+            <mml:mo>=</mml:mo>
+            <mml:mrow>
+              <mml:mrow>
+                <mml:msub>
+                  <mml:mi>B</mml:mi>
+                  <mml:mrow>
+                    <mml:mo>max</mml:mo>
+                  </mml:mrow>
+                </mml:msub>
+                <mml:msup>
+                  <mml:mrow>
+                    <mml:mrow>
+                      <mml:mo>(</mml:mo>
+                      <mml:mi>L</mml:mi>
+                      <mml:mo>)</mml:mo>
+                    </mml:mrow>
+                  </mml:mrow>
+                  <mml:mi>n</mml:mi>
+                </mml:msup>
+              </mml:mrow>
+              <mml:mo>/</mml:mo>
+              <mml:mrow>
+                <mml:mrow>
+                  <mml:mo>[</mml:mo>
+                  <mml:mrow>
+                    <mml:msup>
+                      <mml:mrow>
+                        <mml:mrow>
+                          <mml:mo>(</mml:mo>
+                          <mml:mi>L</mml:mi>
+                          <mml:mo>)</mml:mo>
+                        </mml:mrow>
+                      </mml:mrow>
+                      <mml:mi>n</mml:mi>
+                    </mml:msup>
+                    <mml:mo>+</mml:mo>
+                    <mml:msub>
+                      <mml:mi>K</mml:mi>
+                      <mml:mi>d</mml:mi>
+                    </mml:msub>
+                  </mml:mrow>
+                  <mml:mo>]</mml:mo>
+                </mml:mrow>
+              </mml:mrow>
+            </mml:mrow>
+          </mml:math>
+        </inline-formula>
+        , where this is that. </p>
+      <p>Here's another: 
+        <inline-formula>
+          <mml:math id="M2">
+            <mml:mi>&#x003d5;</mml:mi>
+            <mml:mo>=</mml:mo>
+            <mml:mrow>
+              <mml:mn>1</mml:mn>
+              <mml:mo>/</mml:mo>
+              <mml:mrow>
+                <mml:mrow>
+                  <mml:mo>(</mml:mo>
+                  <mml:mrow>
+                    <mml:mn>1</mml:mn>
+                    <mml:mo>+</mml:mo>
+                    <mml:mrow>
+                      <mml:mo>[</mml:mo>
+                      <mml:mrow>
+                        <mml:mrow>
+                          <mml:mtext>L</mml:mtext>
+                          <mml:mo>/</mml:mo>
+                          <mml:mrow>
+                            <mml:msub>
+                              <mml:mtext>K</mml:mtext>
+                              <mml:mtext>i</mml:mtext>
+                            </mml:msub>
+                          </mml:mrow>
+                        </mml:mrow>
+                      </mml:mrow>
+                      <mml:mo>]</mml:mo>
+                    </mml:mrow>
+                  </mml:mrow>
+                  <mml:mo>)</mml:mo>
+                </mml:mrow>
+              </mml:mrow>
+            </mml:mrow>
+          </mml:math>
+        </inline-formula>
+        , where ...</p>
+    </sec>
+  </body>
+</article>

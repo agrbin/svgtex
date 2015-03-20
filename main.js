@@ -332,7 +332,15 @@ function parse_request(req) {
       query.q = val;
     }
     else if (key == 'width') {
-      query.width = parseInt(val) || null;
+      if (val != '') {
+        var w = parseInt(val);
+        if (isNaN(w) || w <= 0) {
+          query.status_code = 400;  // bad request
+          query.error = "Invalid value for width: " + val;
+          return query;
+        }
+        query.width = w;
+      }
     }
     else if (key == 'file') { // file name, discard
     }
@@ -350,7 +358,11 @@ function parse_request(req) {
       query.out_format = val;
     }
     else if (key == 'latex-style') {
-      console.log("latex-style: " + val);
+      if (val != "text" && val != "display") {
+        query.status_code = 400;  // bad request
+        query.error = "Invalid value for latex-style: " + val;
+        return query;
+      }
       query.latex_style = val;
     }
     else {
@@ -359,7 +371,8 @@ function parse_request(req) {
       return query;
     }
   }
-  if (!query.q) {   // no source math
+  if (!query.q || query.q.match(/^\s*$/)) {   // no source math
+  //if (!query.q || query.q == ' ') {   // no source math
     query.status_code = 400;  // bad request
     query.error = "No source math detected in input";
     return query;

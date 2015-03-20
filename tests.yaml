@@ -45,6 +45,114 @@
     content-type: 'text/plain; charset=utf-8'
     content-contains: "Unrecognized parameter name"
 
+# Bad value for in-format
+- name: bad-in-format
+  request:
+    in-format: foo
+    q: "n^2"
+  expected:
+    code: 400
+    content-type: 'text/plain; charset=utf-8'
+    content-contains: "Invalid value for in-format"
+
+# Bad value for latex-style
+- name: bad-latex-style
+  request:
+    latex-style: foo
+    q: "n^2"
+  expected:
+    code: 400
+    content-type: 'text/plain; charset=utf-8'
+    content-contains: "Invalid value for latex-style"
+
+# Bad value for out-format
+- name: bad-out-format
+  request:
+    out-format: foo
+    q: "n^2"
+  expected:
+    code: 400
+    content-type: 'text/plain; charset=utf-8'
+    content-contains: "Invalid value for out-format"
+
+# Bad value for width: NaN
+- name: bad-width-nan
+  request:
+    width: foo
+    q: "n^2"
+  expected:
+    code: 400
+    content-type: 'text/plain; charset=utf-8'
+    content-contains: "Invalid value for width"
+
+# Bad value for width: zero
+- name: bad-width-zero
+  request:
+    width: 0
+    q: "n^2"
+  expected:
+    code: 400
+    content-type: 'text/plain; charset=utf-8'
+    content-contains: "Invalid value for width"
+
+# Content missing
+- name: content-missing
+  expected:
+    code: 400
+    content-type: 'text/plain; charset=utf-8'
+    content-contains: "No source math detected in input"
+
+# Content all whitespace
+- name: content-whitespace
+  request:
+    q: "  "
+  expected:
+    code: 400
+    content-type: 'text/plain; charset=utf-8'
+    content-contains: "No source math detected in input"
+
+# Good LaTeX
+- name: good-latex
+  request:
+    q: "n^2"
+    in-format: auto
+    latex-style: text
+  expected:
+    format: svg
+
+# Bad LaTeX
+- name: bad-latex
+  request:
+    q: "\\floober{n^2}"
+    in-format: auto
+    latex-style: text
+  expected:
+    code: 400
+    content-type: 'text/plain; charset=utf-8'
+    content-contains: "TeX Jax - undefined control sequence"
+
+# Good MathML
+- name: good-mml
+  request:
+    q: "<math><mfrac><mn>1</mn><mi>N</mi></mfrac></math>"
+    in-format: auto
+  expected:
+    format: svg
+
+# Bad MathML
+- name: bad-mml
+  request:
+    q: "<mathmn>1</mn><mi>N</mi></mfrac></math>"
+    in-format: auto
+  expected:
+    code: 400
+    content-type: 'text/plain; charset=utf-8'
+    content-contains: "MathML Jax - parse error"
+
+# JATS file without any equations
+- name: jats-no-equations
+  request:
+    examples: jats-no-equations
 
 
 
