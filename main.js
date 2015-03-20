@@ -225,13 +225,13 @@ page.onCallback = function(data) {
 // or a static file:
 //   { num: 5, static_file: 'examples/examples.yaml' }
 // or a valid request, e.g.
-//   { num: 5, type: 'tex', q: 'n^2', width: '500' }
+//   { num: 5, format: 'latex', q: 'n^2', width: '500' }
 
 function parse_request(req) {
   // Set any defaults here:
   var query = {
     num: request_num++,
-    type: 'auto',
+    format: 'auto',
     width: null,
     out: 'svg-single'
   };
@@ -268,7 +268,7 @@ function parse_request(req) {
     // Static pages must start with '/examples/' or '/resources/'
     if (url.substr(0, 10) == '/examples/' || url.substr(0, 11) == '/resources/') {
       var static_file = url.substr(1);
-      console.log("Got a request for an example: " + static_file);
+      //console.log("Got a request for an example: " + static_file);
       query.static_file = static_file;
       //if (!fs.isReadable(url)) {
       //  query.status_code = 404;   // Not found
@@ -315,13 +315,13 @@ function parse_request(req) {
     }
     var key = ps.substr(0, ie);
     var val = decodeURIComponent(ps.substr(ie+1).replace(/\+/g, ' '));
-    if (key == 'type') {
-      if (val != 'mml' && val != 'tex' && val != 'auto') {
+    if (key == 'format') {
+      if (val != 'mml' && val != 'latex' && val != 'auto') {
         query.status_code = 400;  // bad request
-        query.error = "Invalid value for type: " + val;
+        query.error = "Invalid value for format: " + val;
         return query;
       }
-      query.type = val;
+      query.format = val;
     }
     else if (key == 'q') {
       query.q = val;
@@ -364,7 +364,7 @@ function parse_request(req) {
   // Implement auto-detect.  We assume that any XML tag that has the name 'math',
   // regardless of whether or not it is in a namespace, is mathml.
   var equations = [];
-  if (query.type == 'auto') {
+  if (query.format == 'auto') {
     var q = query.q;
     var mml_stag = new RegExp('<([A-Za-z_]+:)?math', 'm');
     var segs = q.split(mml_stag);
@@ -372,7 +372,7 @@ function parse_request(req) {
 
     if (num_segs > 1) {
       if (debug) { console.log("Auto-detected MathML"); }
-      query.type = 'mml';
+      query.format = 'mml';
 
       // Have to find multiple equations
       for (var i = 1; i < num_segs; i += 2) {
@@ -387,7 +387,7 @@ function parse_request(req) {
       query.q = equations.length == 1 ? equations[0] : equations;
     }
     else {
-      query.type = 'tex';
+      query.format = 'latex';
       query.q = '\\' + (query.latex_style == 'text' ? 'text' : 'display') +
                 'style{' + q + '}';
     }
@@ -439,7 +439,7 @@ function listenLoop() {
       var media_types = {
         'js': 'application/javascript',
         'html': 'text/html; charset=utf-8'
-      //  'tex': 'application/x-tex; charset=utf-8',
+      //  'latex': 'application/x-tex; charset=utf-8',
       //  'mml': 'application/mathml+xml; charset=utf-8',
       //  'nxml': 'application/jats+xml; charset=utf-8'
       };
@@ -457,11 +457,11 @@ function listenLoop() {
       var equations = query.q;
       var rows = '';
       if (typeof equations === 'string') {
-        rows = make_row(equations, query.type);
+        rows = make_row(equations, query.format);
       }
       else {
         equations.forEach(function(eq) {
-          rows += make_row(eq, query.type);
+          rows += make_row(eq, query.format);
         });
       }
       
@@ -496,8 +496,8 @@ function listenLoop() {
 }
 
 /* Make one row of the table */
-function make_row(eq, type) {
-  if (type == 'tex') eq = '\\(' + eq + '\\)';
+function make_row(eq, format) {
+  if (format == 'latex') eq = '\\(' + eq + '\\)';
   return "<tr><td></td><td></td><td>" + eq + "</td></tr>";
 }
 

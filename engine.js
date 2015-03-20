@@ -4,7 +4,7 @@ window.engine = (function() {
 
     var Q = MathJax.Hub.queue;
     var types = {
-        tex: null,
+        latex: null,
         mml: null
     };
     var buffer = [];
@@ -15,9 +15,9 @@ window.engine = (function() {
     // it is called after MathJax initialization is done.
     var _init = function() {
         Q.Push(function () {
-            types.tex = {
-                div: document.getElementById("math-tex"),
-                jax: MathJax.Hub.getAllJax("math-tex")[0],
+            types.latex = {
+                div: document.getElementById("math-latex"),
+                jax: MathJax.Hub.getAllJax("math-latex")[0],
                 last_width: null,
                 last_q: ''
             }
@@ -100,9 +100,9 @@ window.engine = (function() {
         //cb([query.num, query.q, ["debug message"]]);
         //return;
 
-        var t = types[query.type];
+        var t = types[query.format];
         if (typeof t === 'undefined') {
-            cb([query.num, query.q, ["Invalid type: '" + query.type + "'"]]);
+            cb([query.num, query.q, ["Invalid format: '" + query.format + "'"]]);
             return;
         }
 
