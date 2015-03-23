@@ -1,28 +1,22 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<!--
-  Sample HTML file that contains two simple mathml equations
--->
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xml:lang="en">
-  <head>
-    <script type="text/javascript"
-      src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <title>Sample 2</title>
-  </head>
+<!DOCTYPE article PUBLIC "-//NLM//DTD Journal Archiving and Interchange DTD v2.3 20070202//EN" "archivearticle.dtd">
+<article xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML"
+  article-type="research-article" xml:lang="EN">
+  <front>
+    <article-meta/>
+  </front>
   <body>
-    <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="M1">
-      <mml:mi>&#x003d5;</mml:mi>
-      <mml:mo>=</mml:mo>
-      <mml:mi>B</mml:mi>
-    </mml:math>
-    intron
-    <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="M2">
-      <mml:mi>Z</mml:mi>
-      <mml:mo>=</mml:mo>
-      <mml:mi>W</mml:mi>
-    </mml:math>
+    <p>
+      <mml:math id="M1">
+        <mml:mi>&#x003d5;</mml:mi>
+        <mml:mo>=</mml:mo>
+        <mml:mi>B</mml:mi>
+      </mml:math> 
+      intron 
+      <mml:math id="M2">
+        <mml:mi>Z</mml:mi>
+        <mml:mo>=</mml:mo>
+        <mml:mi>W</mml:mi>
+      </mml:math>
+    </p>
   </body>
-</html>
+</article>

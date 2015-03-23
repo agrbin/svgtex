@@ -1,15 +1,11 @@
-<!DOCTYPE html>
-<!--
-  Sample HTML file that contains two simple mathml equations
--->
-<html>
-  <head>
-    <script type="text/javascript"
-      src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <title>Sample 2</title>
-  </head>
+<!DOCTYPE article PUBLIC "-//NLM//DTD Journal Archiving and Interchange DTD v2.3 20070202//EN" "archivearticle.dtd">
+<article xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML"
+  article-type="research-article" xml:lang="EN">
+  <front>
+    <article-meta/>
+  </front>
   <body>
-    <math id="M1">
+    <math id="M1" xmlns="http://www.w3.org/1998/Math/MathML">
       <mi>&#x003d5;</mi>
       <mo>=</mo>
       <mi>B</mi>
@@ -21,4 +17,4 @@
       <mi>W</mi>
     </math>
   </body>
-</html>
+</article>
