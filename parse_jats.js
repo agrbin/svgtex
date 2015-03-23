@@ -50,6 +50,7 @@ var parse_outer_formula = function(elem_name, xml) {
 
 }
 
+// FIXME:  needs to be implemented
 var strip_formula_wrap = function(xml) {
   return "<tex-math id='M1'>n^2</tex_math>";
 }
