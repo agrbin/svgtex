@@ -39,6 +39,7 @@
               <option value='auto' selected='selected'>Auto-detect</option>
               <option value='mml'>MathML</option>
               <option value='latex'>LaTeX</option>
+              <option value='jats'>JATS</option>
             </select>
             &#160;&#160;&#160;
             <label id='latex-style-label' for='latex-style-select'>LaTeX style:</label>
@@ -57,15 +58,17 @@
           -->
           </td>
         </tr>
+      <!--
         <tr>
-          <td><label for='output-format-select'>Output format</label></td>
+          <td><label for='out-format-select'>Output format</label></td>
           <td>
-            <select id='output-format-select' name='out-format'>
+            <select id='out-format-select' name='out-format'>
               <option value='svg' selected='selected'>SVG</option>
               <option value='client'>Client rendering</option>
             </select>
           </td>
         </tr>
+      -->
         <tr>
           <td><label for='max-width-input'>Maximum width</label></td>
           <td>
@@ -93,6 +96,23 @@
 
       </table>
     </form>
+
+    <h2>Description</h2>
+    <div>
+      <p>Use this service to test the rendering of mathematical formulas with MathJax.
+      </p>
+      <p>This is really two services in one:</p>
+      <ol>
+        <li>When you provide it with a single formula in either LaTeX or MathML format, 
+          then that formula will be rendered on our
+          servers, and the results will be returned as a pure SVG resource.</li>
+        <li>When you provide it with a JATS file that contains one or more equations,
+          then all of the formulas will be extracted from that JATS file, and sent back to your browser
+          encapsulated in an HTML table. Your browser will then use MathJax to render the
+          formulas locally.</li>
+      </ol>
+
+    </div>
 
     <h2>Examples</h2>
     <div id='examples-div'>

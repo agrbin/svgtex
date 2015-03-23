@@ -7,6 +7,9 @@ var server = require('webserver').create();
 var page = require('webpage').create();
 var fs = require('fs');
 
+var parse_jats = require('./parse_jats').parse_jats;
+
+
 var usage =
   'Usage: phantomjs main.js [options]\n' +
   'Options:\n' +
@@ -226,18 +229,17 @@ page.onCallback = function(data) {
 // or a static file:
 //   { num: 5, static_file: 'examples/examples.yaml' }
 // or a valid request, e.g.
-//   { num: 5, in_format: 'latex', q: 'n^2', width: '500' }
+//   { num: 5, in_format: 'latex', latex_style: 'text', q: 'n^2', width: '500' }
 //   { num: 5, in_format: 'mml', q: '<math>...</math>', width: '500' }
 //   { num: 5, in_format: 'jats', 
-//     q: [{id: 'M1', format: 'latex', q: 'n^2'}, {...}], width: '500' }
+//     q: [{id: 'M1', format: 'latex', latex_style: 'display', q: 'n^2'}, {...}], width: '500' }
 
 function parse_request(req) {
   // Set any defaults here:
   var query = {
     num: request_num++,
     in_format: 'auto',
-    width: null,
-    out_format: 'svg'
+    width: null
   };
 
   if (debug) {
@@ -324,7 +326,7 @@ function parse_request(req) {
     var key = ps.substr(0, ie);
     var val = decodeURIComponent(ps.substr(ie+1).replace(/\+/g, ' '));
     if (key == 'in-format') {
-      if (val != 'mml' && val != 'latex' && val != 'auto') {
+      if (val != 'auto' && val != 'mml' && val != 'latex' && val != 'jats') {
         query.status_code = 400;  // bad request
         query.error = "Invalid value for in-format: " + val;
         return query;
@@ -335,6 +337,7 @@ function parse_request(req) {
       query.q = val;
     }
     else if (key == 'width') {
+      // empty string means that no max width was specified
       if (val != '') {
         var w = parseInt(val);
         if (isNaN(w) || w <= 0) {
@@ -346,19 +349,6 @@ function parse_request(req) {
       }
     }
     else if (key == 'file') { // file name, discard
-    }
-    else if (key == 'out-format') {
-      if (val != 'svg' && val != 'client') {
-        query.status_code = 400;  // bad request
-        query.error = "Invalid value for out-format: " + val;
-        return query;
-      }
-      if (val == 'client' && client_template == null) {
-        query.status_code = 400;  // bad request
-        query.error = "client rendering is disabled";
-        return query;
-      }
-      query.out_format = val;
     }
     else if (key == 'latex-style') {
       if (val != "text" && val != "display") {
@@ -374,52 +364,45 @@ function parse_request(req) {
       return query;
     }
   }
+
   if (!query.q || query.q.match(/^\s*$/)) {   // no source math
-  //if (!query.q || query.q == ' ') {   // no source math
     query.status_code = 400;  // bad request
     query.error = "No source math detected in input";
     return query;
   }
 
-
-  // Implement auto-detect.  We assume that any XML tag that has the name 'math',
-  // regardless of whether or not it is in a namespace, is mathml.
-  // Also look for the opening tag '<article', to determine whether or not this is 
-  // JATS.  If it's not JATS, and there are no MathML opening tags, then assume it
-  // is LaTeX.  If it is JATS, then we'll parse out all of the equations into the
-  // equations array.
-  var equations = [];
+  // Implement auto-detect.
+  var q = query.q;
   if (query.in_format == 'auto') {
-    var q = query.q;
+    // We assume that any XML tag that has the name 'math',
+    // regardless of whether or not it is in a namespace, is mathml.
+    // Also look for the opening tag '<article', to determine whether or not this is 
+    // JATS.  If it's not JATS, and there are no MathML opening tags, then assume it
+    // is LaTeX.
     var jats_stag = new RegExp('<article\\s+');
     var mml_stag = new RegExp('<([A-Za-z_]+:)?math', 'm');
-    var segs = q.split(mml_stag);
-    var num_segs = segs.length;
-
-    if (num_segs > 1) {
-      if (debug) { console.log("Auto-detected MathML"); }
-      query.in_format = 'mml';
-
-      // Have to find multiple equations
-      for (var i = 1; i < num_segs; i += 2) {
-        var prefix = typeof(segs[i]) == 'undefined' ? '' : segs[i];
-        var eq_seg = "<" + prefix + "math" + segs[i+1];
-        var eq = eq_seg.replace(/([\s\S]*?<\/([A-Za-z_]+:)?math>)[\s\S]*/, '$1');
-        eq = eq.replace(new RegExp(prefix, "g"), '');
-        console.log("eq = '" + eq + "'");
-        equations.push(eq);
-      }
-
-      query.q = equations.length == 1 ? equations[0] : equations;
-    }
-    else {
-      query.in_format = 'latex';
-      query.q = '\\' + (query.latex_style == 'text' ? 'text' : 'display') +
-                'style{' + q + '}';
-    }
+    query.in_format = q.match(jats_stag) ? 'jats' :
+                      q.match(mml_stag) ? 'mml' : 'latex';
   }
+
+  // Parse JATS files
+  if (query.in_format == 'jats') {
+    var jats_formulas = parse_jats(q);
+    if (typeof jats_formulas === "string") {
+      query.status_code = 400;
+      query.error = jats_formula;
+      return query;
+    }
+    query.q = jats_formulas;
+  }
+
   return query;
 }
+
+
+
+
+
 
 
 // This function is called back from page.open, below, after the bench page

@@ -1,0 +1,14 @@
+<html>
+  <head>
+    <script type='text/javascript' src='parse_jats.js'></script>
+    <script type='text/javascript'>
+      var jats='Formulas: <tex-math id="M1">n^2</tex-math> and <math id="M2"><mi>B</mi></math> etc.';
+      var parsed = exports.parse_jats(jats);
+      console.log("parsed: %o", parsed);
+    </script>
+
+  </head>
+  <body>
+    <h1>For testing the parse_jats module</h1>
+  </body>
+</html>

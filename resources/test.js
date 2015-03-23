@@ -8,10 +8,13 @@
     $('#form').attr('method', $('#method').val());
   }
 
+  // Handle any changes to the in-format select option.
   // Set the latex-style to enabled or disabled, according to the 
   // currently selected value of math format
-  function latex_display_control() {
-    if ($('#math-in-format-select').val() == 'mml') {
+
+  function in_format_handler() {
+    var val = $('#math-in-format-select').val();
+    if (val == 'mml' || val == 'jats') {
       $('#latex-style-select').attr('disabled', 'disabled');
       $('#latex-style-label').attr('class', 'disabled');
     }
@@ -19,7 +22,19 @@
       $('#latex-style-select').removeAttr('disabled');
       $('#latex-style-label').attr('class', '');
     }
+    //if (val == 'latex' || val == 'mml') {
+    //  $('#out-format-select').val('svg');
+    //}
   }
+
+/*
+  function out_format_handler() {
+    var val = $('#out-format-select').val();
+    if (val == 'client') {
+      $('#math-in-format-select').val('jats');
+    }
+  }
+*/
 
   // List of examples that will appear
   var test_examples = [
@@ -84,7 +99,7 @@
 
     // Event handlers
     $('#method').on('change', setMethod);
-    $('#math-in-format-select').on('change', latex_display_control);
+    $('#math-in-format-select').on('change', in_format_handler);
     $('#file').on('change', function(evt) {
       var file = evt.target.files[0];
       //console.log("file = %o", file);
@@ -95,10 +110,11 @@
       };
       reader.readAsText(file);
     });
+    //$('#out-format-select').on('change', out_format_handler);
 
     // Page initialization
     setMethod();
-    latex_display_control();
+    in_format_handler();
     make_example_list();
   });
 

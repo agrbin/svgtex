@@ -18,7 +18,7 @@
     content-contains: "PMC Math Tool 2"
 
 # GET request with some bad params
-- name: get-bad-params
+- name: bad-get-params
   request:
     method: GET
     foo: bar
@@ -29,14 +29,14 @@
     content-contains: "Unrecognized parameter name"
 
 # POST request with no params, should get an error
-- name: post-no-params
+- name: bad-post-no-params
   expected:
     code: 400
     content-type: 'text/plain; charset=utf-8'
     content-contains: "No source math detected in input"
 
 # POST request with some bad params
-- name: post-bad-params
+- name: bad-post-params
   request:
     foo: bar
     baz: buzz
@@ -65,16 +65,6 @@
     content-type: 'text/plain; charset=utf-8'
     content-contains: "Invalid value for latex-style"
 
-# Bad value for out-format
-- name: bad-out-format
-  request:
-    out-format: foo
-    q: "n^2"
-  expected:
-    code: 400
-    content-type: 'text/plain; charset=utf-8'
-    content-contains: "Invalid value for out-format"
-
 # Bad value for width: NaN
 - name: bad-width-nan
   request:
@@ -96,20 +86,25 @@
     content-contains: "Invalid value for width"
 
 # Content missing
-- name: content-missing
+- name: bad-content-missing
   expected:
     code: 400
     content-type: 'text/plain; charset=utf-8'
     content-contains: "No source math detected in input"
 
 # Content all whitespace
-- name: content-whitespace
+- name: bad-content-whitespace
   request:
     q: "  "
   expected:
     code: 400
     content-type: 'text/plain; charset=utf-8'
     content-contains: "No source math detected in input"
+
+
+
+
+
 
 # Good LaTeX
 - name: good-latex
