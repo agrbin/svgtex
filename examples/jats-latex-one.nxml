@@ -1,0 +1,22 @@
+<!DOCTYPE article PUBLIC "-//NLM//DTD Journal Archiving and Interchange DTD v2.3 20070202//EN" "archivearticle.dtd">
+<article xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML"
+  article-type="research-article" xml:lang="EN">
+  <front>
+    <article-meta/>
+  </front>
+  <body>
+    <sec>
+      <title>Stuff and nonsense</title>
+      <disp-formula>
+        <tex-math id="M1">
+          \begin{equation*}
+            {\mathrm{Fd}}+
+            {\mathrm{PSI\hspace{.167em}{\longleftrightarrow}\hspace{.167em}Fd}}-
+            {\mathrm{PSI}}
+          \end{equation*}
+        </tex-math>
+      </disp-formula>
+    </sec>
+  </body>
+</article>
+

@@ -1,0 +1,27 @@
+<!DOCTYPE article PUBLIC "-//NLM//DTD Journal Archiving and Interchange DTD v2.3 20070202//EN" "archivearticle.dtd">
+<article xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML"
+  article-type="research-article" xml:lang="EN">
+  <front>
+    <article-meta/>
+  </front>
+  <body>
+    <sec>
+      <title>Stuff and nonsense</title>
+      <disp-formula>
+        <tex-math id="M1">
+          \begin{equation*}
+            \sum_{n=1}^\inf n^2
+          \end{equation*}
+        </tex-math>
+      </disp-formula>
+      <inline-formula>
+        <tex-math id="M2">
+          \begin{equation*}
+            \sum_{n=1}^\inf n^2
+          \end{equation*}
+        </tex-math>
+      </inline-formula>
+    </sec>
+  </body>
+</article>
+
