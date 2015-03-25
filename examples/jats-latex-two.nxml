@@ -6,18 +6,22 @@
   </front>
   <body>
     <sec>
-      <title>Stuff and nonsense</title>
+      <title>Test file</title>
+      <!--
+        Two LaTeX equations. One with display (block) style, and the second
+        with text (inline) style
+      -->
       <disp-formula>
         <tex-math id="M1">
           \begin{equation*}
-            \sum_{n=1}^\inf n^2
+            \sum_{n=1}^\infty n^2
           \end{equation*}
         </tex-math>
       </disp-formula>
       <inline-formula>
         <tex-math id="M2">
           \begin{equation*}
-            \sum_{n=1}^\inf n^2
+            \sum_{n=1}^\infty n^2
           \end{equation*}
         </tex-math>
       </inline-formula>

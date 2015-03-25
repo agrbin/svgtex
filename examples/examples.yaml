@@ -120,13 +120,18 @@
   description: JATS file with one MathML formula, with namespace prefix
   filename: jats-mathml-one-ns.nxml
 
-- name: jats-mathml-two
+- name: jats-mathml-many
   in-format: jats
   description: JATS file with multiple MathML formulas
-  filename: jats-mathml-two.nxml
+  filename: jats-mathml-many.nxml
 
 - name: jats-with-unicode
   in-format: jats
   description: JATS file with a unicode (non-ascii) character
   filename: jats-with-unicode.nxml
 
+- name: jats-3479416
+  in-format: jats
+  description: Real JATS file, article 3479416 from BMC
+  filename: jats-3479416.nxml
+  
