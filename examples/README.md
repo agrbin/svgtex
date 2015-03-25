@@ -6,6 +6,4 @@ enter
 
     perl test.pl
 
-See [the wiki](https://github.com/agrbin/svgtex/wiki#examples-and-benchmark) for
-more information.
 
