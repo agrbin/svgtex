@@ -6,38 +6,14 @@
 -->
 <html>
   <head>
-  <!--
-    FIXME: need to use PMC's MathJax. For this, I'll have to make a new config
-    file that includes a TeX input jax.
-    <script type='text/javascript'
-      src='http://test.ncbi.nlm.nih.gov/core/mathjax/2.5/MathJax.js?config=/corehtml/pmc/js/mathjax-config-classic.3.4.js'></script>
-  -->
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        showProcessingMessages: false,
-        messageStyle: "none",
-        tex2jax: {
-          inlineMath: [["$", "$"], ["\\(", "\\)"]]
-        },
-        SVG: {
-          linebreaks: {
-            automatic: true,
-            width: "container"
-          }
-        }
-      });
-    </script>
-
     <!--
-      To run with a local version of mathjax:
-    <script type="text/javascript"
-      src="mathjax/MathJax.js?config=TeX-AMS-MML_SVG">
-    </script>
+      FIXME: the config file location needs to be changed, once this version of the
+      config file gets released and deployed.
     -->
       <script type="text/javascript"
-        src="http://www.ncbi.nlm.nih.gov/core/mathjax/2.5/MathJax.js?config=TeX-AMS-MML_SVG">
+        src="http://www.ncbi.nlm.nih.gov/core/mathjax/2.5/MathJax.js?config=http://www.ncbi.nlm.nih.gov/staff/maloneyc/mjconfig/mathjax-config-classic.3.4.1.js">
       </script>
+
     <script type="text/javascript" src="engine.js"></script>
   </head>
   <body>
