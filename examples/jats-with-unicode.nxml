@@ -1,0 +1,12 @@
+<article article-type="research-article" xml:lang="EN">
+  <front>
+    <article-meta/>
+  </front>
+  <body>
+    <sec>
+      <title>test file</title>
+      <tex-math id="M1">θ = n</tex-math>
+    </sec>
+  </body>
+</article>
+

@@ -1,71 +1,96 @@
-svgtex
-======
+pmc-math-tool-2
+===============
 
-Using MathJax and PhantomJS to create SVGs on server side with minimum overhead.
+This tool was forked from 
+[agrbin](https://github.com/agrbin)'s excellent [svgtex](https://github.com/agrbin/svgtex) 
+tool.
 
-This is just an idea, algorithm and it's proof of concept.
-If you want to use such system in production, take a look at this fork too: https://github.com/gwicke/mathoid !
+It uses MathJax and PhantomJS to render mathematical formulas into SVGs, on the server,
+with minimum overhead. It runs as an HTTP service, with a simple interface.
 
-MathJax is a great tool! Why not use it on a server side too?  To avoid loading the whole
-phantomjs and MathJax into memory with every call, the service is exposed via HTTP.
+To run it, first, you'll need to install the main dependency:
+[phantom.js](http://phantomjs.org/). The exact instructions will depend on the type
+of machine you have, and it is quite easy -- follow the instructions on that site's
+download page.
 
-Detailed usage instructions are on the [GitHub wiki](https://github.com/agrbin/svgtex/wiki).
-For quick-start instructions, keep reading.
-
-First, clone this repository, and `cd` into the project directory.
+Next, clone this repository, and `cd` into the project directory.
 Then, start the server:
 
 ```
 $ phantomjs main.js
+port = 16000, requests_to_serve = -1, bench_page = bench.html, debug = false
 
-Loading bench page index.html
+Loading bench page bench.html
 Server started on port 16000
 Point your brownser at http://localhost:16000 for a test form.
 ```
 
 Try it out by pointing your browser at http://localhost:16000/, and using the test form
-to enter an equation in either TeX or MathML.  For example,
+to enter an equation in either TeX or MathML. For example,
 
 * TeX:  `n^2`
 * MathML: `<math><mfrac><mi>y</mi><mn>2</mn></mfrac></math>`
 
 You can use the test form to generate either GET or POST requests.
-Or, from a different console, use curl:
+
+To access the service from a script, for example, you could use curl:
 
 ```
 $ curl localhost:16000/?q=n%5E2
 <svg xmlns:xlink="http://www.w3.org/1999/xlink" style="width: 1.34ex; height: 1.099ex; ...
 
-$ curl http://localhost:16000/?q=%3Cmath%3E%3Cmfrac%3E%3Cmi%3Ey%3C%2Fmi%3E%3Cmn%3E2%3C%2Fmn%3E%3C%2Fmfrac%3E%3C%2Fmath%3E
+$ curl http://localhost:16000/?q=%3Cmath%3E%3Cmi%3EN%3C%2Fmi%3E%3C%2Fmath%3E
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.032ex" height="1.761ex" ...
+
+$ curl http://localhost:16000 --data-urlencode "q=\\text{rate is }26\\%" > rate.svg
 ```
 
+Two services in one
+-------------------
 
 
-Loading MathJax from the CDN vs locally
----------------------------------------
+Service API
+-----------
 
-By default, this loads MathJax from the [MathJax
-CDN](http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_SVG).
-That means that the server uses an internet connection, and it loads MathJax
-once, as the server is started.
+Make requests to the service with either GET or POST. When making POST requests, the
+parameters must be encoded as x-www-form-urlencoded.
 
-To use a local version of MathJax instead, first download and extract MathJax
-into the `mathjax` subdirectory (or wherever else you would like):
+The parameters this service understands are:
+
+* `q` - The content of the math formula or JATS file
+* `in-format` - One of 'latex', 'mml', 'jats', or 'auto'. The default is 'auto'.
+* `latex-style` - If the input is a LaTeX formula, this specifies whether it should
+  be rendered in text (inline) or display (block) mode
+* `width` - Maximum width for the equations
+
+
+Example files and testing
+-------------------------
+
+Example input files are included in the *examples* subdirectory. Metadata about these
+examples is in the *examples.yaml* file.
+
+The Perl script *test.pl* runs automated tests against the service, using tests defined
+in the *tests.yaml* file. Most of those tests use the example files 
+for the value of the `q` parameter (the main input).
+
+During development or maintenance, you can test the processing engine by loading the
+bench.html in a browser.  Then, send a LaTeX equation to the engine to process:
 
 ```
-wget https://github.com/mathjax/MathJax/zipball/v2.3-latest -O mathjax.zip
-unzip mathjax.zip
-mv mathjax-MathJax-* mathjax
+engine.process({q: 'n', 'in_format': 'latex'}, function(q, svg) {console.log(q, svg);});
 ```
 
-Then uncomment the \<script> element in *index.html* that refers to this local version,
-and comment out the one that loads from the CDN.
+Test the JATS parsing routines by loading parse_jats.html in a browser, and looking
+at the JavaScript console. These routines are encapsulated in the parse_jats.js 
+module.
 
 
-Stability
----------
+Loading MathJax
+---------------
 
-Experimental.
+By default, this loads MathJax from the NCBI servers, using the same version of
+MathJax and the same configuration file as PMC.  The URL for this is in the
+&lt;script> tag of the bench.html page.
 
-Read https://github.com/agrbin/svgtex/wiki for more details!
 

@@ -196,6 +196,14 @@
     content-type: 'text/html; charset=utf-8'
     content-contains: 'Math Tool 2'
 
+# JATS file with a unicode (non-ascii) character
+- name: jats-with-unicode
+  request:
+    example: jats-with-unicode
+  expected:
+    content-type: 'text/html; charset=utf-8'
+    content-contains: 'Math Tool 2'
+
 
 
 

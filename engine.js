@@ -100,7 +100,7 @@ window.engine = (function() {
 
         var t = types[query.in_format];
         if (typeof t === 'undefined') {
-            cb([query.num, query.q, ["Invalid in-format: '" + query.in_format + "'"]]);
+            cb([query.num, query.q, ["Invalid in_format: '" + query.in_format + "'"]]);
             return;
         }
 

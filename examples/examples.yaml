@@ -125,3 +125,8 @@
   description: JATS file with multiple MathML formulas
   filename: jats-mathml-two.nxml
 
+- name: jats-with-unicode
+  in-format: jats
+  description: JATS file with a unicode (non-ascii) character
+  filename: jats-with-unicode.nxml
+
