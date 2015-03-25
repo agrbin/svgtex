@@ -132,6 +132,11 @@
 
 - name: jats-3479416
   in-format: jats
-  description: Real JATS file, article 3479416 from BMC
+  description: Real JATS file, article 3479416 from BMC (MathML)
   filename: jats-3479416.nxml
-  
+
+- name: jats-2762331
+  in-format: jats
+  description: Real JATS file, article 2762331 from PLoS Currents (LaTeX)
+  filename: jats-2762331.nxml
+

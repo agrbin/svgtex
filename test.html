@@ -14,6 +14,15 @@
       tr {
         vertical-align: top;
       }
+      th {
+        text-align: right;
+      }
+      td {
+        padding-bottom: 0.3em;
+      }
+      tr.button-row > td {
+        padding-top: 0.5em;
+      }
       .disabled {
         color: #AAA;
       }
@@ -22,18 +31,15 @@
   <body>
     <h1>PMC Math Tool 2</h1>
     <p>
-      Enter MathML or LaTeX in the content box below, or select a file containing equations.
+      Enter MathML, LaTeX or JATS in the content box below, or select a file.
     </p>
     <form id='form' method='POST' action='/'>
-
+      <p>
+        <input type="file" id='file' name="file" />
+      </p>
       <table>
         <tr>
-          <td colspan='2'>
-            <input type="file" id='file' name="file" />
-          </td>
-        </tr>
-        <tr>
-          <td><label for='math-in-format-select'>Math format</label></td>
+          <th><label for='math-in-format-select'>Math format</label></th>
           <td>
             <select id='math-in-format-select' name='in-format'>
               <option value='auto' selected='selected'>Auto-detect</option>
@@ -50,7 +56,7 @@
           </td>
         </tr>
         <tr>
-          <td><label for='q'>Content</label></td>
+          <th><label for='q'>Content</label></th>
           <td>
             <textarea name='q' id='q' rows='20' cols='100'></textarea>
           <!--
@@ -60,7 +66,7 @@
         </tr>
       <!--
         <tr>
-          <td><label for='out-format-select'>Output format</label></td>
+          <th><label for='out-format-select'>Output format</label></th>
           <td>
             <select id='out-format-select' name='out-format'>
               <option value='svg' selected='selected'>SVG</option>
@@ -70,14 +76,15 @@
         </tr>
       -->
         <tr>
-          <td><label for='max-width-input'>Maximum width</label></td>
+          <th><label for='max-width-input'>Maximum width</label></th>
           <td>
-            <input id='max-width-input' type='text' name='width'/>
+            <!-- width initial value is that allowed for equations in PMC -->
+            <input id='max-width-input' type='text' name='width' value='621'/>
           </td>
         </tr>
 
         <tr>
-          <td><label for='method'>HTTP method</label></td>
+          <th><label for='method'>HTTP method</label></th>
           <td>
             <select id='method'>
               <option value='POST' selected='selected'>POST</option>
@@ -85,7 +92,7 @@
             </select>
           </td>
         </tr>
-        <tr>
+        <tr class='button-row'>
           <td colspan='2'>
             <div style='float: right'>
               <input type='reset' value='Reset'/>
@@ -93,7 +100,6 @@
             <input type='submit'/>
           </td>
         </tr>
-
       </table>
     </form>
 
@@ -111,7 +117,10 @@
           encapsulated in an HTML table. Your browser will then use MathJax to render the
           formulas locally.</li>
       </ol>
-
+      <p>
+        When MathML is provided with a namespace prefix, that prefix <em>must be
+        "mml:"</em>. No other namespace prefix will work.
+      </p>
     </div>
 
     <h2>Examples</h2>

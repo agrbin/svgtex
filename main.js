@@ -125,14 +125,13 @@ while (arg_num < args.length) {
   break;
 }
 
-///*
-  console.log(
-    'port = ' + port + ", " +
-    'requests_to_serve = ' + requests_to_serve + ", " +
-    'bench_page = ' + bench_page + ", " +
-    'debug = ' + debug + "\n"
-  );
-//*/
+console.log(
+  'port = ' + port + ", " +
+  'requests_to_serve = ' + requests_to_serve + ", " +
+  'bench_page = ' + bench_page + ", " +
+  'debug = ' + debug + "\n"
+);
+
 
 // activeRequests holds information about any active MathJax requests.  It is
 // a hash, with a sequential number as the key.  request_num gets incremented
@@ -310,8 +309,6 @@ function parse_request(req) {
     return query;
   }
 
-
-  //console.log("qs = '" + qs + "'");
   var param_strings = qs.split(/&/);
   var num_param_strings = param_strings.length;
   if (num_param_strings == 1 && param_strings[0] == '') {
@@ -327,7 +324,14 @@ function parse_request(req) {
       return query;
     }
     var key = ps.substr(0, ie);
-    var val = decodeURIComponent(ps.substr(ie+1).replace(/\+/g, ' '));
+    try {
+      var val = decodeURIComponent(ps.substr(ie+1).replace(/\+/g, ' '));
+    }
+    catch (e) {
+      query.status_code = 400;  // bad request
+      query.error = "Request data not properly URI-encoded";
+      return query;
+    }
     if (key == 'in-format') {
       if (val != 'auto' && val != 'mml' && val != 'latex' && val != 'jats') {
         query.status_code = 400;  // bad request
@@ -482,6 +486,11 @@ function listenLoop() {
       // engine.js, which causes MathJax to render the math.  The callback is
       // PhantomJS's callPhantom() function, which in turn calls page.onCallback(),
       // above.  This just queues up the call, and will return at once.
+
+      // Implement latex_style here
+      if (query.in_format == 'latex' && query.latex_style == 'display') {
+        query.q = '\\displaystyle{' + query.q + '}';
+      }
       console.log(request_num + ": sending to MathJax");
       activeRequests[request_num] = [resp, (new Date()).getTime()];
       page.evaluate(function(_query) {
@@ -504,9 +513,10 @@ function listenLoop() {
 function client_table(resp, query) {
   console.log(query.num + ": returning client template");
   var formulas = query.q;
+  var width = query.width || null;
   var rows = '';
   formulas.forEach(function(f) {
-      rows += make_row(f);
+      rows += make_row(f, width);
   });
   
   var resp_page = client_template.start + rows + client_template.end;
@@ -516,19 +526,21 @@ function client_table(resp, query) {
 }
 
 /* Make one row of the table */
-function make_row(f) {
+function make_row(f, width) {
   var format = 
       f.format == 'mml' ? "MathML" : "LaTeX, " + f.latex_style;
   var formula = 
       f.format == 'mml' ? f.q :
         f.latex_style == 'text' ? '\\(' + f.q + '\\)'
                                 : '\\[' + f.q + '\\]';
-
+  var formula_cell = width ?
+      "<div style='width: " + width + "px'>" + formula + "</div>" :
+      formula;
 
   return "<tr>\n" +
          "  <td>" + f.id + "</td>\n" +
          "  <td>" + format + "</td>\n" +
-         "  <td>" + formula + "</td>\n" +
+         "  <td>" + formula_cell + "</td>\n" +
          "</tr>\n";
 }
 
@@ -543,7 +555,7 @@ page.open(bench_page, listenLoop);
    command-line parameter, but then you'd have to take the <script> tags out of
    bench.html, and we'd lose the ability to debug by loading that in a browser
    directly.
-page.open('index.html', function (status) {
+page.open('bench.html', function (status) {
   page.includeJs('mathjax/MathJax.js?config=TeX-AMS-MML_SVG', function() {
     page.includeJs('engine.js', listenLoop);
   });

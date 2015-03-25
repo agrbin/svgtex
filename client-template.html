@@ -1,9 +1,23 @@
-<!DOCTYPE html>
 <!--
   Template for use when out='orig-mathjax'
 -->
-<html>
+<html xmlns:mml="http://www.w3.org/1998/Math/MathML">
   <head>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        showProcessingMessages: false,
+        messageStyle: "none",
+        "HTML-CSS": { 
+          linebreaks: { automatic: true } 
+        },
+        SVG: {
+          linebreaks: { automatic: true }
+        }
+      });
+    </script>
+
+
     <script type="text/javascript"
       src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <style type='text/css'>
@@ -20,6 +34,13 @@
     <h1>Math Tool 2</h1>
     <p>Equations:</p>
     <table>
+    <!--
+      <colgroup>
+        <col span="1"/>
+        <col span="1"/>
+        <col span="1" style="width: 200px;"/>
+      </colgroup>
+    -->
       <tr>
         <th>Image ID</th>
         <th>Math type</th>

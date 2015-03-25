@@ -54,7 +54,11 @@
     'quadratic',
     'ramanujan',
     'rogers-rmanujan',
-    'standard-deviation'
+    'standard-deviation',
+    'jats-latex-two',
+    'jats-mathml-many',
+    'jats-3479416',
+    'jats-2762331'
   ];
 
   // Populate the example list

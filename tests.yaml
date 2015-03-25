@@ -189,9 +189,9 @@
     content-contains: 'Math Tool 2'
 
 # JATS file with multiple MathML formulas
-- name: jats-mathml-two
+- name: jats-mathml-many
   request:
-    example: jats-mathml-two
+    example: jats-mathml-many
   expected:
     content-type: 'text/html; charset=utf-8'
     content-contains: 'Math Tool 2'
@@ -204,11 +204,21 @@
     content-type: 'text/html; charset=utf-8'
     content-contains: 'Math Tool 2'
 
+# Real JATS file, article 3479416 from BMC
+- name: jats-3479416
+  request:
+    example: jats-3479416
+  expected:
+    content-type: 'text/html; charset=utf-8'
+    content-contains: 'Math Tool 2'
 
-
-
-
-
+# Real JATS file, article 2762331 from PLoS Currents
+- name: jats-2762331
+  request:
+    example: jats-2762331
+  expected:
+    content-type: 'text/html; charset=utf-8'
+    content-contains: 'Math Tool 2'
 
 
 
@@ -241,19 +251,12 @@
     content-type: 'text/plain; charset=utf-8'
     content-contains: "Error parsing MathML"
 
-
-
-
-
-
-
 - name: simple-mml
   request:
     example: simple-mml
     in-format: mml
   expected:
     format: svg
-
 
 - name: cauchy-integral
   request:

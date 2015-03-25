@@ -1,0 +1,43 @@
+<article xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xmlns:mml="http://www.w3.org/1998/Math/MathML"
+  article-type="research-article" xml:lang="EN">
+  <front>
+    <article-meta/>
+  </front>
+  <body>
+    <p>
+      <!-- with namespace prefix -->
+      <mml:math id="M1">
+        <mml:mi>&#x003d5;</mml:mi>
+        <mml:mo>=</mml:mo>
+        <mml:mi>B</mml:mi>
+      </mml:math> 
+
+      <!-- without namespace prefix -->
+      <math id="M2" xmlns="http://www.w3.org/1998/Math/MathML">
+        <mi>Z</mi>
+        <mo>=</mo>
+        <mi>W</mi>
+      </math>
+
+      <!-- with inline-formula wrapper, namespace prefix -->
+      <inline-formula>
+        <mml:math id="M1">
+          <mml:mi>&#x003d5;</mml:mi>
+          <mml:mo>=</mml:mo>
+          <mml:mi>B</mml:mi>
+        </mml:math> 
+      </inline-formula>
+    </p>
+
+    <!-- with disp-formula wrapper, no namespace prefix -->
+    <disp-formula>
+      <math id="M1">
+        <mi>&#x003d5;</mi>
+        <mo>=</mo>
+        <mi>B</mi>
+      </math> 
+    </disp-formula>
+      
+  </body>
+</article>

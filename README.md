@@ -48,6 +48,16 @@ $ curl http://localhost:16000 --data-urlencode "q=\\text{rate is }26\\%" > rate.
 Two services in one
 -------------------
 
+This is really two services in one:
+
+1. When you provide it with a single formula in either LaTeX or MathML format, then 
+  that formula will be rendered on our servers, and the results will be returned as 
+  a pure SVG resource.
+2. When you provide it with a JATS file that contains one or more equations, then 
+  all of the formulas will be extracted from that JATS file, and sent back to your 
+  browser encapsulated in an HTML table. Your browser will then use MathJax to render 
+  the formulas locally.
+
 
 Service API
 -----------
@@ -62,6 +72,10 @@ The parameters this service understands are:
 * `latex-style` - If the input is a LaTeX formula, this specifies whether it should
   be rendered in text (inline) or display (block) mode
 * `width` - Maximum width for the equations
+
+Note that MathML can be provided with a namespace prefix or without one. But,
+if it is provided with a namespace prefix, then that prefix ***must be "mml:"***. 
+No other namespace prefix will work.
 
 
 Example files and testing

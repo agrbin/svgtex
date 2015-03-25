@@ -22,11 +22,14 @@
 // Precompile regular expressions
 
 // Regex to match the starting tag of any formula in a JATS file
+// Note here we're using the [\s\S] trick to get the "dotall" modifier (in Perl, the `s`
+// modifier) in JavaScript.  See http://stackoverflow.com/questions/1068280
 var outer_stag_regexp = new RegExp(
-    '<\\s*((disp-formula)|(inline-formula)|(math)|(mml:math)|(tex-math))(>|\\s.*?>)');
+    '<\\s*((disp-formula)|(inline-formula)|(math)|(mml:math)|(tex-math))(>|\\s[\\s\\S]*?>)');
 
 // Same start-tag regex as above, but without disp-formula or inline-formula.
-var inner_stag_regexp = new RegExp('^\\s*(<\\s*((math)|(mml:math)|(tex-math))(>|\\s.*?>))');
+var inner_stag_regexp = 
+  new RegExp('^([\\s\\S]*?<\\s*((math)|(mml:math)|(tex-math))(>|\\s[\\s\\S]*?>))');
 
 // Regular expressions for some ending tags
 var etag_regexps = {
@@ -48,6 +51,8 @@ var parse_outer_formula = function(stag, elem_name, xml) {
     (elem_name == 'disp-formula' || elem_name == 'inline-formula')
       ? strip_formula_wrap(stag, elem_name, xml)
       : xml;
+  //return "stag = '" + stag + "', elem_name = '" + elem_name + "', xml = '" + xml + "', " +
+  //       "formula_xml = '" + formula_xml + "'";
 
   var pf = parse_formula(formula_xml);
   if (typeof pf === "string") return pf;  // error
@@ -68,6 +73,8 @@ var parse_formula = function(xml) {
   if (!stag_match) return "Bad JATS formula, no start tag";
 
   var stag = stag_match[1];
+  //return "xml = '" + xml + "', stag_match[0] = '" + stag_match[0] + "', " +
+  //      "stag_match[1] = '" + stag_match[1] + "'";
   var id_match = stag.match(id_regexp);
   var id = id_match ? id_match[2] : null;
   var format = stag_match[2] == 'tex-math' ? 'latex' : 'mml';

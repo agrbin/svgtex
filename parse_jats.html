@@ -15,7 +15,8 @@
         //"...<inline-formula><tex-math id='M6'>n^2</tex-math></inline-formula>...",
         //'Formulas: <tex-math id="M1">n^2</tex-math> and <math id="M2"><mi>B</mi></math> etc.',
         //'<disp-formula>    <tex-math id="M1"> n^2 </tex-math>    </disp-formula>  ',
-        '<inline-formula><tex-math id="M2">n^2</tex-math</inline-formula>'
+        //'<inline-formula><tex-math id="M2">n^2</tex-math</inline-formula>',
+        '<inline-formula id="foo">\\n\\n<tex-math id="M2">n^2</tex-math></inline-formula>'
       ];
       for (var i = 0; i < test_strings.length; i++) {
         var jats = test_strings[i];

@@ -120,38 +120,38 @@
     <p id="p10">The first harm of predispensing also occurs only if total demand for antivirals exceeds supply, namely, a predispensed course is unavailable to anyone who may need it other than the person who has received it.&#x000a0; If demand exceeds supply, this means one more person, possibly someone who would benefit greatly from having the antiviral, who is unable to obtain it.&#x000a0; An additional harm of predispensing is the possibility that a predispensed course will be used inappropriately (say, to treat non-influenza infection).&#x000a0; This harm is not considered separately in our analysis but is modeled as a reduced benefit of predispensing, as we describe below.</p>
 <!--WRITE-PARA-->
     <p id="p11">To assess the net benefit or harm from predispensing, we define some notation, summarized in Table 1.&#x000a0; We divide the total population into two groups: a <italic>high-risk group</italic> for which we are considering predispensing, and <italic>the general population</italic>, which is comprised of all individuals not in the high-risk group.&#x000a0; These constitute respectively a proportion <italic>q</italic> &#x000a0;(high risk) and 1-<italic>q</italic> &#x000a0;(general population) of the total population.&#x000a0; Within the general population, risks may vary, so some individuals may be at higher risk than others.&#x000a0;&#x000a0; All quantities in our notation are defined as proportion of the total population, hence lie between 0 and 1.&#x000a0; Let <italic>T</italic> be the total supply of antivirals (as a proportion of the population); thus, if enough antivirals are available for treatment of 20% of the population, then <italic>T</italic>=0.2 .&#x000a0; Let <italic>D</italic> be the demand for antivirals in the general population, that is the number of individuals not at high risk who would receive antiviral treatment in the general population if supply were not limited; in practice, some of this demand may be unmet as the supply is constrained.&#x000a0; Let <inline-formula>
-        <tex-math id="d20e117">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}p_d\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e117">\begin{equation*}p_d\end{equation*}</tex-math>
       </inline-formula> be the probability of dying from the infection over the whole course of the epidemic in the whole population (if no antivirals are used); the death probability in a high risk group is&#x000a0;<inline-formula>
-        <tex-math id="d20e119">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}Rp_d\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e119">\begin{equation*}Rp_d\end{equation*}</tex-math>
       </inline-formula> .&#x000a0; Note that these death probabilities are not conditional on infection (i.e., are not case-fatality proportions) but are unconditional, reflecting the risk of infection times the risk of dying from infection.&#x000a0; Here the number <inline-formula>
-        <tex-math id="d20e121">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}R\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e121">\begin{equation*}R\end{equation*}</tex-math>
       </inline-formula> &#x000a0;is the relative risk of dying in a high risk group compared to the general population.&#x000a0; <inline-formula>
-        <tex-math id="d20e123">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}R\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e123">\begin{equation*}R\end{equation*}</tex-math>
       </inline-formula> can be estimated from the existing epidemic data while&#x000a0;<inline-formula>
-        <tex-math id="d20e126">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}p_d\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e126">\begin{equation*}p_d\end{equation*}</tex-math>
       </inline-formula> may be hard to estimate a priori; as we shall see, <inline-formula>
-        <tex-math id="d20e128">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}p_d\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e128">\begin{equation*}p_d\end{equation*}</tex-math>
       </inline-formula> is factored out of our equations and need not be known. &#x000a0;&#x000a0;Let&#x000a0;<inline-formula>
-        <tex-math id="d20e130">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}p_S\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e130">\begin{equation*}p_S\end{equation*}</tex-math>
       </inline-formula>&#x000a0; be the probability that a course of antivirals obtained from a stockpile during the epidemic would save a life of a person who would die otherwise.&#x000a0; We assume that this probability is the same between high-risk individuals and members of the general population.&#x000a0; This key assumption may be incorrect, and is discussed later.&#x000a0; Let&#x000a0;<inline-formula>
-        <tex-math id="d20e132">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}Bp_s\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e132">\begin{equation*}Bp_s\end{equation*}</tex-math>
       </inline-formula> be the probability that a predispensed course of antivirals would save a life of a high risk person who would die otherwise.&#x000a0;&#x000a0;<inline-formula>
-        <tex-math id="d20e134">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}B\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e134">\begin{equation*}B\end{equation*}</tex-math>
       </inline-formula>&#x000a0; can be thought of as&#x000a0; the &#x0201c;relative benefit&#x0201d; in preventing mortality of receiving a predispensed course of antivirals for a high risk person who takes it, compared to receiving a non-predispensed course. <inline-formula>
-        <tex-math id="d20e136">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}B\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e136">\begin{equation*}B\end{equation*}</tex-math>
       </inline-formula>&#x000a0; captures the benefit of early vs. delayed treatment; however, <inline-formula>
-        <tex-math id="d20e139">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}B\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e139">\begin{equation*}B\end{equation*}</tex-math>
       </inline-formula>&#x000a0; also may be reduced to the extent that a predispensed course is taken for non-influenza illness, in which case it cannot save a life.&#x000a0; Thus <inline-formula>
-        <tex-math id="d20e141">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}B\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e141">\begin{equation*}B\end{equation*}</tex-math>
       </inline-formula>&#x000a0; exceeds one to the extent that early treatment is better than delayed treatment, but it is decremented in proportion to the probability that the course is wasted before it is needed.
     </p>
 <!--WRITE-PARA-->
     <p id="p12">Let&#x000a0; <inline-formula>
-        <tex-math id="d20e146">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}L\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e146">\begin{equation*}L\end{equation*}</tex-math>
       </inline-formula> &#x000a0;be the total number of people in the general population who would die during the epidemic and whose lives would be saved if they received antivirals upon demand during the course of the epidemic. &#x000a0;Since the total number of people in the total&#x000a0; population who would die during the epidemic and whose lives would be saved if they received antivirals during the course of the epidemic is&#x000a0;<inline-formula>
-        <tex-math id="d20e148">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}p_dp_s\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e148">\begin{equation*}p_dp_s\end{equation*}</tex-math>
       </inline-formula> , clearly&#x000a0;<inline-formula>
-        <tex-math id="d20e150">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}L\leq p_dp_s\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e150">\begin{equation*}L\leq p_dp_s\end{equation*}</tex-math>
       </inline-formula> .&#x000a0; We make additional assumptions about how the probability of receiving antivirals behaves if demand exceeds supply; these are made explicit in Appendix A.
     </p>
 <!--WRITE-PARA-->
@@ -170,7 +170,7 @@
           <tr>
             <td valign="top" rowspan="1" colspan="1" style="width:80.45pt">
               <inline-formula>
-                <tex-math id="d20e171">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}T\end{equation*}\end{document}</tex-math>
+                <tex-math id="d20e171">\begin{equation*}T\end{equation*}</tex-math>
               </inline-formula>
             </td>
             <td valign="top" rowspan="1" colspan="1" style="width:365.95pt">Supply of antivirals, before predispensing, as a fraction of total population size</td>
@@ -178,20 +178,20 @@
           <tr>
             <td valign="top" rowspan="1" colspan="1" style="width:80.45pt">
               <inline-formula>
-                <tex-math id="d20e181">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}D,D'\end{equation*}\end{document}</tex-math>
+                <tex-math id="d20e181">\begin{equation*}D,D'\end{equation*}</tex-math>
               </inline-formula>
             </td>
             <td valign="top" rowspan="1" colspan="1" style="width:365.95pt">Number of antiviral courses used by the general population (&#x000a0;<inline-formula>
-                <tex-math id="d20e187">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}D\end{equation*}\end{document}</tex-math>
+                <tex-math id="d20e187">\begin{equation*}D\end{equation*}</tex-math>
               </inline-formula> ) or total population (&#x000a0;<inline-formula>
-                <tex-math id="d20e189">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}D'\end{equation*}\end{document}</tex-math>
+                <tex-math id="d20e189">\begin{equation*}D'\end{equation*}</tex-math>
               </inline-formula> ) if no supply constraint, as fraction of the total population size
             </td>
           </tr>
           <tr>
             <td valign="top" rowspan="1" colspan="1" style="width:80.45pt">
               <inline-formula>
-                <tex-math id="d20e195">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}L\end{equation*}\end{document}</tex-math>
+                <tex-math id="d20e195">\begin{equation*}L\end{equation*}</tex-math>
               </inline-formula>
             </td>
             <td valign="top" rowspan="1" colspan="1" style="width:365.95pt">Total number of lives in the general population that would be saved under no predispensing, if no supply constraint</td>
@@ -199,7 +199,7 @@
           <tr>
             <td valign="top" rowspan="1" colspan="1" style="width:80.45pt">
               <inline-formula>
-                <tex-math id="d20e205">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}q\end{equation*}\end{document}</tex-math>
+                <tex-math id="d20e205">\begin{equation*}q\end{equation*}</tex-math>
               </inline-formula>
             </td>
             <td valign="top" rowspan="1" colspan="1" style="width:365.95pt">Proportion of persons in the high risk group to whom predispensing of one course is considered, hence also the number of courses considered for predispensing, as a fraction of the total population</td>
@@ -207,7 +207,7 @@
           <tr>
             <td valign="top" rowspan="1" colspan="1" style="width:80.45pt">
               <inline-formula>
-                <tex-math id="d20e213">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}p_s\end{equation*}\end{document}</tex-math>
+                <tex-math id="d20e213">\begin{equation*}p_s\end{equation*}</tex-math>
               </inline-formula>
             </td>
             <td valign="top" rowspan="1" colspan="1" style="width:365.95pt">Probability that a course of antivirals obtained during the epidemic would save a life of a person who would die otherwise, absent any predispensing</td>
@@ -215,18 +215,18 @@
           <tr>
             <td valign="top" rowspan="1" colspan="1" style="width:80.45pt">
               <inline-formula>
-                <tex-math id="d20e221">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}B\end{equation*}\end{document}</tex-math>
+                <tex-math id="d20e221">\begin{equation*}B\end{equation*}</tex-math>
               </inline-formula>
             </td>
             <td valign="top" rowspan="1" colspan="1" style="width:365.95pt">Relative benefit (in terms of probability of saving life) for a high risk person to be treated early (with a predispensed course) compared to being treated with a non-predispensed course. Thus <inline-formula>
-                <tex-math id="d20e225">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}p_SB\end{equation*}\end{document}</tex-math>
+                <tex-math id="d20e225">\begin{equation*}p_SB\end{equation*}</tex-math>
               </inline-formula> is the probability that a predispensed course of antivirals would save a life of a high risk person who would die otherwise
             </td>
           </tr>
           <tr>
             <td valign="top" rowspan="1" colspan="1" style="width:80.45pt">
               <inline-formula>
-                <tex-math id="d20e231">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}p_d\end{equation*}\end{document}</tex-math>
+                <tex-math id="d20e231">\begin{equation*}p_d\end{equation*}</tex-math>
               </inline-formula>
             </td>
             <td valign="top" rowspan="1" colspan="1" style="width:365.95pt">Death rate from the epidemic in the whole population, if no antivirals were used</td>
@@ -234,7 +234,7 @@
           <tr>
             <td valign="top" rowspan="1" colspan="1" style="width:80.45pt">
               <inline-formula>
-                <tex-math id="d20e240">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}R\end{equation*}\end{document}</tex-math>
+                <tex-math id="d20e240">\begin{equation*}R\end{equation*}</tex-math>
               </inline-formula>
             </td>
             <td valign="top" rowspan="1" colspan="1" style="width:365.95pt">Ratio between the death rate in the high risk group and the general population.</td>
@@ -245,7 +245,7 @@
 <!--WRITE-PARA-->
 <!--WRITE-PARA-->
     <p id="p34">With this notation in place, we can define the conditions under which it is advantageous to predispense 1 course each to a proportion <inline-formula>
-        <tex-math id="d20e249">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}q\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e249">\begin{equation*}q\end{equation*}</tex-math>
       </inline-formula> &#x000a0;of the population.&#x000a0; Our main result is the following:
     </p>
 <!--WRITE-PARA-->
@@ -254,37 +254,37 @@
 <!--WRITE-PARA-->
 <!--WRITE-PARA-->
     <p id="p38"> (i)&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0; &#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;Supply of antivirals exceeds demand even after predispensing, and&#x000a0;<inline-formula>
-        <tex-math id="d20e259">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}B&#x0003e;1\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e259">\begin{equation*}B&#x0003e;1\end{equation*}</tex-math>
       </inline-formula> .
     </p>
 <!--WRITE-PARA-->
     <p id="p39"> (ii)&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0; &#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;Demand <inline-formula>
-        <tex-math id="d20e263">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}D\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e263">\begin{equation*}D\end{equation*}</tex-math>
       </inline-formula> &#x000a0;in the general population exceeds supply even without predispensing, and the following conditions are met:&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0; 
     </p>
 <!--WRITE-PARA-->
     <p id="p40">&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0; <inline-formula>
-        <tex-math id="d20e268">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}B&#x0003e; \frac{T}{D}\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e268">\begin{equation*}B&#x0003e; \frac{T}{D}\end{equation*}</tex-math>
       </inline-formula> &#x000a0;and&#x000a0; <inline-formula>
-        <tex-math id="d20e270">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}R&#x0003e;\frac{1}{D(B-T/D)}\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e270">\begin{equation*}R&#x0003e;\frac{1}{D(B-T/D)}\end{equation*}</tex-math>
       </inline-formula>
     </p>
 <!--WRITE-PARA-->
     <p id="p41"> (iii)&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0; Supply exceeds demand without predispensing, but after predispensing, demand exceeds supply, and the following conditions are met:&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0; &#x000a0;&#x000a0;&#x000a0;</p>
 <!--WRITE-PARA-->
     <p id="p42"> &#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0; &#x000a0; &#x000a0; &#x000a0; &#x000a0; &#x000a0; &#x000a0; &#x000a0; &#x000a0; &#x000a0; &#x000a0; &#x000a0; &#x000a0; &#x000a0;&#x000a0; <inline-formula>
-        <tex-math id="d20e276">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}B&#x0003e; \frac{T}{D}\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e276">\begin{equation*}B&#x0003e; \frac{T}{D}\end{equation*}</tex-math>
       </inline-formula>&#x000a0; and&#x000a0;&#x000a0;&#x000a0; <inline-formula>
-        <tex-math id="d20e278">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}R&#x0003e;\frac{D+q-T}{Dq(B-1)}\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e278">\begin{equation*}R&#x0003e;\frac{D+q-T}{Dq(B-1)}\end{equation*}</tex-math>
       </inline-formula>.
     </p>
 <!--WRITE-PARA-->
     <p id="p43">(iv)&#x000a0;&#x000a0;&#x000a0; The above results show that even if demand cannot be predicted, predispensing is advantageous when</p>
 <!--WRITE-PARA-->
     <p id="p44">&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0; <inline-formula>
-        <tex-math id="d20e284">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}B&#x0003e;1\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e284">\begin{equation*}B&#x0003e;1\end{equation*}</tex-math>
       </inline-formula>&#x000a0; and&#x000a0; &#x000a0;&#x000a0;&#x000a0; <inline-formula>
-        <tex-math id="d20e286">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}R&#x0003e;\frac{1}{T(B-1)}\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e286">\begin{equation*}R&#x0003e;\frac{1}{T(B-1)}\end{equation*}</tex-math>
       </inline-formula>&#x000a0; 
     </p>
 <!--WRITE-PARA-->
@@ -292,13 +292,13 @@
     <p id="p46">The justification of this result and the assumptions underlying it are presented in Appendix B.&#x000a0; Condition (iv) tells us when a group is at high enough risk that it is worth predispensing to them even if we have no idea of the expected antiviral demand.</p>
 <!--WRITE-PARA-->
     <p id="p47">This result can be seen graphically in Figure 1, which considers a hypothetical case in which there is a supply adequate for&#x000a0;<inline-formula>
-        <tex-math id="d20e295">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}T=0.2\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e295">\begin{equation*}T=0.2\end{equation*}</tex-math>
       </inline-formula>&#x000a0; of the population, and predispensing to&#x000a0;<inline-formula>
-        <tex-math id="d20e297">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}q=3%\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e297">\begin{equation*}q=3\%\end{equation*}</tex-math>
       </inline-formula>&#x000a0; of the total population is under consideration.&#x000a0; Also, we assume that treatment of a high-risk person with a predispensed course is twice as likely to be life-saving as treatment with a non-predispensed course, because predispensing allows earlier initiation of treatment (&#x000a0;<inline-formula>
-        <tex-math id="d20e299">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}B=2\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e299">\begin{equation*}B=2\end{equation*}</tex-math>
       </inline-formula> ). The far left side shows low levels of demand, in which there is no harm to predispensing, so predispensing to any group may be beneficial.&#x000a0; At the far right, competition for antivirals is strong, so it is beneficial to predispense even to a group that gets modest benefit from antivirals.&#x000a0; In the middle, when demand is similar to supply, it is beneficial to predispense only to groups that benefit disproportionately from antivirals (&#x000a0;<inline-formula>
-        <tex-math id="d20e301">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}R&#x0003e;5\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e301">\begin{equation*}R&#x0003e;5\end{equation*}</tex-math>
       </inline-formula> ).&#x000a0; 
     </p>
     <fig id="fig-0">
@@ -310,7 +310,7 @@
     </fig>
 <!--WRITE-PARA-->
     <p id="p49">Figure 2 shows an equivalent plot for the case where there is no intrinsic benefit to predispensing, because a predispensed course is no more likely to save a life than a non-predispensed one.&#x000a0; Here, again there is an advantage to predispensing to even moderate risk groups if demand is high or low, but if demand is similar to supply, then predispensing is not advantageous.&#x000a0;&#x000a0; For reasons elaborated below, we consider it likely that this is an extreme case and that in reality&#x000a0;<inline-formula>
-        <tex-math id="d20e312">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}B&#x0003e;1\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e312">\begin{equation*}B&#x0003e;1\end{equation*}</tex-math>
       </inline-formula> .&#x000a0; 
     </p>
     <fig id="fig-1">
@@ -329,15 +329,15 @@
     </p>
 <!--WRITE-PARA-->
     <p id="p57">Predispensing is most advantageous for groups that have the highest mortality rate (high&#x000a0;<inline-formula>
-        <tex-math id="d20e338">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}R\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e338">\begin{equation*}R\end{equation*}</tex-math>
       </inline-formula> ) and that benefit most from predispensed antivirals compared to non-predispensed ones (high&#x000a0;<inline-formula>
-        <tex-math id="d20e340">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}B\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e340">\begin{equation*}B\end{equation*}</tex-math>
       </inline-formula> ).&#x000a0; These factors capture the demand-independent aspect that it is useful to position antivirals with individuals who can be most helped by having them close at hand, rather than getting them after they become ill.&#x000a0; A second benefit of predispensing is to ensure access of antivirals to those who will benefit the most from them.&#x000a0; This benefit is greatest when demand is very high, because in such circumstances the high-risk individuals are very likely to need antivirals, but not to get them.&#x000a0; Thus the benefits of predispensing are greatest for larger values of <inline-formula>
-        <tex-math id="d20e342">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}R\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e342">\begin{equation*}R\end{equation*}</tex-math>
       </inline-formula> , <inline-formula>
-        <tex-math id="d20e344">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}B\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e344">\begin{equation*}B\end{equation*}</tex-math>
       </inline-formula> , and&#x000a0;<inline-formula>
-        <tex-math id="d20e346">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}D/T\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e346">\begin{equation*}D/T\end{equation*}</tex-math>
       </inline-formula> .&#x000a0; The costs of predispensing &#x02013; lost opportunities for individuals who do not receive predispensed courses &#x02013; are zero when demand is low enough (as all who need the antivirals can receive them) then increase, but not as fast as the benefits.&#x000a0; Qualitatively, then, predispensing is most advantageous when demand is very high or very low, and least likely to be advantageous when demand just exceeds supply.&#x000a0; Even there, however, if the benefit of a predispensed course is significantly larger than that of a non-predispensed course, predispensing is valuable for individuals who can benefit more from treatment than the general population.
     </p>
 <!--WRITE-PARA-->
@@ -347,14 +347,14 @@
     </p>
 <!--WRITE-PARA-->
     <p id="p60">The major risk of predispensing is that courses that would otherwise be life-saving (when used from the stockpile) will be predispensed, then not used by someone for whom they would be more likely to be life-saving.&#x000a0; We can consider what has been written so far from another perspective: this risk is most acute when demand is near supply ( <inline-formula>
-        <tex-math id="d20e355">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}T\approx D\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e355">\begin{equation*}T\approx D\end{equation*}</tex-math>
       </inline-formula> ) , when individuals not in the group to be predispensed would benefit from treatment by predispensed antivirals which won&#x02019;t be used, and when predispensing and consequent early use are not very beneficial (reducing&#x000a0;<inline-formula>
-        <tex-math id="d20e357">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}B\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e357">\begin{equation*}B\end{equation*}</tex-math>
       </inline-formula> ).
     </p>
 <!--WRITE-PARA-->
     <p id="p61">The idea of predispensing was previously considered in the context of pre-pandemic sale of antiviral &#x0201c;Medkits,&#x0201d; special packaging of oseltamivir or zanamivir for home storage to be saved until a pandemic occurred.&#x000a0; A number of concerns were raised concerning such Medkits, resulting eventually in a lack of approval by the Food and Drug Administration (<ext-link ext-link-type="uri" xlink:href="http://www.fda.gov/ohrms/dockets/ac/08/minutes/2008-4385m1-final.pdf">www.fda.gov/ohrms/dockets/ac/08/minutes/2008-4385m1-final.pdf</ext-link>).&#x000a0; The risk of inappropriate use or wastage was prominent among these concerns.&#x000a0; One key difference between pre-pandemic distribution of antivirals and predispensing just prior to an anticipated wave of pandemic influenza is that the time frame for wastage is much shorter in the present case &#x02013; only the time from when the antivirals are predispensed until the time when the individual becomes infected with influenza and needs them.&#x000a0; In the pre-pandemic setting, this might be years, while in the present case &#x02013; considering only the upcoming epidemic wave &#x02013; the time scale is only a matter of a few months.&#x000a0; This consideration makes wastage a less compelling argument. &#x000a0;Thus, we expect that <inline-formula>
-        <tex-math id="d20e364">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}B\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e364">\begin{equation*}B\end{equation*}</tex-math>
       </inline-formula>&#x000a0; will primarily reflect the advantage of early vs. delayed treatment (for which there is some evidence, although not for mortality) <xref ref-type="bibr" rid="ref-709764055">[6]</xref>. 
     </p>
 <!--WRITE-PARA-->
@@ -366,7 +366,7 @@
     </p>
 <!--WRITE-PARA-->
     <p id="p65">On current evidence, we believe that there are likely to be groups in the population for whom the relative risk of death or of other severe outcomes, such as hospitalization, substantially exceeds 1.&#x000a0; These groups include pregnant women<xref ref-type="bibr" rid="ref-1860550007">[5]</xref>&#x000a0;and some of the other high-risk groups http://www.cdc.gov/h1n1flu/recommendations.htm.&#x000a0;&#x000a0; We believe it is also plausible to expect that predispensed antivirals are more likely to be life-saving (or to prevent hospitalizations or other severe outcomes) than those that are not predispensed ( <inline-formula>
-        <tex-math id="d20e388">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}B&#x0003e;1\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e388">\begin{equation*}B&#x0003e;1\end{equation*}</tex-math>
       </inline-formula> ), because wastage is relatively unlikely given the short time frame between when predispensing could occur and when the main wave of the epidemic is likely to come, and because early treatment is likely to have benefits in preventing progression to more severe disease.&#x000a0; Precise data will not be available to evaluate this assumption in time for decision making, so educated opinion will be the only basis for decision making.&#x000a0; We have found (E. Goldstein et al., Unpublished Data) from studies of a US city that approximately 20% of individuals with confirmed H1N1pdm infection took antivirals within 48 hours of infection.&#x000a0; Predispensing should be able to increase this proportion to well above 40%.&#x000a0; We proceed on the assumption that antivirals are twice as likely to save a life if predispensed than if received by normal channels.
     </p>
 <!--WRITE-PARA-->
@@ -375,13 +375,13 @@
     <p id="p67">Under these assumptions, then predispensing to members of groups at very high risk of fatal outcome (say at least 5 times the population average) will be beneficial, for almost any level of demand, if supply is adequate for 20% of the population (a reasonable estimate given current US stockpiles and the need to reserve some for health care worker prophylaxis).&#x000a0; Moreover, if demand is either less than or considerably more than supply of antivirals, predispensing to groups with relative risk of death larger than 1 but less than 5 will be beneficial. While we do not know how to predict demand, we believe that the first two conditions are likely to occur for pregnant women and other risk groups, especially for those with mobility or other impairments that make it difficult for them to obtain rapid medical attention. &#x000a0;One reason to expect that demand may be less than the antiviral supply is the experience in New Zealand, one country in the Southern Hemisphere for which population-based general practitioner consultation rates are available.&#x000a0; In that country, where the winter epidemic appears to be concluding, only approximately 1% of the population has consulted their GP for influenza-like illness (<ext-link ext-link-type="uri" xlink:href="http://www.moh.govt.nz/moh.nsf/indexmh/influenza-a-h1n1-update-138-180809">http://www.moh.govt.nz/moh.nsf/indexmh/influenza-a-h1n1-update-138-180809</ext-link>).&#x000a0; This may indicate that attack rates will be relatively low in the autumn wave in the Northern Hemisphere, though there are many differences between New Zealand and Northern Hemisphere countries, including over-the-counter availability of oseltamivir in New Zealand, which may reduce consultation rates in New Zealand. </p>
 <!--WRITE-PARA-->
     <p id="p68">At present there are no published statistics on which groups are at highest risk of severe outcome (hence most likely to have high&#x000a0;<inline-formula>
-        <tex-math id="d20e399">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}R\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e399">\begin{equation*}R\end{equation*}</tex-math>
       </inline-formula> ), except pregnant women (4) .&#x000a0; Such data are urgently needed to prioritize many types of interventions, including vaccination and antiviral predispensing.&#x000a0; Once such data (or estimates) are available, we would recommend predispensing to all members of groups at very high risk of death (say more than 10), on the grounds that this will be beneficial except for the rather unlikely case of no relative benefit ( <inline-formula>
-        <tex-math id="d20e401">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}B=1\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e401">\begin{equation*}B=1\end{equation*}</tex-math>
       </inline-formula> ) and supply closely matching demand ( <inline-formula>
-        <tex-math id="d20e403">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}T\approx D\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e403">\begin{equation*}T\approx D\end{equation*}</tex-math>
       </inline-formula> ).&#x000a0; We would recommend strong consideration of predispensing for groups with relative risk of death greater than 3-4, on the grounds that this will surely be beneficial, as long as&#x000a0;<inline-formula>
-        <tex-math id="d20e405">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}B\geq 2\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e405">\begin{equation*}B\geq 2\end{equation*}</tex-math>
       </inline-formula> , for almost any level of demand.&#x000a0; We would, however, recommend that the total proportion of the stockpile predispensed be limited (perhaps to 20% of the stockpile or less), first because there is the possibility that risk groups will change if the virus changes, and second for the reason described in the next paragraph.
     </p>
 <!--WRITE-PARA-->
@@ -416,9 +416,9 @@
     </p>
 <!--WRITE-PARA-->
     <p id="p83">In this Appendix we derive the main result by calculating or finding a bound on the number of lives saved by antiviral treatment in the high risk group (a proportion <inline-formula>
-        <tex-math id="d20e453">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}q\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e453">\begin{equation*}q\end{equation*}</tex-math>
       </inline-formula> ) and in what we term the &#x0201c;general population,&#x0201d; which is the total population without the high risk individuals, a proportion&#x000a0; <inline-formula>
-        <tex-math id="d20e455">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}1-q\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e455">\begin{equation*}1-q\end{equation*}</tex-math>
       </inline-formula> .&#x000a0; 
     </p>
 <!--WRITE-PARA-->
@@ -431,9 +431,9 @@
     <p id="p87"> c)&#x000a0;&#x000a0;&#x000a0; For condition (i), no additional assumptions are needed.</p>
 <!--WRITE-PARA-->
     <p id="p88">Condition b) is more flexible than a) and can be interpreted as follows: consider persons infected during the epidemic. As time progresses, the proportion of them who will require antivirals may increase due to panic, etc. - suppose the increase is by a factor of&#x000a0;<inline-formula>
-        <tex-math id="d20e468">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}X\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e468">\begin{equation*}X\end{equation*}</tex-math>
       </inline-formula> . The people who would die without antivirals are the severe cases and the proportion of them who receives antivirals (given availability) is probably large - thus even if it increases it time, we assume that the increase is by a factor of at most <inline-formula>
-        <tex-math id="d20e470">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}X\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e470">\begin{equation*}X\end{equation*}</tex-math>
       </inline-formula> .
     </p>
 <!--WRITE-PARA-->
@@ -452,22 +452,22 @@
     </p>
 <!--WRITE-PARA-->
     <p id="p95">To fix notation, let&#x000a0;<inline-formula>
-        <tex-math id="d20e490">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}D'\geq D\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e490">\begin{equation*}D'\geq D\end{equation*}</tex-math>
       </inline-formula> be the demand for antivirals in the total population in the absence of predispensing.
     </p>
 <!--WRITE-PARA-->
     <p id="p96">Among the <inline-formula>
-        <tex-math id="d20e494">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}q\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e494">\begin{equation*}q\end{equation*}</tex-math>
       </inline-formula> &#x000a0;individuals in the high risk group,&#x000a0;<inline-formula>
-        <tex-math id="d20e496">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}qRp_d\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e496">\begin{equation*}qRp_d\end{equation*}</tex-math>
       </inline-formula> of them would die without antivirals. Out of those,&#x000a0;<inline-formula>
-        <tex-math id="d20e498">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}qRBp_dp_s\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e498">\begin{equation*}qRBp_dp_s\end{equation*}</tex-math>
       </inline-formula> will be saved by predispensed antivirals. Under no predispensing, not all of those <inline-formula>
-        <tex-math id="d20e500">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}qRp_d\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e500">\begin{equation*}qRp_d\end{equation*}</tex-math>
       </inline-formula> people may demand antivirals, and among those who do, a fraction <inline-formula>
-        <tex-math id="d20e502">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}\frac{T}{D'}\leq \frac{T}{D}\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e502">\begin{equation*}\frac{T}{D'}\leq \frac{T}{D}\end{equation*}</tex-math>
       </inline-formula> &#x000a0;of them would get antivirals, so&#x000a0;<inline-formula>
-        <tex-math id="d20e505">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}qRp_dp_s\frac{T}{D'}\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e505">\begin{equation*}qRp_dp_s\frac{T}{D'}\end{equation*}</tex-math>
       </inline-formula> lives would be saved (Table 2). 
     </p>
 <!--WRITE-PARA-->
@@ -492,22 +492,22 @@
             <tr>
               <td valign="top" rowspan="1" colspan="1" style="width:2.05in">General population</td>
               <td valign="top" rowspan="1" colspan="1" style="width:2.05in"> at most <inline-formula>
-                  <tex-math id="d20e537">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}\frac{T}{D'}L\end{equation*}\end{document}</tex-math>
+                  <tex-math id="d20e537">\begin{equation*}\frac{T}{D'}L\end{equation*}</tex-math>
                 </inline-formula>
               </td>
               <td valign="top" rowspan="1" colspan="1" style="width:2.05in">&#x000a0;at least <inline-formula>
-                  <tex-math id="d20e542">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}\frac{T-q}{D}L\end{equation*}\end{document}</tex-math>
+                  <tex-math id="d20e542">\begin{equation*}\frac{T-q}{D}L\end{equation*}</tex-math>
                 </inline-formula>
               </td>
             </tr>
             <tr>
               <td valign="top" rowspan="1" colspan="1" style="width:2.05in">High-risk group</td>
               <td valign="top" rowspan="1" colspan="1" style="width:2.05in">at most <inline-formula>
-                  <tex-math id="d20e550">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}\frac{T}{D'}qRp_dp_s\end{equation*}\end{document}</tex-math>
+                  <tex-math id="d20e550">\begin{equation*}\frac{T}{D'}qRp_dp_s\end{equation*}</tex-math>
                 </inline-formula>
               </td>
               <td valign="top" rowspan="1" colspan="1" style="width:2.05in">&#x000a0;<inline-formula>
-                  <tex-math id="d20e555">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}qRBp_dp_s\end{equation*}\end{document}</tex-math>
+                  <tex-math id="d20e555">\begin{equation*}qRBp_dp_s\end{equation*}</tex-math>
                 </inline-formula>
               </td>
             </tr>
@@ -517,17 +517,17 @@
     </p>
 <!--WRITE-PARA-->
     <p id="p110">Turning now to the general population, if all the demand was met, the total number of lives saved without predispensing would be <inline-formula>
-        <tex-math id="d20e561">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}L\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e561">\begin{equation*}L\end{equation*}</tex-math>
       </inline-formula>.&#x000a0; However, given scarcity, only&#x000a0;&#x000a0;&#x000a0;<inline-formula>
-        <tex-math id="d20e563">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}\frac{T}{D'}L\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e563">\begin{equation*}\frac{T}{D'}L\end{equation*}</tex-math>
       </inline-formula> lives are saved (Table 2), because the remaining individuals do not receive antivirals.&#x000a0; If antivirals are predispensed, the remaining demand is <inline-formula>
-        <tex-math id="d20e565">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}D\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e565">\begin{equation*}D\end{equation*}</tex-math>
       </inline-formula> &#x000a0;and the supply is <inline-formula>
-        <tex-math id="d20e567">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}T-q\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e567">\begin{equation*}T-q\end{equation*}</tex-math>
       </inline-formula> . Thus a fraction <inline-formula>
-        <tex-math id="d20e569">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}\frac{T-q}{D}\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e569">\begin{equation*}\frac{T-q}{D}\end{equation*}</tex-math>
       </inline-formula> &#x000a0;of&#x000a0; the demand in the general population is met, and the number of lives saved is thus <inline-formula>
-        <tex-math id="d20e572">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}\frac{T-q}{D}L\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e572">\begin{equation*}\frac{T-q}{D}L\end{equation*}</tex-math>
       </inline-formula> (Table 2).&#x000a0;&#x000a0; 
     </p>
 <!--WRITE-PARA-->
@@ -535,28 +535,28 @@
     <p id="p112">Using these figures (summarized in Table 2), there is a net gain in lives saved if the total number saved under predispensing exceeds that saved without predispensing, that is, if </p>
 <!--WRITE-PARA-->
     <p id="p113">&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0; (A1)&#x000a0;&#x000a0; <inline-formula>
-        <tex-math id="d20e580">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} $L\frac{T - q}{D} + qRBp_d p_s \geq L\frac{T}{D'} + qRp_d p_s \frac{T}{D'}$\end{document}</tex-math>
+        <tex-math id="d20e580">$L\frac{T - q}{D} + qRBp_d p_s \geq L\frac{T}{D'} + qRp_d p_s \frac{T}{D'}$</tex-math>
       </inline-formula> .
     </p>
 <!--WRITE-PARA-->
     <p id="p114">Rearranging and dividing by&#x000a0;<inline-formula>
-        <tex-math id="d20e584">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}q&#x0003e;0\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e584">\begin{equation*}q&#x0003e;0\end{equation*}</tex-math>
       </inline-formula> , we obtain the condition <inline-formula>
-        <tex-math id="d20e586">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} $L\left(\frac{1}{D} + \frac{T}{q}\left[ \frac{1}{D'} - \frac{1}{D}\right]\right) \leq Rp_d p_s B - Rp_d p_s \frac{T}{{D'}}$\end{document}</tex-math>
+        <tex-math id="d20e586">$L\left(\frac{1}{D} + \frac{T}{q}\left[ \frac{1}{D'} - \frac{1}{D}\right]\right) \leq Rp_d p_s B - Rp_d p_s \frac{T}{{D'}}$</tex-math>
       </inline-formula> .&#x000a0; Using the facts that&#x000a0;<inline-formula>
-        <tex-math id="d20e588">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}D'\geq D\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e588">\begin{equation*}D'\geq D\end{equation*}</tex-math>
       </inline-formula>&#x000a0; and <inline-formula>
-        <tex-math id="d20e590">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}L \le p_s p_d\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e590">\begin{equation*}L \le p_s p_d\end{equation*}</tex-math>
       </inline-formula> , a sufficient condition is then 
     </p>
 <!--WRITE-PARA-->
     <p id="p115">&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0; &#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0; &#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0; (A2) <inline-formula>
-        <tex-math id="d20e595">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}\frac{1}{D} \le R(B - T/D)\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e595">\begin{equation*}\frac{1}{D} \le R(B - T/D)\end{equation*}</tex-math>
       </inline-formula>
     </p>
 <!--WRITE-PARA-->
     <p id="p116">which is condition (ii) so long as <inline-formula>
-        <tex-math id="d20e599">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}B&#x0003e;T/D\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e599">\begin{equation*}B&#x0003e;T/D\end{equation*}</tex-math>
       </inline-formula>.
     </p>
 <!--WRITE-PARA-->
@@ -568,14 +568,14 @@
     <p id="p119">The argument is similar to the previous case. </p>
 <!--WRITE-PARA-->
     <p id="p120">Among the high-risk group, without predispensing nearly all or all demand will be satisfied (there may be some competition if <inline-formula>
-        <tex-math id="d20e610">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} $D \le T \le D'$\end{document}</tex-math>
+        <tex-math id="d20e610">$D \le T \le D'$</tex-math>
       </inline-formula> ), so at most&#x000a0;<inline-formula>
-        <tex-math id="d20e612">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}qRp_dp_s\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e612">\begin{equation*}qRp_dp_s\end{equation*}</tex-math>
       </inline-formula>&#x000a0; lives will be saved.&#x000a0; With predispensing, the situation will be as above.
     </p>
 <!--WRITE-PARA-->
     <p id="p121">Among the general population, without predispensing, at most&#x000a0; <inline-formula>
-        <tex-math id="d20e616">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}L\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e616">\begin{equation*}L\end{equation*}</tex-math>
       </inline-formula>&#x000a0; lives will be saved.&#x000a0;&#x000a0; With predispensing, however, the situation will be as above in Condition (ii).&#x000a0; This condition is summarized in Table 3.&#x000a0; Repeating the comparison of equation (A1) for the entries in Table 3, we obtain Condition (iii).
     </p>
 <!--WRITE-PARA-->
@@ -598,23 +598,23 @@
             <td valign="top" rowspan="1" colspan="1" style="width:2.05in">General population<break/>&#x000a0;
             </td>
             <td valign="top" rowspan="1" colspan="1" style="width:2.05in">at most <inline-formula>
-                <tex-math id="d20e646">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}L\end{equation*}\end{document}</tex-math>
+                <tex-math id="d20e646">\begin{equation*}L\end{equation*}</tex-math>
               </inline-formula>
             </td>
             <td valign="top" rowspan="1" colspan="1" style="width:2.05in">at least <inline-formula>
-                <tex-math id="d20e650">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}\frac{T-q}{D}L\end{equation*}\end{document}</tex-math>
+                <tex-math id="d20e650">\begin{equation*}\frac{T-q}{D}L\end{equation*}</tex-math>
               </inline-formula>
             </td>
           </tr>
           <tr>
             <td valign="top" rowspan="1" colspan="1" style="width:2.05in">High-risk group</td>
             <td valign="top" rowspan="1" colspan="1" style="width:2.05in">at most <inline-formula>
-                <tex-math id="d20e658">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}qRp_dp_s\end{equation*}\end{document}</tex-math>
+                <tex-math id="d20e658">\begin{equation*}qRp_dp_s\end{equation*}</tex-math>
               </inline-formula>
             </td>
             <td valign="top" rowspan="1" colspan="1" style="width:2.05in">
               <inline-formula>
-                <tex-math id="d20e663">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}qRBp_dp_s\end{equation*}\end{document}</tex-math>
+                <tex-math id="d20e663">\begin{equation*}qRBp_dp_s\end{equation*}</tex-math>
               </inline-formula>
               <break/>&#x000a0;
             </td>
@@ -629,15 +629,15 @@
     </p>
 <!--WRITE-PARA-->
     <p id="p137">If <inline-formula>
-        <tex-math id="d20e677">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}B&#x0003e;1\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e677">\begin{equation*}B&#x0003e;1\end{equation*}</tex-math>
       </inline-formula> and <inline-formula>
-        <tex-math id="d20e679">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}R&#x0003e;\frac{1}{T(B-1)}\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e679">\begin{equation*}R&#x0003e;\frac{1}{T(B-1)}\end{equation*}</tex-math>
       </inline-formula>, then depending on whether&#x000a0;<inline-formula>
-        <tex-math id="d20e681">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}D \leq T-q\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e681">\begin{equation*}D \leq T-q\end{equation*}</tex-math>
       </inline-formula>,&#x000a0;<inline-formula>
-        <tex-math id="d20e683">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}T-q \leq D \leq T\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e683">\begin{equation*}T-q \leq D \leq T\end{equation*}</tex-math>
       </inline-formula>, or <inline-formula>
-        <tex-math id="d20e685">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}T&#x0003c;D\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e685">\begin{equation*}T&#x0003c;D\end{equation*}</tex-math>
       </inline-formula> , one of the above conditions applies. &#x000a0; &#x000a0; 
     </p>
 <!--WRITE-PARA-->
@@ -646,36 +646,36 @@
     </p>
 <!--WRITE-PARA-->
     <p id="p139">Suppose that for every individual who is either a member of the high risk group <inline-formula>
-        <tex-math id="d20e696">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}G=h\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e696">\begin{equation*}G=h\end{equation*}</tex-math>
       </inline-formula> &#x000a0;or the total population <inline-formula>
-        <tex-math id="d20e698">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}G=w\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e698">\begin{equation*}G=w\end{equation*}</tex-math>
       </inline-formula> , we can define an outcome <inline-formula>
-        <tex-math id="d20e700">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}O(T)\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e700">\begin{equation*}O(T)\end{equation*}</tex-math>
       </inline-formula> &#x000a0;that depends on the (possibly counterfactual) treatment&#x000a0;<inline-formula>
-        <tex-math id="d20e702">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}T\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e702">\begin{equation*}T\end{equation*}</tex-math>
       </inline-formula> received, where either&#x000a0;<inline-formula>
-        <tex-math id="d20e704">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}O=d\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e704">\begin{equation*}O=d\end{equation*}</tex-math>
       </inline-formula>&#x000a0; (died) or <inline-formula>
-        <tex-math id="d20e707">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}O=s\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e707">\begin{equation*}O=s\end{equation*}</tex-math>
       </inline-formula>&#x000a0; (survived) and either&#x000a0; <inline-formula>
-        <tex-math id="d20e709">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}T=U\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e709">\begin{equation*}T=U\end{equation*}</tex-math>
       </inline-formula> (untreated), or <inline-formula>
-        <tex-math id="d20e711">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}T=S\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e711">\begin{equation*}T=S\end{equation*}</tex-math>
       </inline-formula> &#x000a0;(treated from the stockpile), or <inline-formula>
-        <tex-math id="d20e713">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}T=P\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e713">\begin{equation*}T=P\end{equation*}</tex-math>
       </inline-formula> (treated from a predispensed course, and that course has not been previously wasted).&#x000a0; Then 
     </p>
 <!--WRITE-PARA-->
 <!--WRITE-PARA-->
     <p id="p141">
       <inline-formula>
-        <tex-math id="d20e719">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}\[ \begin{array}{l} p_D = \Pr [O(U) = d|G = w] \\ p_S = \Pr [O(S) = s|O(U) = d] = \Pr [O(S) = s|O(U) = d,G = w] = \Pr [O(S) = s|O(U) = d,G = h] \end{array} \]\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e719">\begin{equation*}\begin{array}{l} p_D = \Pr [O(U) = d|G = w] \\ p_S = \Pr [O(S) = s|O(U) = d] = \Pr [O(S) = s|O(U) = d,G = w] = \Pr [O(S) = s|O(U) = d,G = h] \end{array}\end{equation*}</tex-math>
       </inline-formula>
     </p>
 <!--WRITE-PARA-->
     <p id="p142">
       <inline-formula>
-        <tex-math id="d20e724">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}\[ \begin{array}{l} R = \frac{{\Pr [O(U) = d|G = h]}}{{\Pr [O(U) = d|G = w]}} \\ B = \frac{{\Pr [O(P) = s|O(U) = d,G = h]}}{{\Pr [O(S) = s|O(U) = d,G = h]}} \\ \end{array} \]\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e724">\begin{equation*}\begin{array}{l} R = \frac{{\Pr [O(U) = d|G = h]}}{{\Pr [O(U) = d|G = w]}} \\ B = \frac{{\Pr [O(P) = s|O(U) = d,G = h]}}{{\Pr [O(S) = s|O(U) = d,G = h]}} \\ \end{array}\end{equation*}</tex-math>
       </inline-formula>
     </p>
 <!--WRITE-PARA-->
@@ -684,7 +684,7 @@
 <!--WRITE-PARA-->
     <p id="p145">
       <inline-formula>
-        <tex-math id="d20e731">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}\[ p_d p_s = \Pr [O(U) = d,O(S) = s|G = w] \]\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e731">\begin{equation*}p_d p_s = \Pr [O(U) = d,O(S) = s|G = w]\end{equation*}</tex-math>
       </inline-formula> ,
     </p>
 <!--WRITE-PARA-->
@@ -693,7 +693,7 @@
 <!--WRITE-PARA-->
     <p id="p148">
       <inline-formula>
-        <tex-math id="d20e740">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}\[ \begin{array}{l} p_D p_S R = \Pr [O(U) = d|G = h]\frac{{\Pr [O(U) = d|G = h]}}{{\Pr [O(U) = d|G = w]}}\Pr [O(S) = s|O(U) = d,G = h] \\ = \Pr [O(S) = s,O(U) = d|G = h] \\ \end{array} \]\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e740">\begin{equation*}\begin{array}{l} p_D p_S R = \Pr [O(U) = d|G = h]\frac{{\Pr [O(U) = d|G = h]}}{{\Pr [O(U) = d|G = w]}}\Pr [O(S) = s|O(U) = d,G = h] \\ = \Pr [O(S) = s,O(U) = d|G = h] \\ \end{array}\end{equation*}</tex-math>
       </inline-formula> &#x000a0;
     </p>
 <!--WRITE-PARA-->
@@ -701,7 +701,7 @@
 <!--WRITE-PARA-->
     <p id="p150">
       <inline-formula>
-        <tex-math id="d20e746">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}\[ p_D p_S RB = \Pr [O(T) = s,O(U) = d|G = h] \]\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e746">\begin{equation*}p_D p_S RB = \Pr [O(T) = s,O(U) = d|G = h]\end{equation*}</tex-math>
       </inline-formula>
     </p>
 <!--WRITE-PARA-->
@@ -711,44 +711,44 @@
     </p>
 <!--WRITE-PARA-->
     <p id="p153">While predispensing to high risk groups is beneficial compared to no predispensing, if condition (iv) holds, it is not true in general that the benefit of predispensing increases with the quantity of antivirals predispensed. Consider for example one high risk group whose size equals (or surpasses) the antiviral supply.&#x000a0; As we keep on predispensing, coverage level for the rest of the population goes to&#x000a0;0&#x000a0; while the relative risk of dying in the high risk group stays uniformly bounded. Thus at some point equation (iv) will be violated (with the new coverage level and the relative risk), and in fact it is not advisable to predispense the whole supply to the group under no a-priori assumptions on the demand&#x000a0; <inline-formula>
-        <tex-math id="d20e758">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}D\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e758">\begin{equation*}D\end{equation*}</tex-math>
       </inline-formula> . However the have the following simple criterion: &#x000a0; 
     </p>
 <!--WRITE-PARA-->
     <p id="p154">BENEFIT INCREASES WITH THE AMOUNT PREDISPENSED: </p>
 <!--WRITE-PARA-->
     <p id="p155">Suppose the relative risk of dying&#x000a0; <inline-formula>
-        <tex-math id="d20e765">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} $R \ge 1$\end{document}</tex-math>
+        <tex-math id="d20e765">$R \ge 1$</tex-math>
       </inline-formula> , and assumption b) in Appendix A holds. The benefit of predispensing is guaranteed to increase with quantity of antivirals predispensed as long as the total quantity <inline-formula>
-        <tex-math id="d20e767">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}q\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e767">\begin{equation*}q\end{equation*}</tex-math>
       </inline-formula>of antivirals predispensed obeys
     </p>
 <!--WRITE-PARA-->
     <p id="p156">&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0; (C1)<inline-formula>
-        <tex-math id="d20e771">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} $\frac{{T - q}}{{1 - q}} \ge \frac{1}{{R(B - 1)}}$\end{document}</tex-math>
+        <tex-math id="d20e771">$\frac{{T - q}}{{1 - q}} \ge \frac{1}{{R(B - 1)}}$</tex-math>
       </inline-formula>&#x000a0; 
     </p>
 <!--WRITE-PARA-->
     <p id="p157">To show this, let the quantity <inline-formula>
-        <tex-math id="d20e776">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}q\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e776">\begin{equation*}q\end{equation*}</tex-math>
       </inline-formula> &#x000a0;of antivirals predispensed obey the inequality (C1). To show that the benefit of predispensing was increasing, take any intermediate quantity <inline-formula>
-        <tex-math id="d20e778">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}q_I\leq q\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e778">\begin{equation*}q_I\leq q\end{equation*}</tex-math>
       </inline-formula> . We need the show that equation (C1) was still true after predispensing&#x000a0; <inline-formula>
-        <tex-math id="d20e780">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}q_I\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e780">\begin{equation*}q_I\end{equation*}</tex-math>
       </inline-formula>&#x000a0; courses of antivirals. Note that after this predispensing, the coverage level and the relative risks have changed. The coverage level became
     </p>
 <!--WRITE-PARA-->
     <p id="p158">&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0;&#x000a0; (C2) <inline-formula>
-        <tex-math id="d20e784">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}\[ T_I = \frac{{T - q_I }}{{1 - q_I }} \ge \frac{{T - q}}{{1 - q}} \ge \frac{1}{{R(B - 1)}} \]\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e784">\begin{equation*}T_I = \frac{{T - q_I }}{{1 - q_I }} \ge \frac{{T - q}}{{1 - q}} \ge \frac{1}{{R(B - 1)}}\end{equation*}</tex-math>
       </inline-formula> &#x000a0;
     </p>
 <!--WRITE-PARA-->
     <p id="p159">Also, as a result of predispensing, we've removed some individuals with the risk of dying higher than the one for the general population. Thus the probability of dying for an average individual left after predispensing is lower than the one before predispensing; hence the relative risks of the high risk groups have only increased. Since equation (C2) for the new coverage level holds with original relative risks, condition (iv) in our Main Result holds with the new coverage levels and relative risks (after predispensing&#x000a0;<inline-formula>
-        <tex-math id="d20e788">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}q_I\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e788">\begin{equation*}q_I\end{equation*}</tex-math>
       </inline-formula> courses of antivirals). This implies that predispensing <inline-formula>
-        <tex-math id="d20e790">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}q-q_I\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e790">\begin{equation*}q-q_I\end{equation*}</tex-math>
       </inline-formula>&#x000a0; courses after predispensing the initial <inline-formula>
-        <tex-math id="d20e792">\documentclass[10pt]{article} \usepackage{amsmath} \usepackage{wasysym} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{amsbsy} \usepackage{mathrsfs} \usepackage{pmc} \usepackage[Euler]{upgreek} \pagestyle{empty} \begin{document} \begin{equation*}q_I\end{equation*}\end{document}</tex-math>
+        <tex-math id="d20e792">\begin{equation*}q_I\end{equation*}</tex-math>
       </inline-formula>&#x000a0; courses would be beneficial.
     </p>
 <!--WRITE-PARA-->
