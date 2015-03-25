@@ -1,0 +1,1972 @@
+<!-- ArticleInstanceId : 3479416, Path: bmcbioi/13-2012/1/1471-2105-13-236/preload/nxml/, Name : 1471-2105-13-236.nxml -->
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD v1.0 20120330//EN" "JATS-archivearticle1.dtd">
+<article xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML" article-type="research-article" xml:lang="en">
+  <?DTDIdentifier.IdentifierValue article.dtd?>
+  <?DTDIdentifier.IdentifierType system?>
+  <?SourceDTD.DTDName article.dtd?>
+  <?SourceDTD.Version 1.0?>
+  <?ConverterInfo.XSLTName bmc2nlmx2.xsl?>
+  <?ConverterInfo.Version 2?>
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="nlm-ta">BMC Bioinformatics</journal-id>
+      <journal-id journal-id-type="iso-abbrev">BMC Bioinformatics</journal-id>
+      <journal-title-group>
+        <journal-title>BMC Bioinformatics</journal-title>
+      </journal-title-group>
+      <issn pub-type="epub">1471-2105</issn>
+      <publisher>
+        <publisher-name>BioMed Central</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="publisher-id">1471-2105-13-236</article-id>
+      <article-id pub-id-type="pmid">22984947</article-id>
+      <article-id pub-id-type="doi">10.1186/1471-2105-13-236</article-id>
+      <article-categories>
+        <subj-group subj-group-type="heading">
+          <subject>Research Article</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>Correlation analysis of the side-chains conformational distribution in bound and unbound proteins</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author" id="A1">
+          <name>
+            <surname>Kirys</surname>
+            <given-names>Tatsiana</given-names>
+          </name>
+          <xref ref-type="aff" rid="I1">1</xref>
+          <xref ref-type="aff" rid="I2">2</xref>
+          <email>tatsiana@ku.edu</email>
+        </contrib>
+        <contrib contrib-type="author" id="A2">
+          <name>
+            <surname>Ruvinsky</surname>
+            <given-names>Anatoly M</given-names>
+          </name>
+          <xref ref-type="aff" rid="I1">1</xref>
+          <email>ruvinsky@ku.edu</email>
+        </contrib>
+        <contrib contrib-type="author" id="A3">
+          <name>
+            <surname>Tuzikov</surname>
+            <given-names>Alexander V</given-names>
+          </name>
+          <xref ref-type="aff" rid="I2">2</xref>
+          <email>tuzikov@newman.bas-net.by</email>
+        </contrib>
+        <contrib contrib-type="author" corresp="yes" id="A4">
+          <name>
+            <surname>Vakser</surname>
+            <given-names>Ilya A</given-names>
+          </name>
+          <xref ref-type="aff" rid="I1">1</xref>
+          <xref ref-type="aff" rid="I3">3</xref>
+          <email>vakser@ku.edu</email>
+        </contrib>
+      </contrib-group>
+      <aff id="I1">
+        <label>1</label>Center for Bioinformatics, The University of Kansas, 66047, Lawrence, KS, USA
+      </aff>
+      <aff id="I2">
+        <label>2</label>United Institute of Informatics Problems, National Academy of Sciences, 220012, Minsk, Belarus
+      </aff>
+      <aff id="I3">
+        <label>3</label>Department of Molecular Biosciences, The University of Kansas, Lawrence, 66045, KS, USA
+      </aff>
+      <pub-date pub-type="collection">
+        <year>2012</year>
+      </pub-date>
+      <pub-date pub-type="epub">
+        <day>17</day>
+        <month>9</month>
+        <year>2012</year>
+      </pub-date>
+      <volume>13</volume>
+      <fpage>236</fpage>
+      <lpage>236</lpage>
+      <history>
+        <date date-type="received">
+          <day>23</day>
+          <month>1</month>
+          <year>2012</year>
+        </date>
+        <date date-type="accepted">
+          <day>11</day>
+          <month>9</month>
+          <year>2012</year>
+        </date>
+      </history>
+      <permissions>
+        <copyright-statement>Copyright &#x000a9;2012 Kirys et al.; licensee BioMed Central Ltd.</copyright-statement>
+        <copyright-year>2012</copyright-year>
+        <copyright-holder>Kirys et al.; licensee BioMed Central Ltd.</copyright-holder>
+        <license license-type="open-access" xlink:href="http://creativecommons.org/licenses/by/2.0">
+          <license-p>This is an Open Access article distributed under the terms of the Creative Commons Attribution License (<ext-link ext-link-type="uri" xlink:href="http://creativecommons.org/licenses/by/2.0">http://creativecommons.org/licenses/by/2.0</ext-link>), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.</license-p>
+        </license>
+      </permissions>
+      <self-uri xlink:href="http://www.biomedcentral.com/1471-2105/13/236"/>
+      <abstract>
+        <sec>
+          <title>Background</title>
+          <p>Protein interactions play a key role in life processes. Characterization of conformational properties of protein-protein interactions is important for understanding the mechanisms of protein association. The rapidly increasing amount of experimentally determined structures of proteins and protein-protein complexes provides foundation for research on protein interactions and complex formation. The knowledge of the conformations of the surface side chains is essential for modeling of protein complexes. The purpose of this study was to analyze and compare dihedral angle distribution functions of the side chains at the interface and non-interface areas in bound and unbound proteins.</p>
+        </sec>
+        <sec>
+          <title>Results</title>
+          <p>To calculate the dihedral angle distribution functions, the configuration space was divided into grid cells. Statistical analysis showed that the similarity between bound and unbound interface and non-interface surface depends on the amino acid type and the grid resolution. The correlation coefficients between the distribution functions increased with the grid spacing increase for all amino acid types. The Manhattan distance showing the degree of dissimilarity between the distribution functions decreased accordingly. Short residues with one or two dihedral angles had higher correlations and smaller Manhattan distances than the longer residues. Met and Arg had the slowest growth of the correlation coefficient with the grid spacing increase. The correlations between the interface and non-interface distribution functions had a similar dependence on the grid resolution in both bound and unbound states. The interface and non-interface differences between bound and unbound distribution functions, caused by biological protein-protein interactions or crystal contacts, disappeared at the 70&#x000b0; grid spacing for interfaces and 30&#x000b0; for non-interface surface, which agrees with an average span of the side-chain rotamers.</p>
+        </sec>
+        <sec>
+          <title>Conclusions</title>
+          <p>The two-fold difference in the critical grid spacing indicates larger conformational changes upon binding at the interface than at the rest of the surface. At the same time, transitions between rotamers induced by interactions across the interface or the crystal packing are rare, with most side chains having local readjustments that do not change the rotameric state. The analysis is important for better understanding of protein interactions and development of flexible docking approaches.</p>
+        </sec>
+      </abstract>
+      <kwd-group>
+        <kwd>Protein interactions</kwd>
+        <kwd>Protein docking</kwd>
+        <kwd>Molecular recognition</kwd>
+        <kwd>Conformational analysis</kwd>
+      </kwd-group>
+    </article-meta>
+  </front>
+  <body>
+    <sec>
+      <title>Background</title>
+      <p>Protein-protein interactions play a key role in life processes. Characterization of conformational changes in proteins upon binding is important for understanding the mechanisms of protein association and for our ability to model it. Dependence of side-chain dihedral angle distribution on the conformation of the backbone has been investigated in earlier studies [<xref ref-type="bibr" rid="B1">1</xref>-<xref ref-type="bibr" rid="B5">5</xref>]. The side-chain dihedral angles are not evenly distributed, but for the most part are tightly clustered. A number of unbound rotamer libraries have been described previously [<xref ref-type="bibr" rid="B1">1</xref>-<xref ref-type="bibr" rid="B14">14</xref>] (see [<xref ref-type="bibr" rid="B15">15</xref>] for a review). Dunbrack and Cohen [<xref ref-type="bibr" rid="B1">1</xref>] used Bayesian statistics to estimate populations and dihedral angles for all amino acids rotamers at all &#x003c6; and &#x003c8; values. A backbone-dependent rotamer library [<xref ref-type="bibr" rid="B15">15</xref>] was obtained by dividing &#x003c6; and &#x003c8; dihedral space into 10&#x000b0;&#x000d7;&#x02009;10&#x000b0; bins, &#x003c7; angles into 120&#x000b0; bins, and calculating frequencies and average values of rotamers for each amino acid. A backbone-independent rotamer library was generated in a similar way. In a recent study [<xref ref-type="bibr" rid="B16">16</xref>], a new version of the backbone-dependent rotamer library was developed. It consists of rotamer frequencies, mean dihedral angles, and variances as a function of the backbone dihedral angles. In one of the latest backbone-independent rotamer libraries, the &#x0201c;Penultimate rotamer library&#x0201d; [<xref ref-type="bibr" rid="B5">5</xref>] by Lovell, Richardson and colleagues, the dihedral angle space was clustered and rotamer positions were defined as the distribution mode.</p>
+      <p>Comparison of the side-chain distribution in the core and on the surface [<xref ref-type="bibr" rid="B3">3</xref>], conducted on 19 protein structures available in 1978, revealed a small variation of the &#x003c7;<sub>1</sub> rotamers distribution. A later study [<xref ref-type="bibr" rid="B17">17</xref>] on a set of 50 non-homologous proteins showed that for all side chains, except Asp, Asn and Glu, the distributions of &#x003c7;<sub>1</sub> rotamers on the surface and in the core are not significantly different.</p>
+      <p>Comparison of the &#x003c7;<sub>1</sub> and &#x003c7;<sub>2</sub> distributions at the interface and non-interface surface was performed by Guharoy et al. [<xref ref-type="bibr" rid="B18">18</xref>]. Distributions were divided into bins as in the Dunbrack&#x02019;s backbone-independent rotamer library [<xref ref-type="bibr" rid="B1">1</xref>]. Empirical free energies of inter-rotamer transitions were calculated and compared for the interface and non-interface areas. The rotamers free energies were different at the interface and non-interface, whereas bound and unbound free energies were essentially the same.</p>
+      <p>Conformations of surface residues in protein structures determined by crystallography are affected by the crystal packing. The area of the protein surface involved in the crystal contacts is generally smaller than in biological interfaces [<xref ref-type="bibr" rid="B19">19</xref>], and the interface packing is looser [<xref ref-type="bibr" rid="B20">20</xref>]. Studies of the crystal packing effect on the surface side chains [<xref ref-type="bibr" rid="B21">21</xref>-<xref ref-type="bibr" rid="B23">23</xref>] showed that&#x02009;~&#x02009;20% of the exposed side chains change conformation, and the change increases with the increase of the side-chain solvent accessibility. Large polar or charged residues Arg, Lys, Glu, Gln, as well as Ser were found to be most flexible [<xref ref-type="bibr" rid="B21">21</xref>].</p>
+      <p>The purpose of this study was to analyze and compare dihedral angle distribution functions of the side chains at the interface and non-interface areas in bound and unbound proteins. Such analysis is important for better understanding of protein interactions and development of flexible docking approaches. The dihedral-angle distribution functions (DADF) were calculated on a cubic grid dividing the dihedral space into cells for each residue type, at interface and non-interface surface, in bound and unbound structures. The correlation coefficients between bound and unbound, interface and non-interface DADFs were calculated, along with the Manhattan distance, as a measure of dissimilarity between the DADFs. All the correlation coefficients depended on the amino acid type and the grid resolution. The correlation coefficients always increased with the increase of the grid spacing, whereas the Manhattan distances decreased accordingly. Short residues with one or two dihedral angles had higher correlations and smaller Manhattan distances at small grid spacing than the longer residues. The correlation between the interface and non-interface DADFs showed a similar dependence on the grid resolution in both bound and unbound states. The differences between bound and unbound DADFs induced by biological protein-protein interactions or crystal contacts disappeared at the 70&#x000b0; grid spacing for interfaces and 30&#x000b0; for non-interface surface. The two-fold difference in the critical grid spacing indicates larger changes at the interface than on the rest of the surface. While the earlier studies [<xref ref-type="bibr" rid="B18">18</xref>,<xref ref-type="bibr" rid="B24">24</xref>,<xref ref-type="bibr" rid="B25">25</xref>] observed this trend for the side-chain rotamers, this study validates it by a more general approach based on the DADFs.</p>
+    </sec>
+    <sec sec-type="methods">
+      <title>Methods</title>
+      <p>The analysis was performed on the non-redundant D<sc>ockground</sc> Benchmark 3 set of bound and corresponding unbound protein structures [<xref ref-type="bibr" rid="B26">26</xref>]. The set consists of 233 complexes, with the unbound structures of both interacting proteins for 99 complexes, and the unbound structure of one interacting protein for 134 complexes. The following criteria were used for generating the set: sequence identity between bound and unbound structures&#x02009;&#x0003e;&#x02009;97%; sequence identity between complexes&#x02009;&#x0003c;&#x02009;30%; and homomultimers, crystal packing, and obligate complexes excluded.</p>
+      <p>The core residues change conformation upon binding less than the surface ones [<xref ref-type="bibr" rid="B24">24</xref>]. Thus, our study focused on the surface residues only. Surface residues were defined as those with the relative solvent-accessible surface area&#x02009;&#x02265;&#x02009;25% in bound and unbound state. The change of the residue solvent-accessible surface area (SASA) upon binding was used to differentiate the interface residues from the non-interface ones. SASA was calculated using Naccess [<xref ref-type="bibr" rid="B27">27</xref>]. The interface residues were defined as those losing&#x02009;&#x0003e;&#x02009;1&#x02009;&#x000c5;<sup>2</sup> SASA upon binding. The statistics of the interface and non-interface residues in the bound and unbound structures are summarized in Table <xref ref-type="table" rid="T1">1</xref>. The difference between the numbers of bound and unbound interface/non-interface residues reflects the difference between the number of bound and unbound protein structures in the D<sc>ockground</sc> set. </p>
+      <table-wrap position="float" id="T1">
+        <label>Table 1</label>
+        <caption>
+          <p>Number of surface residues in bound and unbound proteins</p>
+        </caption>
+        <table frame="hsides" rules="groups" border="1">
+          <colgroup>
+            <col align="left"/>
+            <col align="center"/>
+            <col align="right"/>
+          </colgroup>
+          <thead valign="top">
+            <tr>
+              <th align="left">
+                <bold>Amino acid</bold>
+              </th>
+              <th align="center">
+                <bold>Interface</bold>
+                <bold>U</bold>
+                <sup>
+                  <bold>a</bold>
+                </sup>
+                <bold>/B</bold>
+                <sup>
+                  <bold>b</bold>
+                </sup>
+              </th>
+              <th align="right">
+                <bold>Non-interface U/B</bold>
+              </th>
+            </tr>
+          </thead>
+          <tbody valign="top">
+            <tr>
+              <td align="left" valign="bottom">Ser<hr/>
+              </td>
+              <td align="center" valign="bottom">333/429<hr/>
+              </td>
+              <td align="right" valign="bottom">2409/2934<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Val<hr/>
+              </td>
+              <td align="center" valign="bottom">175/259<hr/>
+              </td>
+              <td align="right" valign="bottom">1003/1116<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Thr<hr/>
+              </td>
+              <td align="center" valign="bottom">321/406<hr/>
+              </td>
+              <td align="right" valign="bottom">2021/2375<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Cys<hr/>
+              </td>
+              <td align="center" valign="bottom">40/58<hr/>
+              </td>
+              <td align="right" valign="bottom">183/190<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Pro<hr/>
+              </td>
+              <td align="center" valign="bottom">250/295<hr/>
+              </td>
+              <td align="right" valign="bottom">1727/2029<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Ile<hr/>
+              </td>
+              <td align="center" valign="bottom">136/202<hr/>
+              </td>
+              <td align="right" valign="bottom">560/638<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Leu<hr/>
+              </td>
+              <td align="center" valign="bottom">245/348<hr/>
+              </td>
+              <td align="right" valign="bottom">1095/1258<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Asn<hr/>
+              </td>
+              <td align="center" valign="bottom">291/350<hr/>
+              </td>
+              <td align="right" valign="bottom">1902/2074<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Asp<hr/>
+              </td>
+              <td align="center" valign="bottom">329/433<hr/>
+              </td>
+              <td align="right" valign="bottom">2448/2856<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">His<hr/>
+              </td>
+              <td align="center" valign="bottom">126/174<hr/>
+              </td>
+              <td align="right" valign="bottom">682/741<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Phe<hr/>
+              </td>
+              <td align="center" valign="bottom">108/176<hr/>
+              </td>
+              <td align="right" valign="bottom">457/487<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Tyr<hr/>
+              </td>
+              <td align="center" valign="bottom">202/296<hr/>
+              </td>
+              <td align="right" valign="bottom">636/718<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Trp<hr/>
+              </td>
+              <td align="center" valign="bottom">63/100<hr/>
+              </td>
+              <td align="right" valign="bottom">187/220<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Gln<hr/>
+              </td>
+              <td align="center" valign="bottom">268/357<hr/>
+              </td>
+              <td align="right" valign="bottom">1687/1888<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Glu<hr/>
+              </td>
+              <td align="center" valign="bottom">416/545<hr/>
+              </td>
+              <td align="right" valign="bottom">2933/3303<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Met<hr/>
+              </td>
+              <td align="center" valign="bottom">73/119<hr/>
+              </td>
+              <td align="right" valign="bottom">311/329<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Lys<hr/>
+              </td>
+              <td align="center" valign="bottom">427/555<hr/>
+              </td>
+              <td align="right" valign="bottom">2965/3387<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left">Arg</td>
+              <td align="center">325/474</td>
+              <td align="right">1791/2014</td>
+            </tr>
+          </tbody>
+        </table>
+        <table-wrap-foot>
+          <p>
+            <sup>a</sup>Unbound.
+          </p>
+          <p>
+            <sup>b</sup>Bound.
+          </p>
+        </table-wrap-foot>
+      </table-wrap>
+      <p>Side chain conformations were represented by dihedral angles, calculated by Dangle [<xref ref-type="bibr" rid="B28">28</xref>]. All dihedral angles varied from &#x02212;180&#x000b0; to 180&#x000b0;, with exception of the last dihedral angle in Phe, Tyr, Asp and Glu [<xref ref-type="bibr" rid="B2">2</xref>], which varied from 0&#x000b0; to 180&#x000b0; due to the symmetry of the terminal aromatic and charged groups. To calculate the distribution functions, the configuration space was divided into cells by a cubic grid.</p>
+      <p>DADFs were calculated as the occupancy of the grid cells separately for each residue type for interface and non-interface, bound and unbound residues. Thus, there were four DADFs for each residue type: interface bound, interface unbound, non-interface bound, and non-interface unbound. Figure <xref ref-type="fig" rid="F1">1</xref> shows a two-dimensional distribution function of Asp dihedral angles for the non-interface unbound residues. </p>
+      <fig id="F1" position="float">
+        <label>Figure 1 </label>
+        <caption>
+          <p>Dihedral angle distribution of non-interface Asp in unbound structures.</p>
+        </caption>
+        <graphic xlink:href="1471-2105-13-236-1"/>
+      </fig>
+      <p>To compare distributions X and Y, the corresponding n-dimensional space (n is the number of the dihedral angles in the side chain) was split into m cubes with a fixed side length. The occupancy in each cell was calculated (Figure <xref ref-type="fig" rid="F1">1</xref>). The correlation coefficient r [<xref ref-type="bibr" rid="B29">29</xref>] between unbound (X) and bound (Y) DADFs was calculated as:</p>
+      <p>
+        <disp-formula id="bmcM1">
+          <label>(1)</label>
+          <mml:math id="M1" name="1471-2105-13-236-i1" overflow="scroll">
+            <mml:mrow>
+              <mml:mi>r</mml:mi>
+              <mml:mo>=</mml:mo>
+              <mml:mfrac>
+                <mml:mstyle displaystyle="true">
+                  <mml:munderover>
+                    <mml:mo>&#x02211;</mml:mo>
+                    <mml:mrow>
+                      <mml:mi>i</mml:mi>
+                      <mml:mo>=</mml:mo>
+                      <mml:mn>1</mml:mn>
+                    </mml:mrow>
+                    <mml:mi>m</mml:mi>
+                  </mml:munderover>
+                  <mml:mrow>
+                    <mml:mfenced open="(" close=")">
+                      <mml:mrow>
+                        <mml:msub>
+                          <mml:mi>X</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:mo>&#x02212;</mml:mo>
+                        <mml:mover accent="true">
+                          <mml:mi>X</mml:mi>
+                          <mml:mo stretchy="true">&#x000af;</mml:mo>
+                        </mml:mover>
+                      </mml:mrow>
+                    </mml:mfenced>
+                    <mml:mfenced open="(" close=")">
+                      <mml:mrow>
+                        <mml:msub>
+                          <mml:mi>Y</mml:mi>
+                          <mml:mi>i</mml:mi>
+                        </mml:msub>
+                        <mml:mo>&#x02212;</mml:mo>
+                        <mml:mover accent="true">
+                          <mml:mi>Y</mml:mi>
+                          <mml:mo stretchy="true">&#x000af;</mml:mo>
+                        </mml:mover>
+                      </mml:mrow>
+                    </mml:mfenced>
+                  </mml:mrow>
+                </mml:mstyle>
+                <mml:mrow>
+                  <mml:msqrt>
+                    <mml:mstyle displaystyle="true">
+                      <mml:munderover>
+                        <mml:mo>&#x02211;</mml:mo>
+                        <mml:mrow>
+                          <mml:mi>i</mml:mi>
+                          <mml:mo>=</mml:mo>
+                          <mml:mn>1</mml:mn>
+                        </mml:mrow>
+                        <mml:mi>m</mml:mi>
+                      </mml:munderover>
+                      <mml:mrow>
+                        <mml:msup>
+                          <mml:mfenced open="(" close=")">
+                            <mml:mrow>
+                              <mml:msub>
+                                <mml:mi>X</mml:mi>
+                                <mml:mi>i</mml:mi>
+                              </mml:msub>
+                              <mml:mo>&#x02212;</mml:mo>
+                              <mml:mover accent="true">
+                                <mml:mi>X</mml:mi>
+                                <mml:mo stretchy="true">&#x000af;</mml:mo>
+                              </mml:mover>
+                            </mml:mrow>
+                          </mml:mfenced>
+                          <mml:mn>2</mml:mn>
+                        </mml:msup>
+                      </mml:mrow>
+                    </mml:mstyle>
+                  </mml:msqrt>
+                  <mml:msqrt>
+                    <mml:mstyle displaystyle="true">
+                      <mml:munderover>
+                        <mml:mo>&#x02211;</mml:mo>
+                        <mml:mrow>
+                          <mml:mi>i</mml:mi>
+                          <mml:mo>=</mml:mo>
+                          <mml:mn>1</mml:mn>
+                        </mml:mrow>
+                        <mml:mi>m</mml:mi>
+                      </mml:munderover>
+                      <mml:mrow>
+                        <mml:msup>
+                          <mml:mfenced open="(" close=")">
+                            <mml:mrow>
+                              <mml:msub>
+                                <mml:mi>Y</mml:mi>
+                                <mml:mi>i</mml:mi>
+                              </mml:msub>
+                              <mml:mo>&#x02212;</mml:mo>
+                              <mml:mover accent="true">
+                                <mml:mi>Y</mml:mi>
+                                <mml:mo stretchy="true">&#x000af;</mml:mo>
+                              </mml:mover>
+                            </mml:mrow>
+                          </mml:mfenced>
+                          <mml:mn>2</mml:mn>
+                        </mml:msup>
+                      </mml:mrow>
+                    </mml:mstyle>
+                  </mml:msqrt>
+                </mml:mrow>
+              </mml:mfrac>
+              <mml:mtext>,</mml:mtext>
+            </mml:mrow>
+          </mml:math>
+        </disp-formula>
+      </p>
+      <p>where X<sub>i</sub> and Y<sub>i</sub> are the probabilities of bound and unbound side-chain conformations in a grid cell i, <inline-formula>
+          <mml:math id="M2" name="1471-2105-13-236-i2" overflow="scroll">
+            <mml:mrow>
+              <mml:mover accent="true">
+                <mml:mi>X</mml:mi>
+                <mml:mo stretchy="true">&#x000af;</mml:mo>
+              </mml:mover>
+              <mml:mo>=</mml:mo>
+              <mml:mfrac>
+                <mml:mn>1</mml:mn>
+                <mml:mi>m</mml:mi>
+              </mml:mfrac>
+              <mml:mstyle displaystyle="true">
+                <mml:munderover>
+                  <mml:mo>&#x02211;</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>i</mml:mi>
+                    <mml:mo>=</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                  <mml:mi>m</mml:mi>
+                </mml:munderover>
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>X</mml:mi>
+                    <mml:mi>i</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+              </mml:mstyle>
+            </mml:mrow>
+          </mml:math>
+        </inline-formula> and <inline-formula>
+          <mml:math id="M3" name="1471-2105-13-236-i3" overflow="scroll">
+            <mml:mrow>
+              <mml:mover accent="true">
+                <mml:mi>Y</mml:mi>
+                <mml:mo stretchy="true">&#x000af;</mml:mo>
+              </mml:mover>
+              <mml:mo>=</mml:mo>
+              <mml:mfrac>
+                <mml:mn>1</mml:mn>
+                <mml:mi>m</mml:mi>
+              </mml:mfrac>
+              <mml:mstyle displaystyle="true">
+                <mml:munderover>
+                  <mml:mo>&#x02211;</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>i</mml:mi>
+                    <mml:mo>=</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                  <mml:mi>m</mml:mi>
+                </mml:munderover>
+                <mml:mrow>
+                  <mml:msub>
+                    <mml:mi>Y</mml:mi>
+                    <mml:mi>i</mml:mi>
+                  </mml:msub>
+                </mml:mrow>
+              </mml:mstyle>
+            </mml:mrow>
+          </mml:math>
+        </inline-formula> are the average probabilities of bound and unbound side-chain conformations. To determine the degree of similarity between two probability distributions the Manhattan distance [<xref ref-type="bibr" rid="B30">30</xref>] was calculated as:
+      </p>
+      <p>
+        <disp-formula id="bmcM2">
+          <label>(2)</label>
+          <mml:math id="M4" name="1471-2105-13-236-i4" overflow="scroll">
+            <mml:mrow>
+              <mml:mi>d</mml:mi>
+              <mml:mfenced open="(" close=")">
+                <mml:mrow>
+                  <mml:mi>X</mml:mi>
+                  <mml:mo>,</mml:mo>
+                  <mml:mi>Y</mml:mi>
+                </mml:mrow>
+              </mml:mfenced>
+              <mml:mo>=</mml:mo>
+              <mml:mfrac>
+                <mml:mn>1</mml:mn>
+                <mml:mn>2</mml:mn>
+              </mml:mfrac>
+              <mml:mstyle displaystyle="true">
+                <mml:munderover>
+                  <mml:mo>&#x02211;</mml:mo>
+                  <mml:mrow>
+                    <mml:mi>i</mml:mi>
+                    <mml:mo>=</mml:mo>
+                    <mml:mn>1</mml:mn>
+                  </mml:mrow>
+                  <mml:mi>m</mml:mi>
+                </mml:munderover>
+                <mml:mrow>
+                  <mml:mfenced open="|" close="|">
+                    <mml:mrow>
+                      <mml:msub>
+                        <mml:mi>X</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                      <mml:mo>&#x02212;</mml:mo>
+                      <mml:msub>
+                        <mml:mi>Y</mml:mi>
+                        <mml:mi>i</mml:mi>
+                      </mml:msub>
+                    </mml:mrow>
+                  </mml:mfenced>
+                </mml:mrow>
+              </mml:mstyle>
+            </mml:mrow>
+          </mml:math>
+        </disp-formula>
+      </p>
+      <p>The Manhattan distance equals 0 for two identical DADFs, and increases up to 1 with the decrease of the DADFs similarity (higher similarity between the DADFs corresponds to lower values of the Manhattan distance).</p>
+    </sec>
+    <sec>
+      <title>Results and discussion</title>
+      <p>The discrete probability distribution of the amino acid side-chain &#x003c7; angles depended on the starting point of splitting and the size of the grid spacing. An example of a probability function with 20&#x000b0; grid spacing and different starting points of splitting for non-interface unbound Ser is shown in Figure <xref ref-type="fig" rid="F2">2</xref>. The distribution was divided into cells with a predefined step size, starting with a randomly chosen point, and the probability in each cell was calculated. To remove the effect of splitting, correlation coefficients were calculated 100 and 1000 times with the same splitting step but random starting point of splitting. Then, the average correlation coefficients were calculated. We found no significant difference between the correlation coefficients averaged 100 or 1000 times. Tests of statistical significance of the correlation [<xref ref-type="bibr" rid="B31">31</xref>] between bound and unbound distributions, and non-interface and interface distributions showed that all correlation values were significant, with p-values far below 0.001. </p>
+      <fig id="F2" position="float">
+        <label>Figure 2 </label>
+        <caption>
+          <p>Dihedral angle distribution of non-interface unbound Ser with 20&#x000b0; grid spacing and different splitting points.</p>
+        </caption>
+        <graphic xlink:href="1471-2105-13-236-2"/>
+      </fig>
+      <p>Analysis showed that the correlation coefficients depend on the grid spacing (Figure <xref ref-type="fig" rid="F3">3</xref>). Generally, larger steps corresponded to higher correlation values (larger cells yielded more smooth/similar distributions). Table <xref ref-type="table" rid="T2">2</xref> shows the grid spacing at which the correlation reaches a high level of 0.7. Most amino acids had high correlation between bound and unbound interface/non-interface distributions for grid spacing&#x02009;&#x02264;&#x02009;20&#x000b0;, except Met and Arg at the interface and non-interface, and Glu and Gln at the interface. The correlation coefficient for Met and Arg increased with the grid spacing increase and reached the high level of 0.7 at the 70&#x000b0; grid spacing for interface, and 30&#x000b0; for non-interface. The two-fold difference in the critical grid spacing indicates higher flexibility of these amino acids at the interface [<xref ref-type="bibr" rid="B24">24</xref>]. Since the 120&#x000b0; distance between two adjacent side-chain rotamers is significantly larger than the critical grid spacing, the use of large clustering radii for bound and unbound rotamer libraries [<xref ref-type="bibr" rid="B24">24</xref>] would produce similar results. </p>
+      <fig id="F3" position="float">
+        <label>Figure 3 </label>
+        <caption>
+          <p>
+            <bold>Correlation between dihedral angle distributions</bold>
+            <bold>.</bold> (<bold>A</bold>) Interface bound vs. unbound, (<bold>B</bold>) non-interface bound vs. unbound, (<bold>C</bold>) non-interface vs. interface unbound, and (<bold>D</bold>) non-interface vs. interface bound. For each grid spacing, 100 tests were performed with random splitting point. The plot shows the average correlation value.
+          </p>
+        </caption>
+        <graphic xlink:href="1471-2105-13-236-3"/>
+      </fig>
+      <table-wrap position="float" id="T2">
+        <label>Table 2</label>
+        <caption>
+          <p>The minimal grid spacing corresponding to correlation coefficient 0.7 between bound and unbound interface/non-interface dihedral angle distribution</p>
+        </caption>
+        <table frame="hsides" rules="groups" border="1">
+          <colgroup>
+            <col align="left"/>
+            <col align="left"/>
+            <col align="left"/>
+          </colgroup>
+          <thead valign="top">
+            <tr>
+              <th align="left">
+                <bold>Amino acid</bold>
+                <bold>NI</bold>
+                <sup>
+                  <bold>a</bold>
+                </sup>
+              </th>
+              <th align="left">
+                <bold>step</bold>
+                <bold>NI</bold>
+                <sup>
+                  <bold>a</bold>
+                </sup>
+              </th>
+              <th align="left">
+                <bold>I</bold>
+                <sup>
+                  <bold>b</bold>
+                </sup>
+              </th>
+            </tr>
+          </thead>
+          <tbody valign="top">
+            <tr>
+              <td align="left" valign="bottom">Ser<hr/>
+              </td>
+              <td align="left" valign="bottom">10<hr/>
+              </td>
+              <td align="left" valign="bottom">10<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Val<hr/>
+              </td>
+              <td align="left" valign="bottom">&#x000a0;<hr/>
+              </td>
+              <td align="left" valign="bottom">&#x000a0;<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Thr<hr/>
+              </td>
+              <td align="left" valign="bottom">&#x000a0;<hr/>
+              </td>
+              <td align="left" valign="bottom">&#x000a0;<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Cys<hr/>
+              </td>
+              <td align="left" valign="bottom">&#x000a0;<hr/>
+              </td>
+              <td align="left" valign="bottom">&#x000a0;<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Pro<hr/>
+              </td>
+              <td align="left" valign="bottom">&#x000a0;<hr/>
+              </td>
+              <td align="left" valign="bottom">&#x000a0;<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Ile<hr/>
+              </td>
+              <td align="left" valign="bottom">&#x000a0;<hr/>
+              </td>
+              <td align="left" valign="bottom">&#x000a0;<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Leu<hr/>
+              </td>
+              <td align="left" valign="bottom">&#x000a0;<hr/>
+              </td>
+              <td align="left" valign="bottom">&#x000a0;<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Asn<hr/>
+              </td>
+              <td align="left" valign="bottom">&#x000a0;<hr/>
+              </td>
+              <td align="left" valign="bottom">&#x000a0;<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Asp<hr/>
+              </td>
+              <td align="left" valign="bottom">&#x000a0;<hr/>
+              </td>
+              <td align="left" valign="bottom">&#x000a0;<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">His<hr/>
+              </td>
+              <td align="left" valign="bottom">&#x000a0;<hr/>
+              </td>
+              <td align="left" valign="bottom">20<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Phe<hr/>
+              </td>
+              <td align="left" valign="bottom">&#x000a0;<hr/>
+              </td>
+              <td align="left" valign="bottom">&#x000a0;<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Tyr<hr/>
+              </td>
+              <td align="left" valign="bottom">&#x000a0;<hr/>
+              </td>
+              <td align="left" valign="bottom">&#x000a0;<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Trp<hr/>
+              </td>
+              <td align="left" valign="bottom">20<hr/>
+              </td>
+              <td align="left" valign="bottom">&#x000a0;<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Gln<hr/>
+              </td>
+              <td align="left" valign="bottom">&#x000a0;<hr/>
+              </td>
+              <td align="left" valign="bottom">30<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Glu<hr/>
+              </td>
+              <td align="left" valign="bottom">&#x000a0;<hr/>
+              </td>
+              <td align="left" valign="bottom">&#x000a0;<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Met<hr/>
+              </td>
+              <td align="left" valign="bottom">30<hr/>
+              </td>
+              <td align="left" valign="bottom">70<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Lys<hr/>
+              </td>
+              <td align="left" valign="bottom">20<hr/>
+              </td>
+              <td align="left" valign="bottom">20<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left">Arg</td>
+              <td align="left">30</td>
+              <td align="left">70</td>
+            </tr>
+          </tbody>
+        </table>
+        <table-wrap-foot>
+          <p>
+            <sup>a</sup>Non-interface.
+          </p>
+          <p>
+            <sup>b</sup>Interface.
+          </p>
+        </table-wrap-foot>
+      </table-wrap>
+      <p>Although the results showed high degree of similarity between the distributions, correlation values for Met and Arg were noticeably lower than for other amino acids. Analysis of the results for Met revealed that although the covariance of distributions for all amino acids with three dihedral angles were the same, the standard deviation for Met was higher (Table <xref ref-type="table" rid="T3">3</xref>), leading to the lower correlation value for Met. In the case of Arg, although the standard deviations of Lys were twice larger than that of Arg, the covariance of Arg was ten times smaller than that of Lys, yielding the overall lower correlation for Arg. </p>
+      <table-wrap position="float" id="T3">
+        <label>Table 3</label>
+        <caption>
+          <p>Correlation between interface bound and unbound distributions for 30&#x000b0; grid spacing</p>
+        </caption>
+        <table frame="hsides" rules="groups" border="1">
+          <colgroup>
+            <col align="left"/>
+            <col align="center"/>
+            <col align="center"/>
+            <col align="center"/>
+            <col align="center"/>
+            <col align="center"/>
+          </colgroup>
+          <thead valign="top">
+            <tr>
+              <th align="left">
+                <bold>Amino acid</bold>
+              </th>
+              <th align="center">
+                <bold>Covariance (numerator in Equation</bold>
+                <bold>1</bold>
+                <bold>)</bold>
+              </th>
+              <th align="center">
+                <bold>Product of Standard deviations (denominator in Equation 1)</bold>
+              </th>
+              <th align="center">
+                <bold>Standard deviations of the unbound DADF</bold>
+              </th>
+              <th align="center">
+                <bold>Standard deviation of the bound DADF</bold>
+              </th>
+              <th align="center">
+                <bold>Correlation</bold>
+              </th>
+            </tr>
+          </thead>
+          <tbody valign="top">
+            <tr>
+              <td align="left" valign="bottom">Ser<hr/>
+              </td>
+              <td align="center" valign="bottom">0.0830<hr/>
+              </td>
+              <td align="center" valign="bottom">0.0839<hr/>
+              </td>
+              <td align="center" valign="bottom">0.2884<hr/>
+              </td>
+              <td align="center" valign="bottom">0.2910<hr/>
+              </td>
+              <td align="center" valign="bottom">0.9892<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Val<hr/>
+              </td>
+              <td align="center" valign="bottom">0.1414<hr/>
+              </td>
+              <td align="center" valign="bottom">0.1456<hr/>
+              </td>
+              <td align="center" valign="bottom">0.3862<hr/>
+              </td>
+              <td align="center" valign="bottom">0.3769<hr/>
+              </td>
+              <td align="center" valign="bottom">0.9714<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Thr<hr/>
+              </td>
+              <td align="center" valign="bottom">0.1217<hr/>
+              </td>
+              <td align="center" valign="bottom">0.1229<hr/>
+              </td>
+              <td align="center" valign="bottom">0.3475<hr/>
+              </td>
+              <td align="center" valign="bottom">0.3536<hr/>
+              </td>
+              <td align="center" valign="bottom">0.9906<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Cys<hr/>
+              </td>
+              <td align="center" valign="bottom">0.1162<hr/>
+              </td>
+              <td align="center" valign="bottom">0.1259<hr/>
+              </td>
+              <td align="center" valign="bottom">0.3315<hr/>
+              </td>
+              <td align="center" valign="bottom">0.3797<hr/>
+              </td>
+              <td align="center" valign="bottom">0.9235<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Pro<hr/>
+              </td>
+              <td align="center" valign="bottom">0.1681<hr/>
+              </td>
+              <td align="center" valign="bottom">0.1725<hr/>
+              </td>
+              <td align="center" valign="bottom">0.4148<hr/>
+              </td>
+              <td align="center" valign="bottom">0.4158<hr/>
+              </td>
+              <td align="center" valign="bottom">0.9744<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Ile<hr/>
+              </td>
+              <td align="center" valign="bottom">0.1002<hr/>
+              </td>
+              <td align="center" valign="bottom">0.1048<hr/>
+              </td>
+              <td align="center" valign="bottom">0.3446<hr/>
+              </td>
+              <td align="center" valign="bottom">0.3042<hr/>
+              </td>
+              <td align="center" valign="bottom">0.9561<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Leu<hr/>
+              </td>
+              <td align="center" valign="bottom">0.1343<hr/>
+              </td>
+              <td align="center" valign="bottom">0.1358<hr/>
+              </td>
+              <td align="center" valign="bottom">0.3486<hr/>
+              </td>
+              <td align="center" valign="bottom">0.3896<hr/>
+              </td>
+              <td align="center" valign="bottom">0.9891<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Asn<hr/>
+              </td>
+              <td align="center" valign="bottom">0.0302<hr/>
+              </td>
+              <td align="center" valign="bottom">0.0329<hr/>
+              </td>
+              <td align="center" valign="bottom">0.1815<hr/>
+              </td>
+              <td align="center" valign="bottom">0.1815<hr/>
+              </td>
+              <td align="center" valign="bottom">0.9174<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Asp<hr/>
+              </td>
+              <td align="center" valign="bottom">0.0313<hr/>
+              </td>
+              <td align="center" valign="bottom">0.0338<hr/>
+              </td>
+              <td align="center" valign="bottom">0.1727<hr/>
+              </td>
+              <td align="center" valign="bottom">0.1959<hr/>
+              </td>
+              <td align="center" valign="bottom">0.9242<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">His<hr/>
+              </td>
+              <td align="center" valign="bottom">0.0358<hr/>
+              </td>
+              <td align="center" valign="bottom">0.0394<hr/>
+              </td>
+              <td align="center" valign="bottom">0.1944<hr/>
+              </td>
+              <td align="center" valign="bottom">0.2026<hr/>
+              </td>
+              <td align="center" valign="bottom">0.9101<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Phe<hr/>
+              </td>
+              <td align="center" valign="bottom">0.0520<hr/>
+              </td>
+              <td align="center" valign="bottom">0.0577<hr/>
+              </td>
+              <td align="center" valign="bottom">0.2201<hr/>
+              </td>
+              <td align="center" valign="bottom">0.2621<hr/>
+              </td>
+              <td align="center" valign="bottom">0.9020<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Tyr<hr/>
+              </td>
+              <td align="center" valign="bottom">0.0449<hr/>
+              </td>
+              <td align="center" valign="bottom">0.0477<hr/>
+              </td>
+              <td align="center" valign="bottom">0.2058<hr/>
+              </td>
+              <td align="center" valign="bottom">0.2317<hr/>
+              </td>
+              <td align="center" valign="bottom">0.9415<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Trp<hr/>
+              </td>
+              <td align="center" valign="bottom">0.0335<hr/>
+              </td>
+              <td align="center" valign="bottom">0.0419<hr/>
+              </td>
+              <td align="center" valign="bottom">0.2174<hr/>
+              </td>
+              <td align="center" valign="bottom">0.1927<hr/>
+              </td>
+              <td align="center" valign="bottom">0.8003<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Gln<hr/>
+              </td>
+              <td align="center" valign="bottom">0.0056<hr/>
+              </td>
+              <td align="center" valign="bottom">0.0093<hr/>
+              </td>
+              <td align="center" valign="bottom">0.0901<hr/>
+              </td>
+              <td align="center" valign="bottom">0.1030<hr/>
+              </td>
+              <td align="center" valign="bottom">0.5984<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Glu<hr/>
+              </td>
+              <td align="center" valign="bottom">0.0069<hr/>
+              </td>
+              <td align="center" valign="bottom">0.0089<hr/>
+              </td>
+              <td align="center" valign="bottom">0.0900<hr/>
+              </td>
+              <td align="center" valign="bottom">0.0986<hr/>
+              </td>
+              <td align="center" valign="bottom">0.7770<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Met<hr/>
+              </td>
+              <td align="center" valign="bottom">0.0071<hr/>
+              </td>
+              <td align="center" valign="bottom">0.0194<hr/>
+              </td>
+              <td align="center" valign="bottom">0.1403<hr/>
+              </td>
+              <td align="center" valign="bottom">0.1383<hr/>
+              </td>
+              <td align="center" valign="bottom">0.3676<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" valign="bottom">Lys<hr/>
+              </td>
+              <td align="center" valign="bottom">0.0096<hr/>
+              </td>
+              <td align="center" valign="bottom">0.0116<hr/>
+              </td>
+              <td align="center" valign="bottom">0.1067<hr/>
+              </td>
+              <td align="center" valign="bottom">0.1092<hr/>
+              </td>
+              <td align="center" valign="bottom">0.8286<hr/>
+              </td>
+            </tr>
+            <tr>
+              <td align="left">Arg</td>
+              <td align="center">0.0012</td>
+              <td align="center">0.0033</td>
+              <td align="center">0.0535</td>
+              <td align="center">0.0620</td>
+              <td align="center">0.3515</td>
+            </tr>
+          </tbody>
+        </table>
+      </table-wrap>
+      <p>Equation&#x02009;2 was used to calculate the Manhattan distance between bound and unbound interface/non-interface distributions. As in the case of correlation, the metric value depended on the grid spacing, with larger steps corresponding to more coarse-grained distributions. Thus, tests were conducted with different steps: 10&#x000b0;, 30&#x000b0;, 50&#x000b0;, 70&#x000b0;, and 90&#x000b0;. The distance between the distributions decreased with the step increase (Figure <xref ref-type="fig" rid="F4">4</xref>). In most cases, the Manhattan distances for the interface were greater than for the non-interface. The distances between interface unbound and bound distributions for all long amino acids with three and four dihedral angles were the largest (Figure <xref ref-type="fig" rid="F4">4</xref>A). It agrees with our previous findings that long amino acids have higher flexibility in binding [<xref ref-type="bibr" rid="B24">24</xref>]. The Manhattan distance between the probability functions was&#x02009;&#x0003c;&#x02009;30% for most amino acids, starting with 50&#x000b0; grid spacing, except for Met and Arg interface bound vs. unbound and non-interface vs. interface distributions. For these distributions, the distance was&#x02009;&#x0003c;&#x02009;30% at grid spacing 70&#x000b0;, and&#x02009;&#x0003c;&#x02009;35% for Met interface bound vs. unbound and Arg bound non-interface vs. interface. The high similarity between the DADFs at the 50&#x000b0; grid spacing is a result of the small number of rotamer-to-rotamer transitions induced by interactions across the interface or the crystal packing. Most side chains have local readjustments (Figure <xref ref-type="fig" rid="F5">5</xref>) that do not change the rotameric state. </p>
+      <fig id="F4" position="float">
+        <label>Figure 4</label>
+        <caption>
+          <p>
+            <bold>Manhattan distance between dihedral angle distributions.</bold> (<bold>A</bold>) Interface bound vs. unbound, (<bold>B</bold>) non-interface bound vs. unbound, (<bold>C</bold>) non-interface vs. interface unbound, (<bold>D</bold>) non-interface vs. interface bound.
+          </p>
+        </caption>
+        <graphic xlink:href="1471-2105-13-236-4"/>
+      </fig>
+      <fig id="F5" position="float">
+        <label>Figure 5 </label>
+        <caption>
+          <p>
+            <bold>Examples of side-chain conformational changes upon binding</bold>
+            <bold>.</bold> (<bold>A</bold>) Immunoglobulin and (<bold>B</bold>) alpha-chymotrypsin in the unbound (blue) and bound (magenta) states. The core residues are shown as surface. The interface residues are shown in bold colors. The bound structure of the immunoglobulin is 1a2y [<xref ref-type="bibr" rid="B32">32</xref>], the unbound structure is 1vfa [<xref ref-type="bibr" rid="B33">33</xref>]. The bound structure of the alpha-chymotrypsin is 1acb [<xref ref-type="bibr" rid="B34">34</xref>], and the unbound structure is 1gct [<xref ref-type="bibr" rid="B35">35</xref>].
+          </p>
+        </caption>
+        <graphic xlink:href="1471-2105-13-236-5"/>
+      </fig>
+    </sec>
+    <sec sec-type="conclusions">
+      <title>Conclusions</title>
+      <p>The dihedral-angle distribution functions were calculated for each amino acid type for interface and non-interface surface residues, in bound and unbound protein structures. To generate the distribution functions, the configuration space was divided into cells by a cubic grid. Correlation coefficients between bound and unbound interface and non-interface distribution functions were calculated. The similarity between the distributions was also quantified by the Manhattan distance. The results showed that all the correlation coefficients depend on amino acid type and the grid resolution. For all amino acid types, the correlation coefficients increased with the increase of the grid spacing. The Manhattan distances between the distribution functions decreased accordingly. Short residues with one or two dihedral angles had higher correlations and smaller Manhattan distances than the longer residues. Met and Arg had the lowest correlation coefficients at any grid spacing. The correlations between the interface and non-interface distribution functions had a similar dependence on the grid resolution in both bound and unbound states. The interface and non-interface difference between bound and unbound distribution functions, induced by biological protein-protein interactions or crystal contacts, disappeared at the 70&#x000b0; grid spacing for interfaces and 30&#x000b0; for non-interface surface, in agreement with an average span of a side-chain rotamer. The two-fold difference in the critical grid spacing indicates larger conformational changes upon binding at the interface than at the rest of the surface. At the same time, transitions between rotamers induced by interactions across the interface or the crystal packing are rare, with most side chains having local readjustments that do not change the rotameric state.</p>
+      <p>Conformational sampling based on the side chain dihedral angle distributions may optimize flexible docking protocols by reflecting conformational preferences of the bound proteins. The results suggest that the site- (interface vs. non-interface) and residue-specific grid spacing smaller than the critical values should be used in the sampling. The minimal grid spacing (Table <xref ref-type="table" rid="T2">2</xref>) reflects intra-rotamer amino acid local readjustments upon binding. Thus, using such steps in conformational sampling may accelerate the flexible docking search by reflecting the size of these readjustments.</p>
+    </sec>
+    <sec>
+      <title>Competing interests</title>
+      <p>The authors declare that they have no competing interests.</p>
+    </sec>
+    <sec>
+      <title>Authors' contributions</title>
+      <p>All authors conceived and designed the research. TK and AMR carried out the calculations, and all authors analyzed the results. The manuscript was drafted by TK and written/revised by all authors, who read and approved the final manuscript.</p>
+    </sec>
+    <sec>
+      <title>Authors' information</title>
+      <p>TK is a PhD student at the United Institute of Informatics Problems, National Academy of Sciences of Belarus and a Research Assistant at the Center for Bioinformatics, The University of Kansas; AMR is an Assistant Research Professor at the Center for Bioinformatics, The University of Kansas; AVT is the General Director of the United Institute of Informatics Problems, National Academy of Sciences of Belarus; and IAV is the Director of the Center for Bioinformatics and Professor of Bioinformatics and Molecular Biosciences at The University of Kansas.</p>
+    </sec>
+  </body>
+  <back>
+    <sec>
+      <title>Acknowledgements</title>
+      <p>This study was supported by grant R01GM074255 from the NIH.</p>
+    </sec>
+    <ref-list>
+      <ref id="B1">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Dunbrack</surname>
+            <given-names>RL</given-names>
+          </name>
+          <name>
+            <surname>Cohen</surname>
+            <given-names>FE</given-names>
+          </name>
+          <article-title>Bayesian statistical analysis of protein side-chain rotamer preferences</article-title>
+          <source>Protein Sci</source>
+          <year>1997</year>
+          <volume>6</volume>
+          <fpage>1661</fpage>
+          <lpage>1681</lpage>
+          <pub-id pub-id-type="doi">10.1002/pro.5560060807</pub-id>
+          <pub-id pub-id-type="pmid">9260279</pub-id>
+        </mixed-citation>
+      </ref>
+      <ref id="B2">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Dunbrack</surname>
+            <given-names>RL</given-names>
+          </name>
+          <name>
+            <surname>Karplus</surname>
+            <given-names>M</given-names>
+          </name>
+          <article-title>Backbone-dependent rotamer library for proteins: application to side-chain prediction</article-title>
+          <source>J Mol Biol</source>
+          <year>1993</year>
+          <volume>230</volume>
+          <fpage>543</fpage>
+          <lpage>574</lpage>
+          <pub-id pub-id-type="doi">10.1006/jmbi.1993.1170</pub-id>
+          <pub-id pub-id-type="pmid">8464064</pub-id>
+        </mixed-citation>
+      </ref>
+      <ref id="B3">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Janin</surname>
+            <given-names>J</given-names>
+          </name>
+          <name>
+            <surname>Wodak</surname>
+            <given-names>S</given-names>
+          </name>
+          <article-title>Conformation of amino acid side-chains in proteins</article-title>
+          <source>J Mol Biol</source>
+          <year>1978</year>
+          <volume>125</volume>
+          <fpage>357</fpage>
+          <lpage>386</lpage>
+          <pub-id pub-id-type="doi">10.1016/0022-2836(78)90408-4</pub-id>
+          <pub-id pub-id-type="pmid">731698</pub-id>
+        </mixed-citation>
+      </ref>
+      <ref id="B4">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Mcgregor</surname>
+            <given-names>MJ</given-names>
+          </name>
+          <name>
+            <surname>Islam</surname>
+            <given-names>SA</given-names>
+          </name>
+          <name>
+            <surname>Sternberg</surname>
+            <given-names>MJE</given-names>
+          </name>
+          <article-title>Analysis of the relationship between side-chain conformation and secondary structure in globular-proteins</article-title>
+          <source>J Mol Biol</source>
+          <year>1987</year>
+          <volume>198</volume>
+          <fpage>295</fpage>
+          <lpage>310</lpage>
+          <pub-id pub-id-type="doi">10.1016/0022-2836(87)90314-7</pub-id>
+          <pub-id pub-id-type="pmid">3430610</pub-id>
+        </mixed-citation>
+      </ref>
+      <ref id="B5">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Lovell</surname>
+            <given-names>SC</given-names>
+          </name>
+          <name>
+            <surname>Word</surname>
+            <given-names>JM</given-names>
+          </name>
+          <name>
+            <surname>Richardson</surname>
+            <given-names>JS</given-names>
+          </name>
+          <name>
+            <surname>Richardson</surname>
+            <given-names>DC</given-names>
+          </name>
+          <article-title>The penultimate rotamer library</article-title>
+          <source>Proteins</source>
+          <year>2000</year>
+          <volume>40</volume>
+          <fpage>389</fpage>
+          <lpage>408</lpage>
+          <pub-id pub-id-type="doi">10.1002/1097-0134(20000815)40:3&#x0003c;389::AID-PROT50&#x0003e;3.0.CO;2-2</pub-id>
+          <pub-id pub-id-type="pmid">10861930</pub-id>
+        </mixed-citation>
+      </ref>
+      <ref id="B6">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Tuffery</surname>
+            <given-names>P</given-names>
+          </name>
+          <name>
+            <surname>Etchebest</surname>
+            <given-names>C</given-names>
+          </name>
+          <name>
+            <surname>Hazout</surname>
+            <given-names>S</given-names>
+          </name>
+          <name>
+            <surname>Lavery</surname>
+            <given-names>R</given-names>
+          </name>
+          <article-title>A new approach to the rapid determination of protein side-chain conformations</article-title>
+          <source>J Biomol Struc &#x00026; Dynamics</source>
+          <year>1991</year>
+          <volume>8</volume>
+          <fpage>1267</fpage>
+          <lpage>1289</lpage>
+          <pub-id pub-id-type="doi">10.1080/07391102.1991.10507882</pub-id>
+        </mixed-citation>
+      </ref>
+      <ref id="B7">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Benedetti</surname>
+            <given-names>E</given-names>
+          </name>
+          <name>
+            <surname>Morelli</surname>
+            <given-names>G</given-names>
+          </name>
+          <name>
+            <surname>Nemethy</surname>
+            <given-names>G</given-names>
+          </name>
+          <name>
+            <surname>Scheraga</surname>
+            <given-names>HA</given-names>
+          </name>
+          <article-title>Statistical and energetic analysis of side-chain conformations in oligopeptides</article-title>
+          <source>Int J Pept Prot Res</source>
+          <year>1983</year>
+          <volume>22</volume>
+          <fpage>1</fpage>
+          <lpage>15</lpage>
+        </mixed-citation>
+      </ref>
+      <ref id="B8">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Chandrasekaran</surname>
+            <given-names>R</given-names>
+          </name>
+          <name>
+            <surname>Ramachandran</surname>
+            <given-names>GN</given-names>
+          </name>
+          <article-title>Studies on the conformation of amino acids. XI. Analysis of the observed side group conformation in proteins</article-title>
+          <source>Int J Protein Res</source>
+          <year>1970</year>
+          <volume>2</volume>
+          <fpage>223</fpage>
+          <lpage>233</lpage>
+          <pub-id pub-id-type="pmid">5538390</pub-id>
+        </mixed-citation>
+      </ref>
+      <ref id="B9">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Bhat</surname>
+            <given-names>TN</given-names>
+          </name>
+          <name>
+            <surname>Sasisekharan</surname>
+            <given-names>V</given-names>
+          </name>
+          <name>
+            <surname>Vijayan</surname>
+            <given-names>M</given-names>
+          </name>
+          <article-title>Analysis of side-chain conformation in proteins</article-title>
+          <source>Int J Pept Prot Res</source>
+          <year>1979</year>
+          <volume>13</volume>
+          <fpage>170</fpage>
+          <lpage>184</lpage>
+        </mixed-citation>
+      </ref>
+      <ref id="B10">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Ponder</surname>
+            <given-names>JW</given-names>
+          </name>
+          <name>
+            <surname>Richards</surname>
+            <given-names>FM</given-names>
+          </name>
+          <article-title>Tertiary templates for proteins. Use of packing criteria in the enumeration of allowed sequences for different structural classes</article-title>
+          <source>J Mol Biol</source>
+          <year>1987</year>
+          <volume>193</volume>
+          <fpage>775</fpage>
+          <lpage>791</lpage>
+          <pub-id pub-id-type="doi">10.1016/0022-2836(87)90358-5</pub-id>
+          <pub-id pub-id-type="pmid">2441069</pub-id>
+        </mixed-citation>
+      </ref>
+      <ref id="B11">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Schrauber</surname>
+            <given-names>H</given-names>
+          </name>
+          <name>
+            <surname>Eisenhaber</surname>
+            <given-names>F</given-names>
+          </name>
+          <name>
+            <surname>Argos</surname>
+            <given-names>P</given-names>
+          </name>
+          <article-title>Rotamers: to be or not to be? An analysis of amino acid side-chain conformations in globular proteins</article-title>
+          <source>J Mol Biol</source>
+          <year>1993</year>
+          <volume>230</volume>
+          <fpage>592</fpage>
+          <lpage>612</lpage>
+          <pub-id pub-id-type="doi">10.1006/jmbi.1993.1172</pub-id>
+          <pub-id pub-id-type="pmid">8464066</pub-id>
+        </mixed-citation>
+      </ref>
+      <ref id="B12">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Kono</surname>
+            <given-names>H</given-names>
+          </name>
+          <name>
+            <surname>Doi</surname>
+            <given-names>J</given-names>
+          </name>
+          <article-title>A new method for side-chain conformation prediction using a hopfield network and reproduced rotamers</article-title>
+          <source>J Comput Chem</source>
+          <year>1996</year>
+          <volume>17</volume>
+          <fpage>1667</fpage>
+          <lpage>1683</lpage>
+        </mixed-citation>
+      </ref>
+      <ref id="B13">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>DeMaeyer</surname>
+            <given-names>M</given-names>
+          </name>
+          <name>
+            <surname>Desmet</surname>
+            <given-names>J</given-names>
+          </name>
+          <name>
+            <surname>Lasters</surname>
+            <given-names>I</given-names>
+          </name>
+          <article-title>All in one: a highly detailed rotamer library improves both accuracy and speed in the modelling of sidechains by dead-end elimination</article-title>
+          <source>Fold Des</source>
+          <year>1997</year>
+          <volume>2</volume>
+          <fpage>53</fpage>
+          <lpage>66</lpage>
+          <pub-id pub-id-type="doi">10.1016/S1359-0278(97)00006-0</pub-id>
+          <pub-id pub-id-type="pmid">9080199</pub-id>
+        </mixed-citation>
+      </ref>
+      <ref id="B14">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Beglov</surname>
+            <given-names>D</given-names>
+          </name>
+          <name>
+            <surname>Hall</surname>
+            <given-names>D</given-names>
+          </name>
+          <name>
+            <surname>Brenke</surname>
+            <given-names>R</given-names>
+          </name>
+          <name>
+            <surname>Shapovalov</surname>
+            <given-names>MV</given-names>
+          </name>
+          <name>
+            <surname>Dunbrack</surname>
+            <given-names>RL</given-names>
+          </name>
+          <name>
+            <surname>Kozakov</surname>
+            <given-names>D</given-names>
+          </name>
+          <name>
+            <surname>Vajda</surname>
+            <given-names>S</given-names>
+          </name>
+          <article-title>Minimal ensembles of side chain conformers for modeling protein-protein interactions</article-title>
+          <source>Proteins</source>
+          <year>2011</year>
+          <volume>80</volume>
+          <fpage>591</fpage>
+          <lpage>601</lpage>
+        </mixed-citation>
+      </ref>
+      <ref id="B15">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Dunbrack</surname>
+            <given-names>RL</given-names>
+          </name>
+          <article-title>Rotamer libraries in the 21st century</article-title>
+          <source>Curr Opin Struct Biol</source>
+          <year>2002</year>
+          <volume>12</volume>
+          <fpage>431</fpage>
+          <lpage>440</lpage>
+          <pub-id pub-id-type="doi">10.1016/S0959-440X(02)00344-5</pub-id>
+          <pub-id pub-id-type="pmid">12163064</pub-id>
+        </mixed-citation>
+      </ref>
+      <ref id="B16">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Shapovalov</surname>
+            <given-names>MS</given-names>
+          </name>
+          <name>
+            <surname>Dunbrack</surname>
+            <given-names>RL</given-names>
+          </name>
+          <article-title>A smoothed backbone-dependent rotamer library for proteins derived from adaptive kernel density estimates and regressions</article-title>
+          <source>Structure</source>
+          <year>2011</year>
+          <volume>19</volume>
+          <fpage>844</fpage>
+          <lpage>858</lpage>
+          <pub-id pub-id-type="doi">10.1016/j.str.2011.03.019</pub-id>
+          <pub-id pub-id-type="pmid">21645855</pub-id>
+        </mixed-citation>
+      </ref>
+      <ref id="B17">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Pickett</surname>
+            <given-names>SD</given-names>
+          </name>
+          <name>
+            <surname>Sternberg</surname>
+            <given-names>MJE</given-names>
+          </name>
+          <article-title>Empirical scale of side-chain conformational entropy in protein folding</article-title>
+          <source>J Mol Biol</source>
+          <year>1993</year>
+          <volume>231</volume>
+          <fpage>825</fpage>
+          <lpage>839</lpage>
+          <pub-id pub-id-type="doi">10.1006/jmbi.1993.1329</pub-id>
+          <pub-id pub-id-type="pmid">8515453</pub-id>
+        </mixed-citation>
+      </ref>
+      <ref id="B18">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Guharoy</surname>
+            <given-names>M</given-names>
+          </name>
+          <name>
+            <surname>Janin</surname>
+            <given-names>J</given-names>
+          </name>
+          <name>
+            <surname>Robert</surname>
+            <given-names>CH</given-names>
+          </name>
+          <article-title>Side-chain rotamer transitions at protein&#x02013;protein interfaces</article-title>
+          <source>Proteins</source>
+          <year>2010</year>
+          <volume>78</volume>
+          <fpage>3219</fpage>
+          <lpage>3225</lpage>
+          <pub-id pub-id-type="doi">10.1002/prot.22821</pub-id>
+          <pub-id pub-id-type="pmid">20737439</pub-id>
+        </mixed-citation>
+      </ref>
+      <ref id="B19">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Carugo</surname>
+            <given-names>O</given-names>
+          </name>
+          <name>
+            <surname>Argos</surname>
+            <given-names>P</given-names>
+          </name>
+          <article-title>Protein-protein crystal-packing contacts</article-title>
+          <source>Protein Sci</source>
+          <year>1997</year>
+          <volume>6</volume>
+          <fpage>2261</fpage>
+          <lpage>2263</lpage>
+          <pub-id pub-id-type="pmid">9336849</pub-id>
+        </mixed-citation>
+      </ref>
+      <ref id="B20">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Janin</surname>
+            <given-names>J</given-names>
+          </name>
+          <name>
+            <surname>Bahadur</surname>
+            <given-names>RP</given-names>
+          </name>
+          <name>
+            <surname>Chakrabarti</surname>
+            <given-names>P</given-names>
+          </name>
+          <article-title>Protein-protein interaction and quaternary structure</article-title>
+          <source>Quart Rev Biophys</source>
+          <year>2008</year>
+          <volume>41</volume>
+          <fpage>133</fpage>
+          <lpage>180</lpage>
+        </mixed-citation>
+      </ref>
+      <ref id="B21">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Zhao</surname>
+            <given-names>S</given-names>
+          </name>
+          <name>
+            <surname>Goodsell</surname>
+            <given-names>DS</given-names>
+          </name>
+          <name>
+            <surname>Olson</surname>
+            <given-names>AJ</given-names>
+          </name>
+          <article-title>Analysis of a data set of paired uncomplexed protein structures: new metrics for side-chain flexibility and model evaluation</article-title>
+          <source>Proteins</source>
+          <year>2001</year>
+          <volume>43</volume>
+          <fpage>271</fpage>
+          <lpage>279</lpage>
+          <pub-id pub-id-type="doi">10.1002/prot.1038</pub-id>
+          <pub-id pub-id-type="pmid">11288177</pub-id>
+        </mixed-citation>
+      </ref>
+      <ref id="B22">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Jacobson</surname>
+            <given-names>MP</given-names>
+          </name>
+          <name>
+            <surname>Friesner</surname>
+            <given-names>RA</given-names>
+          </name>
+          <name>
+            <surname>Xiang</surname>
+            <given-names>Z</given-names>
+          </name>
+          <name>
+            <surname>Honig</surname>
+            <given-names>B</given-names>
+          </name>
+          <article-title>On the role of the crystal environment in determining protein side-chain conformations</article-title>
+          <source>J Mol Biol</source>
+          <year>2002</year>
+          <volume>320</volume>
+          <fpage>597</fpage>
+          <lpage>608</lpage>
+          <pub-id pub-id-type="doi">10.1016/S0022-2836(02)00470-9</pub-id>
+          <pub-id pub-id-type="pmid">12096912</pub-id>
+        </mixed-citation>
+      </ref>
+      <ref id="B23">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Eyal</surname>
+            <given-names>E</given-names>
+          </name>
+          <name>
+            <surname>Gerzon</surname>
+            <given-names>S</given-names>
+          </name>
+          <name>
+            <surname>Potapov</surname>
+            <given-names>V</given-names>
+          </name>
+          <name>
+            <surname>Edelman</surname>
+            <given-names>M</given-names>
+          </name>
+          <name>
+            <surname>Sobolev</surname>
+            <given-names>V</given-names>
+          </name>
+          <article-title>The limit of accuracy of protein modeling: influence of crystal packing on protein structure</article-title>
+          <source>J Mol Biol</source>
+          <year>2005</year>
+          <volume>351</volume>
+          <fpage>431</fpage>
+          <lpage>442</lpage>
+          <pub-id pub-id-type="doi">10.1016/j.jmb.2005.05.066</pub-id>
+          <pub-id pub-id-type="pmid">16005885</pub-id>
+        </mixed-citation>
+      </ref>
+      <ref id="B24">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Ruvinsky</surname>
+            <given-names>AM</given-names>
+          </name>
+          <name>
+            <surname>Kirys</surname>
+            <given-names>T</given-names>
+          </name>
+          <name>
+            <surname>Tuzikov</surname>
+            <given-names>AV</given-names>
+          </name>
+          <name>
+            <surname>Vakser</surname>
+            <given-names>IA</given-names>
+          </name>
+          <article-title>Side-chain conformational changes upon protein-protein association</article-title>
+          <source>J Mol Biol</source>
+          <year>2011</year>
+          <volume>408</volume>
+          <fpage>356</fpage>
+          <lpage>365</lpage>
+          <pub-id pub-id-type="doi">10.1016/j.jmb.2011.02.030</pub-id>
+          <pub-id pub-id-type="pmid">21354429</pub-id>
+        </mixed-citation>
+      </ref>
+      <ref id="B25">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Kirys</surname>
+            <given-names>T</given-names>
+          </name>
+          <name>
+            <surname>Ruvinsky</surname>
+            <given-names>A</given-names>
+          </name>
+          <name>
+            <surname>Tuzikov</surname>
+            <given-names>AV</given-names>
+          </name>
+          <name>
+            <surname>Vakser</surname>
+            <given-names>IA</given-names>
+          </name>
+          <article-title>Rotamer libraries and probabilities of transition between rotamers for the side chains in protein-protein binding</article-title>
+          <source>Proteins</source>
+          <year>2012</year>
+          <volume>80</volume>
+          <fpage>2089</fpage>
+          <lpage>2098</lpage>
+          <pub-id pub-id-type="pmid">22544766</pub-id>
+        </mixed-citation>
+      </ref>
+      <ref id="B26">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Gao</surname>
+            <given-names>Y</given-names>
+          </name>
+          <name>
+            <surname>Douguet</surname>
+            <given-names>D</given-names>
+          </name>
+          <name>
+            <surname>Tovchigrechko</surname>
+            <given-names>A</given-names>
+          </name>
+          <name>
+            <surname>Vakser</surname>
+            <given-names>IA</given-names>
+          </name>
+          <article-title>DOCKGROUND system of databases for protein recognition studies: unbound structures for docking</article-title>
+          <source>Proteins</source>
+          <year>2007</year>
+          <volume>69</volume>
+          <fpage>845</fpage>
+          <lpage>851</lpage>
+          <pub-id pub-id-type="doi">10.1002/prot.21714</pub-id>
+          <pub-id pub-id-type="pmid">17803215</pub-id>
+        </mixed-citation>
+      </ref>
+      <ref id="B27">
+        <mixed-citation publication-type="book">
+          <name>
+            <surname>Hubbard</surname>
+            <given-names>SJ</given-names>
+          </name>
+          <name>
+            <surname>Thornton</surname>
+            <given-names>JM</given-names>
+          </name>
+          <source>NACCESS, computer program, Department of Biochemistry and Molecular Biology</source>
+          <year>1993</year>
+          <publisher-name>University College London</publisher-name>
+        </mixed-citation>
+      </ref>
+      <ref id="B28">
+        <mixed-citation publication-type="other">
+          <source>'Dang', Computer Program</source>
+          <comment>
+            <ext-link ext-link-type="uri" xlink:href="http://kinemage.biochem.duke.edu">http://kinemage.biochem.duke.edu</ext-link>
+          </comment>
+        </mixed-citation>
+      </ref>
+      <ref id="B29">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Rodgers</surname>
+            <given-names>JL</given-names>
+          </name>
+          <name>
+            <surname>Nicewander</surname>
+            <given-names>WA</given-names>
+          </name>
+          <article-title>Thirteen ways to look at the correlation coefficient</article-title>
+          <source>The American Statistician</source>
+          <year>1988</year>
+          <volume>42</volume>
+          <fpage>59</fpage>
+          <lpage>66</lpage>
+        </mixed-citation>
+      </ref>
+      <ref id="B30">
+        <mixed-citation publication-type="book">
+          <name>
+            <surname>Krause</surname>
+            <given-names>EF</given-names>
+          </name>
+          <source>Taxicab Geometry : an adventure in non-Euclidean geometry</source>
+          <year>1987</year>
+          <publisher-name>New York: Dover Publications</publisher-name>
+        </mixed-citation>
+      </ref>
+      <ref id="B31">
+        <mixed-citation publication-type="book">
+          <name>
+            <surname>Rahman</surname>
+            <given-names>NA</given-names>
+          </name>
+          <source>A course in theoretical statistics</source>
+          <year>1968</year>
+          <publisher-name>Charles Griffin &#x00026; Co</publisher-name>
+        </mixed-citation>
+      </ref>
+      <ref id="B32">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Dall'Acqua</surname>
+            <given-names>W</given-names>
+          </name>
+          <name>
+            <surname>Goldman</surname>
+            <given-names>ER</given-names>
+          </name>
+          <name>
+            <surname>Lin</surname>
+            <given-names>W</given-names>
+          </name>
+          <name>
+            <surname>Teng</surname>
+            <given-names>C</given-names>
+          </name>
+          <name>
+            <surname>Tsuchiya</surname>
+            <given-names>D</given-names>
+          </name>
+          <name>
+            <surname>Li</surname>
+            <given-names>H</given-names>
+          </name>
+          <name>
+            <surname>Ysern</surname>
+            <given-names>X</given-names>
+          </name>
+          <name>
+            <surname>Braden</surname>
+            <given-names>BC</given-names>
+          </name>
+          <name>
+            <surname>Li</surname>
+            <given-names>Y</given-names>
+          </name>
+          <name>
+            <surname>Smith-Gill</surname>
+            <given-names>SJ</given-names>
+          </name>
+          <article-title>A mutational analysis of binding interactions in an antigen-antibody protein-protein complex</article-title>
+          <source>Biochemistry</source>
+          <year>1998</year>
+          <volume>37</volume>
+          <fpage>7981</fpage>
+          <lpage>799</lpage>
+          <pub-id pub-id-type="doi">10.1021/bi980148j</pub-id>
+          <pub-id pub-id-type="pmid">9609690</pub-id>
+        </mixed-citation>
+      </ref>
+      <ref id="B33">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Bhat</surname>
+            <given-names>TN</given-names>
+          </name>
+          <name>
+            <surname>Bentley</surname>
+            <given-names>GA</given-names>
+          </name>
+          <name>
+            <surname>Boulot</surname>
+            <given-names>G</given-names>
+          </name>
+          <name>
+            <surname>Greene</surname>
+            <given-names>MI</given-names>
+          </name>
+          <name>
+            <surname>Tello</surname>
+            <given-names>D</given-names>
+          </name>
+          <name>
+            <surname>Dall'Acqua</surname>
+            <given-names>W</given-names>
+          </name>
+          <name>
+            <surname>Souchon</surname>
+            <given-names>H</given-names>
+          </name>
+          <name>
+            <surname>Schwarz</surname>
+            <given-names>FP</given-names>
+          </name>
+          <name>
+            <surname>Mariuzza</surname>
+            <given-names>RA</given-names>
+          </name>
+          <name>
+            <surname>Poljak</surname>
+            <given-names>RJ</given-names>
+          </name>
+          <article-title>Bound water molecules and conformational stabilization help mediate an antigen-antibody association</article-title>
+          <source>Proc Natl Acad Sci USA</source>
+          <year>1994</year>
+          <volume>91</volume>
+          <fpage>1089</fpage>
+          <lpage>1093</lpage>
+          <pub-id pub-id-type="doi">10.1073/pnas.91.3.1089</pub-id>
+          <pub-id pub-id-type="pmid">8302837</pub-id>
+        </mixed-citation>
+      </ref>
+      <ref id="B34">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Frigerio</surname>
+            <given-names>F</given-names>
+          </name>
+          <name>
+            <surname>Coda</surname>
+            <given-names>A</given-names>
+          </name>
+          <name>
+            <surname>Pugliese</surname>
+            <given-names>L</given-names>
+          </name>
+          <name>
+            <surname>Lionetti</surname>
+            <given-names>C</given-names>
+          </name>
+          <name>
+            <surname>Menegatti</surname>
+            <given-names>E</given-names>
+          </name>
+          <name>
+            <surname>Amiconi</surname>
+            <given-names>G</given-names>
+          </name>
+          <name>
+            <surname>Schnebli</surname>
+            <given-names>HP</given-names>
+          </name>
+          <name>
+            <surname>Ascenzi</surname>
+            <given-names>P</given-names>
+          </name>
+          <name>
+            <surname>Bolognesi</surname>
+            <given-names>M</given-names>
+          </name>
+          <article-title>Crystal and molecular structure of the bovine alpha-chymotrypsin-eglin c complex at 2.0 a resolution</article-title>
+          <source>J Mol Biol</source>
+          <year>1992</year>
+          <volume>225</volume>
+          <fpage>107</fpage>
+          <lpage>123</lpage>
+          <pub-id pub-id-type="doi">10.1016/0022-2836(92)91029-O</pub-id>
+          <pub-id pub-id-type="pmid">1583684</pub-id>
+        </mixed-citation>
+      </ref>
+      <ref id="B35">
+        <mixed-citation publication-type="journal">
+          <name>
+            <surname>Dixon</surname>
+            <given-names>MM</given-names>
+          </name>
+          <name>
+            <surname>Matthews</surname>
+            <given-names>BW</given-names>
+          </name>
+          <article-title>Is gamma-chymotrypsin a tetrapeptide acyl-enzyme adduct of alpha-chymotrypsin?</article-title>
+          <source>Biochemistry</source>
+          <year>1989</year>
+          <volume>28</volume>
+          <fpage>7033</fpage>
+          <lpage>7038</lpage>
+          <pub-id pub-id-type="doi">10.1021/bi00443a038</pub-id>
+          <pub-id pub-id-type="pmid">2819046</pub-id>
+        </mixed-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>
+
+
