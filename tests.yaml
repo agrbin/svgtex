@@ -101,16 +101,10 @@
     content-type: 'text/plain; charset=utf-8'
     content-contains: "No source math detected in input"
 
-
-
-
-
-
 # Good LaTeX
 - name: good-latex
   request:
     q: "n^2"
-    in-format: auto
     latex-style: text
   expected:
     format: svg
@@ -147,7 +141,62 @@
 # JATS file without any equations
 - name: jats-no-equations
   request:
-    examples: jats-no-equations
+    example: jats-no-equations
+  expected:
+    code: 400
+    content-type: 'text/plain; charset=utf-8'
+    content-contains: "No formulas found"
+
+# JATS file with one good latex equation
+- name: jats-latex-one
+  request:
+    example: jats-latex-one
+  expected:
+    content-type: 'text/html; charset=utf-8'
+    content-contains: 'Math Tool 2'
+
+# JATS file with two good latex equations
+- name: jats-latex-two
+  request:
+    example: jats-latex-two
+  expected:
+    content-type: 'text/html; charset=utf-8'
+    content-contains: 'Math Tool 2'
+
+# JATS file with one good and one bad latex equation
+- name: bad-jats-latex
+  request:
+    example: bad-jats-latex
+  expected:
+    code: 400
+    content-type: 'text/plain; charset=utf-8'
+    content-contains: "No closing </tex-math> tag"
+
+# JATS file with one MathML equation with no namespace prefix
+- name: jats-mathml-one-nons
+  request:
+    example: jats-mathml-one-nons
+  expected:
+    content-type: 'text/html; charset=utf-8'
+    content-contains: 'Math Tool 2'
+
+# JATS file with one MathML formula, with namespace prefix
+- name: jats-mathml-one-ns
+  request:
+    example: jats-mathml-one-ns
+  expected:
+    content-type: 'text/html; charset=utf-8'
+    content-contains: 'Math Tool 2'
+
+# JATS file with multiple MathML formulas
+- name: jats-mathml-two
+  request:
+    example: jats-mathml-two
+  expected:
+    content-type: 'text/html; charset=utf-8'
+    content-contains: 'Math Tool 2'
+
+
 
 
 

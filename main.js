@@ -242,6 +242,7 @@ function parse_request(req) {
     width: null
   };
 
+
   if (debug) {
     if (req.method == 'POST') {
       console.log("  req.postRaw = '" + req.postRaw + "'");
@@ -251,6 +252,7 @@ function parse_request(req) {
       console.log("  req.url = '" + req.url + "'");
     }
   }
+
 
   var qs;   // query string, or x-www-form-urlencoded post data
   if (req.method == 'GET') {
@@ -307,6 +309,7 @@ function parse_request(req) {
     query.error = "Method " + req.method + " not supported";
     return query;
   }
+
 
   //console.log("qs = '" + qs + "'");
   var param_strings = qs.split(/&/);
@@ -371,6 +374,7 @@ function parse_request(req) {
     return query;
   }
 
+
   // Implement auto-detect.
   var q = query.q;
   if (query.in_format == 'auto') {
@@ -385,12 +389,15 @@ function parse_request(req) {
                       q.match(mml_stag) ? 'mml' : 'latex';
   }
 
+
   // Parse JATS files
   if (query.in_format == 'jats') {
+    console.log("about to parse_jats");
     var jats_formulas = parse_jats(q);
+
     if (typeof jats_formulas === "string") {
       query.status_code = 400;
-      query.error = jats_formula;
+      query.error = jats_formulas;
       return query;
     }
     query.q = jats_formulas;
@@ -398,10 +405,6 @@ function parse_request(req) {
 
   return query;
 }
-
-
-
-
 
 
 
@@ -413,8 +416,13 @@ function listenLoop() {
     var query = parse_request(req);
     var request_num = query.num;
     console.log(request_num + ': ' + "received: " + req.method + " " +
-        req.url.substr(0, 30) + " ..");
+        req.url.substr(0, 70) + (req.url.length > 70 ? "..." : ""));
     resp.setHeader("X-XSS-Protection", 0);
+
+
+    //console.log("---------------------------------------------\n");
+    //console.log("typeof query.q == " + typeof query.q);
+    //console.log("---------------------------------------------\n");
 
     if (query.error) {
       console.log(request_num + ": error: " + query.error);
@@ -463,23 +471,8 @@ function listenLoop() {
       resp.close();
     }
 
-    else if (query.out_format == 'client') {
-      console.log(request_num + ": returning client template");
-      var equations = query.q;
-      var rows = '';
-      if (typeof equations === 'string') {
-        rows = make_row(equations, query.in_format);
-      }
-      else {
-        equations.forEach(function(eq) {
-          rows += make_row(eq, query.in_format);
-        });
-      }
-      
-      var resp_page = client_template.start + rows + client_template.end;
-      resp.setHeader('Content-type', 'text/html; charset=utf-8');
-      resp.write(resp_page);
-      resp.close();
+    else if (query.in_format == 'jats') {
+      client_table(resp, query);
     }
 
     else {
@@ -507,15 +500,44 @@ function listenLoop() {
   }
 }
 
+// Return an HTML page with a table of equations, for rendering on the client
+function client_table(resp, query) {
+  console.log(query.num + ": returning client template");
+  var formulas = query.q;
+  var rows = '';
+  formulas.forEach(function(f) {
+      rows += make_row(f);
+  });
+  
+  var resp_page = client_template.start + rows + client_template.end;
+  resp.setHeader('Content-type', 'text/html; charset=utf-8');
+  resp.write(resp_page);
+  resp.close();
+}
+
 /* Make one row of the table */
-function make_row(eq, format) {
-  if (format == 'latex') eq = '\\(' + eq + '\\)';
-  return "<tr><td></td><td></td><td>" + eq + "</td></tr>";
+function make_row(f) {
+  var format = 
+      f.format == 'mml' ? "MathML" : "LaTeX, " + f.latex_style;
+  var formula = 
+      f.format == 'mml' ? f.q :
+        f.latex_style == 'text' ? '\\(' + f.q + '\\)'
+                                : '\\[' + f.q + '\\]';
+
+
+  return "<tr>\n" +
+         "  <td>" + f.id + "</td>\n" +
+         "  <td>" + format + "</td>\n" +
+         "  <td>" + formula + "</td>\n" +
+         "</tr>\n";
 }
 
 // Open the web page. Once loaded, it will invoke listenLoop.
 console.log("Loading bench page " + bench_page);
 page.open(bench_page, listenLoop);
+
+
+
 
 /* These includeJs calls would allow us to specify the MathJax location as a
    command-line parameter, but then you'd have to take the <script> tags out of

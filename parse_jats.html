@@ -1,10 +1,27 @@
 <html>
   <head>
     <script type='text/javascript' src='parse_jats.js'></script>
+
     <script type='text/javascript'>
-      var jats='Formulas: <tex-math id="M1">n^2</tex-math> and <math id="M2"><mi>B</mi></math> etc.';
-      var parsed = exports.parse_jats(jats);
-      console.log("parsed: %o", parsed);
+      var test_strings = [
+        //// errors
+        //'foo',
+        //'...<math>oops',
+        //'...<disp-formula><math><mi>m</mi></math></disp-formula oops',
+        //// good stuff
+        //'...<disp-formula><math id="M3"><mi>m</mi></math></disp-formula>...',
+        //"...<inline-formula><math id='M4'><mi>m</mi></math></inline-formula>...",
+        //"...<disp-formula><tex-math id='M5'>n^2</tex-math></disp-formula>...",
+        //"...<inline-formula><tex-math id='M6'>n^2</tex-math></inline-formula>...",
+        //'Formulas: <tex-math id="M1">n^2</tex-math> and <math id="M2"><mi>B</mi></math> etc.',
+        //'<disp-formula>    <tex-math id="M1"> n^2 </tex-math>    </disp-formula>  ',
+        '<inline-formula><tex-math id="M2">n^2</tex-math</inline-formula>'
+      ];
+      for (var i = 0; i < test_strings.length; i++) {
+        var jats = test_strings[i];
+        var parsed = exports.parse_jats(jats);
+        console.log(jats + "\n%o", parsed);
+      }
     </script>
 
   </head>

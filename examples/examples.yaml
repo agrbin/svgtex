@@ -90,42 +90,38 @@
   description: Standard deviation
   filename: standard-deviation.mml
 
-
-
-# This one is good
 - name: jats-no-equations
   in-format: jats
   description: JATS file without any equations
   filename: jats-no-equations.nxml
 
+- name: jats-latex-one
+  in-format: jats
+  description: JATS file with one good LaTeX equations
+  filename: jats-latex-one.nxml
 
+- name: jats-latex-two
+  in-format: jats
+  description: JATS file with two good LaTeX equations
+  filename: jats-latex-two.nxml
 
-# Haven't checked the following:
-- name: mathml-one-nons
+- name: bad-jats-latex
+  in-format: jats
+  description: JATS file with one good and one bad LaTeX equation
+  filename: bad-jats-latex.nxml
+
+- name: jats-mathml-one-nons
   in-format: jats
   description: JATS file with one MathML formula, no namespace prefix
-  filename: mathml-one-nons.nxml
+  filename: jats-mathml-one-nons.nxml
 
-- name: mathml-one-ns
+- name: jats-mathml-one-ns
   in-format: jats
   description: JATS file with one MathML formula, with namespace prefix
-  filename: mathml-one-ns.nxml
+  filename: jats-mathml-one-ns.nxml
 
-- name: mathml-two-nons
+- name: jats-mathml-two
   in-format: jats
-  description: JATS file with multiple MathML formulas, no namespace prefix
-  filename: mathml-two-nons.nxml
-
-- name: mathml-two-ns
-  in-format: jats
-  description: JATS file with multiple MathML formula, with namespace prefix
-  filename: mathml-two-ns.nxml
-
-# This one is good
-- name: jats-mathml-2
-  in-format: jats
-  description: JATS file with two equations
-  filename: jats-mathml-2.nxml
-
-
+  description: JATS file with multiple MathML formulas
+  filename: jats-mathml-two.nxml
 
