@@ -80,6 +80,10 @@ No other namespace prefix will work.
 Example files and testing
 -------------------------
 
+To see the command line options that are available when you start the service, enter
+
+    phantomjs main.js --help
+
 Example input files are included in the *examples* subdirectory. Metadata about these
 examples is in the *examples.yaml* file.
 
