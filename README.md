@@ -119,7 +119,7 @@ Possible enhancements:
 License and public domain notice
 --------------------------------
 
-Portions of this software from the original [agrbin/svgtex]() project are
+Portions of this software from the original [agrbin/svgtex](https://github.com/agrbin/svgtex) project are
 licensed under the MIT license, as described in LICENSE.txt.
 
 Code that was added by government employees or contractors working for the
