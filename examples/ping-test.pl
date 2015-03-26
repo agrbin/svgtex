@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 # This pings each of several instances, and should be run over a long period of
-# time, to see if/when they crash.  Start the svgtex instances on separate ports.
+# time, to see if/when they crash.  Start the instances on separate ports.
 # Change the @instances table below to define which instances you want to ping,
 # and how often.
 

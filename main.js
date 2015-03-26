@@ -99,7 +99,7 @@ while (arg_num < args.length) {
   }
 
   if (option_match('version', false, arg)) {
-    console.log('svgtex version ' + VERSION);
+    console.log('pmc-math-tool-2 version ' + VERSION);
     phantom.exit(0);
     break;
   }
@@ -125,11 +125,11 @@ while (arg_num < args.length) {
   break;
 }
 
-console.log(
-  'port = ' + port + ", " +
-  'requests_to_serve = ' + requests_to_serve + ", " +
-  'bench_page = ' + bench_page + ", " +
-  'debug = ' + debug + "\n"
+log("Starting PMC Math Tool 2, version " + VERSION + ": " +
+    'port = ' + port + ", " +
+    'requests_to_serve = ' + requests_to_serve + ", " +
+    'bench_page = ' + bench_page + ", " +
+    'debug = ' + debug
 );
 
 
@@ -190,7 +190,7 @@ page.onCallback = function(data) {
     resp.setHeader("Content-Type", "image/svg+xml; charset=utf-8");
     resp.setHeader("Content-Length", utf8_strlen(svg_or_error));
     resp.write(svg_or_error);
-    console.log(num + ': ' + src.substr(0, 30) + '.. ' +
+    log(num + ': ' + src.substr(0, 30) + '.. ' +
         src.length + 'B query, OK ' + svg_or_error.length + 'B result' +
         duration_msg);
     if (debug) {
@@ -201,7 +201,7 @@ page.onCallback = function(data) {
     resp.statusCode = 400;    // bad request
     resp.setHeader("Content-Type", "text/plain; charset=utf-8");
     resp.write(svg_or_error[0]);
-    console.log(num, src.substr(0, 30) + '.. ' +
+    log(num, src.substr(0, 30) + '.. ' +
         src.length + 'B query, error: ' + svg_or_error[0] + duration_msg);
   }
   resp.close();
@@ -254,7 +254,8 @@ function parse_request(req) {
     // Implement the test form
     if (url == '' || url == '/') {
       if (test_form == null && fs.isReadable(test_form_filename)) {
-        test_form = fs.read(test_form_filename);  // set the global variable
+        var t = fs.read(test_form_filename);  // set the global variable
+        test_form = t.replace("<!-- version -->", VERSION);
       }
       if (test_form != null) {
         query.test_form = 1;
@@ -390,7 +391,6 @@ function parse_request(req) {
 
   // Parse JATS files
   if (query.in_format == 'jats') {
-    console.log("about to parse_jats");
     var jats_formulas = parse_jats(q);
 
     if (typeof jats_formulas === "string") {
@@ -413,7 +413,8 @@ function listenLoop() {
   service = server.listen('0.0.0.0:' + port, function(req, resp) {
     var query = parse_request(req);
     var request_num = query.num;
-    console.log(request_num + ': ' + "received: " + req.method + " " +
+    log(request_num + ': ' + 
+        "received: " + req.method + " " +
         req.url.substr(0, 70) + (req.url.length > 70 ? "..." : ""));
     resp.setHeader("X-XSS-Protection", 0);
 
@@ -423,14 +424,14 @@ function listenLoop() {
     //console.log("---------------------------------------------\n");
 
     if (query.error) {
-      console.log(request_num + ": error: " + query.error);
+      log(request_num + ": error: " + query.error);
       resp.statusCode = query.status_code;
       resp.setHeader('Content-type', 'text/plain; charset=utf-8');
       resp.write(query.error);
       resp.close();
     }
     else if (query.test_form) {
-      console.log(request_num + ": returning test form");
+      log(request_num + ": returning test form");
       /*
         console.log("resp.headers = {");
         for (var k in resp.headers) {
@@ -446,7 +447,7 @@ function listenLoop() {
     }
     else if (query.static_file) {
       var static_file = query.static_file;
-      console.log(request_num + ": returning " + static_file);
+      log(request_num + ": returning " + static_file);
 
       // I was going to set a content-type, depending on extension, for all of the
       // examples. But, the test page works better if we always use 'text/plain', because
@@ -485,7 +486,7 @@ function listenLoop() {
       if (query.in_format == 'latex' && query.latex_style == 'display') {
         query.q = '\\displaystyle{' + query.q + '}';
       }
-      console.log(request_num + ": sending to MathJax");
+      log(request_num + ": sending to MathJax");
       activeRequests[request_num] = [resp, (new Date()).getTime()];
       page.evaluate(function(_query) {
         window.engine.process(_query, window.callPhantom);
@@ -498,14 +499,14 @@ function listenLoop() {
     phantom.exit(1);
   }
   else {
-    console.log("Server started on port " + port);
-    console.log("Point your brownser at http://localhost:" + port + " for a test form.");
+    log("Server started on port " + port);
+    console.log("Point your browser at http://localhost:" + port + " for a test form.");
   }
 }
 
 // Return an HTML page with a table of equations, for rendering on the client
 function client_table(resp, query) {
-  console.log(query.num + ": returning client template");
+  log(query.num + ": returning client template");
   var formulas = query.q;
   var width = query.width || null;
 
@@ -561,9 +562,13 @@ function xml_escape(s) {
           .replace(/"/g, "&quot;");
 }
 
+function log(msg) {
+  console.log((new Date()).toISOString() + ": " + msg);
+}
+
 
 // Open the web page. Once loaded, it will invoke listenLoop.
-console.log("Loading bench page " + bench_page);
+log("Loading bench page " + bench_page);
 page.open(bench_page, listenLoop);
 
 

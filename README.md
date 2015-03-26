@@ -18,11 +18,10 @@ Then, start the server:
 
 ```
 $ phantomjs main.js
-port = 16000, requests_to_serve = -1, bench_page = bench.html, debug = false
-
-Loading bench page bench.html
-Server started on port 16000
-Point your brownser at http://localhost:16000 for a test form.
+2015-03-26T16:20:05.602Z: Starting PMC Math Tool 2, version 0.1: port = 16000, ...
+2015-03-26T16:20:05.602Z: Loading bench page bench.html
+2015-03-26T16:20:05.640Z: Server started on port 16000
+Point your browser at http://localhost:16000 for a test form.
 ```
 
 Try it out by pointing your browser at http://localhost:16000/, and using the test form
@@ -107,10 +106,17 @@ By default, this loads MathJax from the NCBI servers, using the same version of
 MathJax and the same configuration file as PMC.  The URL for this is in the
 &lt;script> tag of the bench.html page.
 
-Future enhancements
--------------------
+Release procedure
+-----------------
 
-Possible enhancements:
+* Test
+* Update the version number in main.js
+* Commit and tag the repository with the version number
+* Push
+* Deploy
+
+Possible future enhancements
+----------------------------
 
 - Allow POST in other formats.  How about JSON?
 - Implement uploading via "PMCID (from PMC3 by default or PMC3QA on selection)", and 
