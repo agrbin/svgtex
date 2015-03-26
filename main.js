@@ -152,13 +152,7 @@ var test_form = null;
 var client_template_filename = 'client-template.html';
 var client_template = (function() {
   if (fs.isReadable(client_template_filename)) {
-    var ct = fs.read(client_template_filename);
-    var sep = '<!--sep-->';
-    var sepi = ct.indexOf(sep);
-    return {
-      start: ct.substr(0, sepi),
-      end: ct.substr(sepi + sep.length)
-    };
+    return fs.read(client_template_filename);
   }
   else {
     console.error("Can't find " + client_template_filename + " ... " +
@@ -514,28 +508,37 @@ function client_table(resp, query) {
   console.log(query.num + ": returning client template");
   var formulas = query.q;
   var width = query.width || null;
+
   var rows = '';
   formulas.forEach(function(f) {
       rows += make_row(f, width);
   });
+  resp_page = client_template.replace("<!-- rows -->", rows);
+
+  var sources = '';
+  formulas.forEach(function(f) {
+      sources += make_source(f);
+  });
+  resp_page = resp_page.replace("<!-- sources -->", sources);
+
   
-  var resp_page = client_template.start + rows + client_template.end;
+  //var resp_page = client_template.start + rows + client_template.end;
   resp.setHeader('Content-type', 'text/html; charset=utf-8');
   resp.write(resp_page);
   resp.close();
 }
 
-/* Make one row of the table */
+// Make one row of the table 
 function make_row(f, width) {
-  var format = 
-      f.format == 'mml' ? "MathML" : "LaTeX, " + f.latex_style;
-  var formula = 
-      f.format == 'mml' ? f.q :
-        f.latex_style == 'text' ? '\\(' + f.q + '\\)'
-                                : '\\[' + f.q + '\\]';
+  var format = f.format == 'mml' ? "MathML" : "LaTeX, " + f.latex_style;
+
+  var formula = f.format == 'mml' ? '<math />' :
+                f.latex_style == 'text' ? '\\(\\)'
+                                        : '\\[\\]';
+
   var formula_cell = width ?
-      "<div style='width: " + width + "px'>" + formula + "</div>" :
-      formula;
+      "<div id='" + f.id + "-div' style='width: " + width + "px;'>" + formula + "</div>" :
+      "<div id='" + f.id + "-div'>" + formula + "</div>";
 
   return "<tr>\n" +
          "  <td>" + f.id + "</td>\n" +
@@ -543,6 +546,21 @@ function make_row(f, width) {
          "  <td>" + formula_cell + "</td>\n" +
          "</tr>\n";
 }
+
+function make_source(f) {
+  return "<div data-rid='" + f.id + "-div' data-format='" + f.format + "'>" + 
+         xml_escape(f.q) +
+         "</div>\n";
+}
+
+function xml_escape(s) {
+  return s.replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/'/g, "&apos;")
+          .replace(/"/g, "&quot;");
+}
+
 
 // Open the web page. Once loaded, it will invoke listenLoop.
 console.log("Loading bench page " + bench_page);

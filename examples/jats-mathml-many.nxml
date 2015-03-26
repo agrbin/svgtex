@@ -22,7 +22,7 @@
 
       <!-- with inline-formula wrapper, namespace prefix -->
       <inline-formula>
-        <mml:math id="M1">
+        <mml:math id="M3">
           <mml:mi>&#x003d5;</mml:mi>
           <mml:mo>=</mml:mo>
           <mml:mi>B</mml:mi>
@@ -32,7 +32,7 @@
 
     <!-- with disp-formula wrapper, no namespace prefix -->
     <disp-formula>
-      <math id="M1">
+      <math id="M4">
         <mi>&#x003d5;</mi>
         <mo>=</mo>
         <mi>B</mi>

@@ -4,19 +4,21 @@
 
     <script type='text/javascript'>
       var test_strings = [
-        //// errors
-        //'foo',
-        //'...<math>oops',
-        //'...<disp-formula><math><mi>m</mi></math></disp-formula oops',
-        //// good stuff
-        //'...<disp-formula><math id="M3"><mi>m</mi></math></disp-formula>...',
-        //"...<inline-formula><math id='M4'><mi>m</mi></math></inline-formula>...",
-        //"...<disp-formula><tex-math id='M5'>n^2</tex-math></disp-formula>...",
-        //"...<inline-formula><tex-math id='M6'>n^2</tex-math></inline-formula>...",
-        //'Formulas: <tex-math id="M1">n^2</tex-math> and <math id="M2"><mi>B</mi></math> etc.',
-        //'<disp-formula>    <tex-math id="M1"> n^2 </tex-math>    </disp-formula>  ',
-        //'<inline-formula><tex-math id="M2">n^2</tex-math</inline-formula>',
-        '<inline-formula id="foo">\\n\\n<tex-math id="M2">n^2</tex-math></inline-formula>'
+        // errors
+        'foo',
+        '...<math>oops',
+        '...<disp-formula><math><mi>m</mi></math></disp-formula oops',
+        // good stuff
+        '...<disp-formula><math id="M3"><mi>m</mi></math></disp-formula>...',
+        "...<inline-formula><math id='M4'><mi>m</mi></math></inline-formula>...",
+        "...<disp-formula><tex-math id='M5'>n^2</tex-math></disp-formula>...",
+        "...<inline-formula><tex-math id='M6'>n^2</tex-math></inline-formula>...",
+        'Formulas: <tex-math id="M1">n^2</tex-math> and <math id="M2"><mi>B</mi></math> etc.',
+        '<disp-formula>    <tex-math id="M1"> n^2 </tex-math>    </disp-formula>  ',
+        '<inline-formula><tex-math id="M2">n^2</tex-math</inline-formula>',
+        '<inline-formula id="foo">\\n\\n<tex-math id="M2">n^2</tex-math></inline-formula>',
+        '<disp-formula><label>(1)</label><tex-math id="M1">n^2</tex-math></disp-formula>',
+        '<disp-formula><label>(1)</label><math id="M1"><mi>m</mi></math></disp-formula>'
       ];
       for (var i = 0; i < test_strings.length; i++) {
         var jats = test_strings[i];

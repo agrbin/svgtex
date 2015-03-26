@@ -27,9 +27,15 @@
 var outer_stag_regexp = new RegExp(
     '<\\s*((disp-formula)|(inline-formula)|(math)|(mml:math)|(tex-math))(>|\\s[\\s\\S]*?>)');
 
-// Same start-tag regex as above, but without disp-formula or inline-formula.
+// Same start-tag regex as above, but without disp-formula or inline-formula. Also, 
+// designed to allow us to throw away whatever came *before* the start tag.
+// After this matches: 
+//   0 - Everything before and including the start tag
+//   1 - Everything before the start tag
+//   2 - The complete start tag
+//   3 - The element name
 var inner_stag_regexp = 
-  new RegExp('^([\\s\\S]*?<\\s*((math)|(mml:math)|(tex-math))(>|\\s[\\s\\S]*?>))');
+  new RegExp('^([\\s\\S]*?)(<\\s*((math)|(mml:math)|(tex-math))(>|(\\s[\\s\\S]*?>)))');
 
 // Regular expressions for some ending tags
 var etag_regexps = {
@@ -42,7 +48,8 @@ var etag_regexps = {
 var id_regexp = new RegExp('\\s+id\\s*=\\s*("|\')(.*?)("|\')');
 
 
-// This function parses a single JATS XML formula.  The outermost element might be 'disp-formula',
+// This function parses a single JATS XML formula.
+// The outermost element might be 'disp-formula',
 // 'inline-formula', 'mml:math', 'math', or 'tex-math'. It returns an object like
 // {id: 'M1', format: 'latex', style: 'display', q: 'n^2'}
 var parse_outer_formula = function(stag, elem_name, xml) {
@@ -66,26 +73,42 @@ var strip_formula_wrap = function(stag, wrap_elem_name, xml) {
   return xml.substr(stag.length).replace(etag_regexps[wrap_elem_name], "");
 }
 
-// This finishes the parsing job.  It returns an object like
-// {id: 'M1', format: 'latex', q: 'n^2'} (everything except 'style')
+// This finishes the parsing job, getting, as input:
+// * If a <disp-formula> or <inline-formula> wrapper was give, whatever XML was inside; or
+// * The original XML, which has an `mml:math`, `math`, or `tex-math` outermost element
+// It returns an object like
+//   {id: 'M1', format: 'latex', q: 'n^2'}
+// (everything except 'style')
+
 var parse_formula = function(xml) {
   var stag_match = inner_stag_regexp.exec(xml);
   if (!stag_match) return "Bad JATS formula, no start tag";
 
-  var stag = stag_match[1];
-  //return "xml = '" + xml + "', stag_match[0] = '" + stag_match[0] + "', " +
-  //      "stag_match[1] = '" + stag_match[1] + "'";
+  var preamble_and_stag = stag_match[0]; // Everything before and including the start tag
+  var preamble = stag_match[1]           // Everything before the start tag
+  var stag = stag_match[2]               // The complete start tag
+  var elem_name = stag_match[3]          // The element name
+
+  //console.log("xml = '" + xml + "'\n" +
+  //      "  preamble_and_stag = '" + preamble_and_stag + "',\n" +
+  //      "  preamble          = '" + preamble + "',\n" +
+  //      "  stag              = '" + stag + "',\n" +
+  //      "  elem_name         = '" + elem_name + "',\n");
+
   var id_match = stag.match(id_regexp);
   var id = id_match ? id_match[2] : null;
-  var format = stag_match[2] == 'tex-math' ? 'latex' : 'mml';
+  var format = elem_name == 'tex-math' ? 'latex' : 'mml';
 
-  // Get the contents.  For mml, the contents include the start and end tags. For
-  // latex, not.
-  var q = xml;
-  if (format == 'latex') {
-    var stag_length = stag_match[0].length;
-    var etag_regex = etag_regexps["tex-math"];
-    var etag_match = etag_regex.exec(q);
+  // Get the contents.  For mml, the contents include the start and end tags, but
+  // throw away everything before the start tag. For latex, only include what is
+  // between the start and end tags.
+  var q;
+  if (format == 'mml') {
+    q = xml.substr(preamble.length);
+  }
+  else {
+    var stag_length = preamble_and_stag.length;
+    var etag_match = etag_regexps["tex-math"].exec(xml);
     if (!etag_match) return "No closing </tex-math> tag"
     q = xml.substr(stag_length, etag_match.index - stag_length);
   }

@@ -8,7 +8,6 @@ window.engine = (function() {
     var current_type;
     var buffer = [];
 
-
     // Initialize the engine. This is pushed onto the MathJax queue to make sure
     // it is called after MathJax initialization is done.
     var _init = function() {

@@ -107,4 +107,31 @@ By default, this loads MathJax from the NCBI servers, using the same version of
 MathJax and the same configuration file as PMC.  The URL for this is in the
 &lt;script> tag of the bench.html page.
 
+Future enhancements
+-------------------
 
+Possible enhancements:
+
+- Allow POST in other formats.  How about JSON?
+- Implement uploading via "PMCID (from PMC3 by default or PMC3QA on selection)", and 
+  have all of the math displayed on the page.
+
+License and public domain notice
+--------------------------------
+
+Portions of this software from the original [agrbin/svgtex]() project are
+licensed under the MIT license, as described in LICENSE.txt.
+
+Code that was added by government employees or contractors working for the
+National Center for Biotechnology Information (NCBI) is released into the public
+domain, as specified below.
+
+~~~~
+
+> This software is a "United States Government Work" under the terms of the United States Copyright Act. It was written as part of the authors' official duties as United States Government employees and thus cannot be copyrighted. This software is freely available to the public for use. The National Library of Medicine and the U.S. Government have not placed any restriction on its use or reproduction.
+>
+> Although all reasonable efforts have been taken to ensure the accuracy and reliability of the software and data, the NLM and the U.S. Government do not and cannot warrant the performance or results that may be obtained by using this software or data. The NLM and the U.S. Government disclaim all warranties, express or implied, including warranties of performance, merchantability or fitness for any particular purpose.
+> 
+> Please cite NCBI in any work or product based on this material.
+
+~~~~
