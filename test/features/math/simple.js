@@ -135,31 +135,31 @@ describe('Simple Mathoid API tests', function () {
     });
     describe('query parameter', function () {
         //TODO: Figure out error handling or remove error throwing for errors>400 in preq
-        //it("missing q parameter should return 400", function () {
-        //    this.timeout(15000);
-        //    return preq.post({
-        //        uri: baseURL,
-        //        body: {}
-        //    }).
-        //        then(function (res) {
-        //            assert.status(res, 400);
-        //            deepEqual(res.body, {error: "q (query) post parameter is missing!"});
-        //        });
-        //});
-        //it("reject invalid tex inout", function () {
-        //    this.timeout(15000);
-        //    return preq.post({
-        //        uri: baseURL,
-        //        body: {q: "\\newcommand{\\commandname}{buh}"}
-        //    }).
-        //        then(function (res) {
-        //            assert.status(res, 400);
-        //            deepEqual(res.body, {
-        //                success: false,
-        //                "log": "F: \\newcommand"
-        //            });
-        //        });
-        //});
+        it("missing q parameter should return 400", function () {
+            this.timeout(15000);
+            return preq.post({
+                uri: baseURL,
+                body: {}
+            }).
+                then(function (res) {
+                    assert.status(res, 400);
+                    deepEqual(res.body, {error: "q (query) post parameter is missing!"});
+                });
+        });
+        it("reject invalid tex inout", function () {
+            this.timeout(15000);
+            return preq.post({
+                uri: baseURL,
+                body: {q: "\\newcommand{\\commandname}{buh}"}
+            }).
+                then(function (res) {
+                    assert.status(res, 400);
+                    deepEqual(res.body, {
+                        success: false,
+                        "log": "F: \\newcommand"
+                    });
+                });
+        });
     });
 
 });
