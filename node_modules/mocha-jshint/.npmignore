@@ -1,0 +1,7 @@
+.idea
+node_modules
+test
+.gitignore
+.jshintignore
+.jshintrc
+test.js

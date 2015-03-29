@@ -5,7 +5,7 @@
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC="Mathoid HTTP service"
 NAME=mathoid
-SCRIPT_PATH=/usr/lib/mathoid/src/mathoid.js
+SCRIPT_PATH=/usr/lib/mathoid/server.js
 DAEMON="/usr/bin/nodejs $SCRIPT_PATH"
 #DAEMON_ARGS=""
 PIDFILE=/var/run/$NAME.pid

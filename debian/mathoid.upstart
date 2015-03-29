@@ -27,5 +27,5 @@ script
         . "$DEFAULTFILE"
     fi
     chdir "$MATHOID_BASE_PATH"
-    exec /usr/bin/nodejs mathoid.js < /dev/null >> "$MATHOID_LOG_FILE" 2>&1
+    exec /usr/bin/nodejs server.js < /dev/null >> "$MATHOID_LOG_FILE" 2>&1
 end script

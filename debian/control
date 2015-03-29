@@ -11,7 +11,7 @@ Vcs-Git: https://gerrit.wikimedia.org/r/mediawiki/services/mathoid
 Vcs-Browser: https://git.wikimedia.org/tree/mediawiki/services/mathoid
 
 Package: mathoid
-Architecture: any
+Architecture: amd64
 Depends: nodejs (>=0.8.0), logrotate, adduser, ${shlibs:Depends}, ${misc:Depends}
 Enhances: mediawiki
 Description: Web service converting LaTeX to MathML

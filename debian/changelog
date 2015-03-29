@@ -1,3 +1,9 @@
+mathoid (0.2.6) trusty; urgency=medium
+
+  * test new way of ppa building
+
+ -- Moritz Schubotz (Physikerwelt) <wiki@physikerwelt.de>  Sun, 29 MAR 2015 15:16:17 +0000
+
 mathoid (0.2.5ubuntu2) trusty; urgency=medium
 
   * Update npm modules to ubuntu14

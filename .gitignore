@@ -1,6 +1,5 @@
 coverage
 config.yaml
-node_modules
 npm-debug.log
 Makefile
 debian/mathoid.debhelper.log
