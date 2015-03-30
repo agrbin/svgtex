@@ -6,3 +6,5 @@ node_js:
     - "iojs"
 
 script: npm run-script coverage && (npm run-script coveralls || exit 0)
+
+before_install: sudo apt-get install -qq openjdk-7-jre-headless

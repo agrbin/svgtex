@@ -44,9 +44,6 @@ function handleRequest(res, q, type) {
             throw new HTTPError
             ({
                 status: 400,
-                //type: 'unauthorized',
-                //title: 'Unauthorized',
-                //detail: 'You are not authorized to fetch this endpoint!'//,
                 log: sanitizationOutput.status + ': ' + sanitizationOutput.details,
                 success: false
             });
@@ -59,7 +56,7 @@ function handleRequest(res, q, type) {
     if (type === "ascii" || type === "asciimath") {
         type = "AsciiMath";
     }
-    app.mjAPI.typeset({math: q, format: type, svg: true, img: true, mml: mml, speakText: true}, function (data) {
+    app.mjAPI.typeset({math: q, format: type, svg: true, img: true, mml: mml, speakText: true, png: true}, function (data) {
         if (data.errors) {
             data.success = false;
             data.log = "Error:" + JSON.stringify(data.errors);

@@ -12,7 +12,7 @@ Vcs-Browser: https://git.wikimedia.org/tree/mediawiki/services/mathoid
 
 Package: mathoid
 Architecture: amd64
-Depends: nodejs (>=0.8.0), logrotate, adduser, ${shlibs:Depends}, ${misc:Depends}
+Depends: nodejs (>=0.8.0), openjdk-7-jre-headless, logrotate, adduser, ${shlibs:Depends}, ${misc:Depends}
 Enhances: mediawiki
 Description: Web service converting LaTeX to MathML
  Conversion from LaTeX to MathML node.js web service. See http://www.formulasearchengine.com/mathoid.
