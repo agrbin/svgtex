@@ -1,5 +1,4 @@
 coverage
-config.yaml
 npm-debug.log
 Makefile
 debian/mathoid.debhelper.log
@@ -9,3 +8,6 @@ debian/mathoid.postinst.debhelper
 debian/mathoid.preinst.debhelper
 debian/mathoid.prerm.debhelper
 debian/mathoid.substvars
+node_modules
+.idea
+mathoid.iml
