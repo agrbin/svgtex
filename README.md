@@ -1,24 +1,34 @@
-==============
-Mathoid-server
-==============
-[![NPM][NPM1]][NPM2]
+# Mathoid-server
 
 [![Build Status][1]][2] [![dependency status][3]][4] [![dev dependency status][5]][6] [![Coverage Status][7]][8]
+
+[![NPM][9]][10]
 
 Mathoid-server is a service that uses MathJax and PhantomJS to create SVGs and MathML on server side.
 Mathoid-server is a based on svgtex - https://github.com/agrbin/svgtex.
 
 
 
-Installation
-------------
+## Installation
 see http://formulasearchengine.com/mathoid
 
 
-API Description
----------------
+## API Description
 
-to be written
+There is basically just one entry point '/' with one required POST parameter 'q'.
+
+#### q (input to be converted)
+
+* required parameter
+* no $ for (La)TeX input
+
+#### type (the input type)
+* optional
+* defalult 'tex'
+* possible values
+  * tex (texvc input will be verified by texvccheck)
+  * mml (MathML input, used in MW_MATH_LATEXML rendering mode)
+  * ascii (ascii mathml input, experimental)
 
 ## Create a new release
 
@@ -58,8 +68,6 @@ In a lot of cases when there is an issue with node it helps to recreate the `nod
 rm -r node_modules
 npm install
 ```
-[NPM1]: https://nodei.co/npm/mathoid.svg
-[NPM2]: https://nodei.co/npm/mathoid/
 
 [1]: https://travis-ci.org/physikerwelt/mathoid-server.svg
 [2]: https://travis-ci.org/physikerwelt/mathoid-server
@@ -67,5 +75,7 @@ npm install
 [4]: https://david-dm.org/physikerwelt/mathoid-server
 [5]: https://david-dm.org/physikerwelt/mathoid-server/dev-status.svg
 [6]: https://david-dm.org/physikerwelt/mathoid-server#info=devDependencies
-[7]: https://coveralls.io/repos/physikerwelt/mathoid-server/badge.svg
+[7]: https://img.shields.io/coveralls/physikerwelt/mathoid-server.svg
 [8]: https://coveralls.io/r/physikerwelt/mathoid-server
+[9]: https//nodei.co/npm/mathoid.svg
+[10]: https://nodei.co/npm/mathoid/
