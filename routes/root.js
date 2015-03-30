@@ -9,7 +9,7 @@ var sUtil = require('../lib/util');
  */
 var router = sUtil.router();
 var texvcjs = require('texvcjs');
-
+var HTTPError = sUtil.HTTPError;
 
 /**
  * The main application object reported when this module is require()d
@@ -41,13 +41,15 @@ function handleRequest(res, q, type) {
             sanitizedTex = sanitizationOutput.output || '';
             q = sanitizedTex;
         } else {
-            res.writeHead(400, {
-                'Content-Type': 'application/json'
+            throw new HTTPError
+            ({
+                status: 400,
+                //type: 'unauthorized',
+                //title: 'Unauthorized',
+                //detail: 'You are not authorized to fetch this endpoint!'//,
+                log: sanitizationOutput.status + ': ' + sanitizationOutput.details,
+                success: false
             });
-            return res.end(JSON.stringify({
-                success: false,
-                log: sanitizationOutput.status + ': ' + sanitizationOutput.details
-            }));
         }
     }
     if (type === "mml" || type === "MathML") {
@@ -94,10 +96,11 @@ router.post(/^\/$/, function(req, res) {
 
     // First some rudimentary input validation
     if (!(req.body.q)) {
-        res.writeHead(400, {
-            'Content-Type': 'application/json'
+        throw new HTTPError
+        ({
+            status: 400,
+            error: "q (query) post parameter is missing!"
         });
-        return res.end(JSON.stringify({error: "q (query) post parameter is missing!"}));
     }
     var q = req.body.q;
     var type = req.body.type;

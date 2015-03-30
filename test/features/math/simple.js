@@ -143,7 +143,7 @@ describe('Simple Mathoid API tests', function () {
             }).
                 then(function (res) {
                     assert.status(res, 400);
-                    deepEqual(res.body, {error: "q (query) post parameter is missing!"});
+                    deepEqual(res.body.error, "q (query) post parameter is missing!");
                 });
         });
         it("reject invalid tex inout", function () {
@@ -154,11 +154,9 @@ describe('Simple Mathoid API tests', function () {
             }).
                 then(function (res) {
                     assert.status(res, 400);
-                    deepEqual(res.body, {
-                        success: false,
-                        "log": "F: \\newcommand"
+                    deepEqual(res.body.success, false);
+                    deepEqual(res.body.log, "F: \\newcommand");
                     });
-                });
         });
     });
 
