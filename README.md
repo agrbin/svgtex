@@ -1,5 +1,5 @@
-pmc-math-tool-2
-===============
+render-math
+===========
 
 This tool was forked from 
 [agrbin](https://github.com/agrbin)'s excellent [svgtex](https://github.com/agrbin/svgtex) 
@@ -18,7 +18,7 @@ Then, start the server:
 
 ```
 $ phantomjs main.js
-2015-03-26T16:20:05.602Z: Starting PMC Math Tool 2, version 0.1: port = 16000, ...
+2015-03-26T16:20:05.602Z: Starting Render Math, version 0.1: port = 16000, ...
 2015-03-26T16:20:05.602Z: Loading bench page bench.html
 2015-03-26T16:20:05.640Z: Server started on port 16000
 Point your browser at http://localhost:16000 for a test form.
@@ -50,7 +50,7 @@ Two services in one
 This is really two services in one:
 
 1. When you provide it with a single formula in either LaTeX or MathML format, then 
-  that formula will be rendered on our servers, and the results will be returned as 
+  that formula will be rendered on the server, and the results will be returned as 
   a pure SVG resource.
 2. When you provide it with a JATS file that contains one or more equations, then 
   all of the formulas will be extracted from that JATS file, and sent back to your 
@@ -106,9 +106,21 @@ module.
 Loading MathJax
 ---------------
 
-By default, this loads MathJax from the NCBI servers, using the same version of
-MathJax and the same configuration file as PMC.  The URL for this is in the
-&lt;script> tag of the bench.html page.
+By default, this loads MathJax from the MathJax CDN, with this URL:
+*http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_SVG*.
+
+You could use the `--mathjax` command-line option to tell it to load MathJax from
+some alternate location, or to use some alternate configuration file.  For example,
+the following uses the same MathJax deployment as is used in PMC:
+
+```
+phantomjs main.js --mathjax=http://www.ncbi.nlm.nih.gov/core/mathjax/2.5/MathJax.js?\
+config=http://www.ncbi.nlm.nih.gov/staff/maloneyc/mjconfig/mathjax-config-classic.3.4.1.js
+```
+
+[@FIXME: the above URL should be adjusted to use the URL of the released version of the config
+file, once tex-with-mathjax is deployed.]
+
 
 Release procedure
 -----------------

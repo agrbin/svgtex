@@ -6,14 +6,8 @@
 -->
 <html>
   <head>
-    <!--
-      FIXME: the config file location needs to be changed, once this version of the
-      config file gets released and deployed.
-    -->
-      <script type="text/javascript"
-        src="http://www.ncbi.nlm.nih.gov/core/mathjax/2.5/MathJax.js?config=http://www.ncbi.nlm.nih.gov/staff/maloneyc/mjconfig/mathjax-config-classic.3.4.1.js">
-      </script>
-
+    <!-- This gets the real MathJax URL at runtime. -->
+    <script type="text/javascript" src="$mathjax_url"></script>
     <script type="text/javascript" src="engine.js"></script>
   </head>
   <body>

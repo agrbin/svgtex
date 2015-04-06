@@ -18,12 +18,14 @@ var usage =
   '  -p,--port <port>     IP port on which to start the server\n' +
   '  -r,--requests <num>  Process this many requests and then exit.  -1 means \n' +
   '                       never stop.\n' +
-  '  -b,--bench <page>    Use alternate bench page (default is bench.html)\n' +
+  '  -m,--mathjax <url>   Use alternate URL to load MathJax; including the config file\n' +
   '  -d,--debug           Enable verbose debug messages\n';
 
 var port = 16000;
 var requests_to_serve = -1;
-var bench_page = 'bench.html';
+var bench_page = 'bench.html';    // bench page template, before $mathjax_url is substituted
+var tmp_bench = 'tmp_bench.html'; // bench page with the correct value for $mathjax_url
+var mathjax_url = 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_SVG';
 var debug = false;
 
 // Parse command-line options.  This keeps track of which one we are on
@@ -82,7 +84,7 @@ function option_arg_parse(name) {
       port = match - 0;
   }
   else if (name == 'requests') { requests_to_serve = match - 0; }
-  else if (name == 'bench') { bench_page = match; }
+  else if (name == 'mathjax') { mathjax_url = match; }
 
   arg_num++;
   return true;
@@ -99,7 +101,7 @@ while (arg_num < args.length) {
   }
 
   if (option_match('version', false, arg)) {
-    console.log('pmc-math-tool-2 version ' + VERSION);
+    console.log('render-math version ' + VERSION);
     phantom.exit(0);
     break;
   }
@@ -116,7 +118,7 @@ while (arg_num < args.length) {
   if (option_arg_parse('requests')) {
     continue;
   }
-  if (option_arg_parse('bench')) {
+  if (option_arg_parse('mathjax')) {
     continue;
   }
 
@@ -125,10 +127,10 @@ while (arg_num < args.length) {
   break;
 }
 
-log("Starting PMC Math Tool 2, version " + VERSION + ": " +
+log("Starting Render Math, version " + VERSION + ": " +
     'port = ' + port + ", " +
     'requests_to_serve = ' + requests_to_serve + ", " +
-    'bench_page = ' + bench_page + ", " +
+    'mathjax_url = ' + mathjax_url + ", " +
     'debug = ' + debug
 );
 
@@ -409,7 +411,12 @@ function parse_request(req) {
 // This function is called back from page.open, below, after the bench page
 // has loaded.  It sets up the service listener that will respond to every new request.
 
-function listenLoop() {
+function listenLoop(bench_status) {
+  if (bench_status == "fail") {
+    console.error("Bench page failed to load.");
+    phantom.exit(1);
+  }
+
   service = server.listen('0.0.0.0:' + port, function(req, resp) {
     var query = parse_request(req);
     var request_num = query.num;
@@ -510,11 +517,13 @@ function client_table(resp, query) {
   var formulas = query.q;
   var width = query.width || null;
 
+  resp_page = client_template.replace("$mathjax_url", mathjax_url);
+
   var rows = '';
   formulas.forEach(function(f) {
       rows += make_row(f, width);
   });
-  resp_page = client_template.replace("<!-- rows -->", rows);
+  resp_page = resp_page.replace("<!-- rows -->", rows);
 
   var sources = '';
   formulas.forEach(function(f) {
@@ -567,9 +576,21 @@ function log(msg) {
 }
 
 
+// Read the bench page in, substitute the mathjax_url
+
+if (fs.isReadable(bench_page)) {
+  var bench_str = fs.read(bench_page);
+}
+else {
+  console.error("Can't find " + bench_page);
+  phantom.exit(1);
+}
+bench_str = bench_str.replace("$mathjax_url", mathjax_url);
+
 // Open the web page. Once loaded, it will invoke listenLoop.
-log("Loading bench page " + bench_page);
-page.open(bench_page, listenLoop);
+//page.open(tmp_bench, listenLoop);
+page.onLoadFinished = listenLoop;
+page.setContent(bench_str, "file://" + fs.absolute(".") + "/bench.html");
 
 
 
