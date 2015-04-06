@@ -15,7 +15,7 @@
     method: GET
   expected:
     content-type: 'text/html; charset=utf-8'
-    content-contains: "PMC Math Tool 2"
+    content-contains: "Render Math"
 
 # GET request with some bad params
 - name: bad-get-params
