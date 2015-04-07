@@ -101,7 +101,7 @@ while (arg_num < args.length) {
   }
 
   if (option_match('version', false, arg)) {
-    console.log('render-math version ' + VERSION);
+    console.log('RenderMath version ' + VERSION);
     phantom.exit(0);
     break;
   }
@@ -127,7 +127,7 @@ while (arg_num < args.length) {
   break;
 }
 
-log("Starting Render Math, version " + VERSION + ": " +
+log("Starting RenderMath, version " + VERSION + ": " +
     'port = ' + port + ", " +
     'requests_to_serve = ' + requests_to_serve + ", " +
     'mathjax_url = ' + mathjax_url + ", " +

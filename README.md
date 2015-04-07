@@ -18,7 +18,7 @@ Then, start the server:
 
 ```
 $ phantomjs main.js
-2015-03-26T16:20:05.602Z: Starting Render Math, version 0.1: port = 16000, ...
+2015-03-26T16:20:05.602Z: Starting RenderMath, version 0.1: port = 16000, ...
 2015-03-26T16:20:05.602Z: Loading bench page bench.html
 2015-03-26T16:20:05.640Z: Server started on port 16000
 Point your browser at http://localhost:16000 for a test form.
