@@ -1,4 +1,8 @@
 #!/usr/bin/env perl
+# Runs tests against the RenderMath server.  Make sure the server is up and running
+# at the appropriate URL (default is http://localhost:16000, but you can specify another
+# on the command line.)
+# Run `test.pl -?` for usage information.
 
 use strict;
 use warnings;
@@ -15,21 +19,33 @@ use Getopt::Long;
 use Data::Dumper;
 
 my $examples_dir = 'examples';
-my $default_service_url = 'http://localhost:16000/';
+my $default_service_url = 'http://localhost:16000';
 
 my %options;
 my $opts_ok = GetOptions(\%options,
+    'help|?',
     'verbose',
     'writesvg',
     'url=s',
 );
-if (!$opts_ok) {
-    print "Usage:  test.pl [options] [test_name]\n" .
-          "Options\n" .
-          "  --verbose - output verbose messages\n" .
-          "  --writesvg - write the svg results from each test case to a file\n" .
-          "  --url=[url] - the URL of the service; defaults to $default_service_url/\n";
-    exit 1;
+if (!$opts_ok || $options{help}) {
+
+    print <<USAGE;
+Usage:  test.pl [options] [<test_name>]
+Runs tests against the RenderMath server.  Make sure the server is up and running
+at the appropriate URL.
+If no <test_name> is given, then all the tests are run. Test names are defined in
+tests.yaml
+
+Options
+
+--help|-? - print this usage information and exit
+--verbose - output verbose messages
+--writesvg - write the svg results from each test case to a file
+--url=[url] - the URL of the service; defaults to $default_service_url.
+USAGE
+
+    exit !$opts_ok;
 }
 my $verbose = $options{verbose} || 0;
 my $writesvg = $options{writesvg} || 0;
@@ -104,6 +120,12 @@ sub test_one {
         $request_method = $request->{method};
         delete $request->{method};
     }
+    my $path = '/';
+    if ($request->{path}) {
+        $path = $request->{path};
+        delete $request->{path};
+    }
+    my $test_url = $url . $path;
 
     print "\$request: " . Dumper($request) if $verbose;
 
@@ -111,7 +133,7 @@ sub test_one {
     my $response;
     if ($request_method eq 'GET') {
         # Construct the GET URL from the request parameters
-        my $get_url = $url . ((keys $request == 0) ? '' :
+        my $get_url = $test_url . ((keys $request == 0) ? '' :
             '?' . join('&', map {
                 $_ . '=' .uri_encode($request->{$_})
             } keys $request));
@@ -125,7 +147,7 @@ sub test_one {
                     "$_=" . ($_ eq 'q' ? string_start($request->{$_}) : $request->{$_})
                 } keys %$request) . "\n";
         }
-        $response = $ua->post($url, $request);
+        $response = $ua->post($test_url, $request);
     }
 
     my $expected_code = $expected->{code} || 200;

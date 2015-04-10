@@ -272,12 +272,7 @@ function parse_request(req) {
     // Static pages must start with '/examples/' or '/resources/'
     if (url.substr(0, 10) == '/examples/' || url.substr(0, 11) == '/resources/') {
       var static_file = url.substr(1);
-      //console.log("Got a request for an example: " + static_file);
       query.static_file = static_file;
-      //if (!fs.isReadable(url)) {
-      //  query.status_code = 404;   // Not found
-      //  query.error = "Can't find that file";
-      //}
       return query;
     }
 
@@ -418,86 +413,111 @@ function listenLoop(bench_status) {
   }
 
   service = server.listen('0.0.0.0:' + port, function(req, resp) {
-    var query = parse_request(req);
-    var request_num = query.num;
-    log(request_num + ': ' + 
-        "received: " + req.method + " " +
-        req.url.substr(0, 70) + (req.url.length > 70 ? "..." : ""));
-    resp.setHeader("X-XSS-Protection", 0);
+    try {
+      var query = parse_request(req);
+      var request_num = query.num;
+      log(request_num + ': ' + 
+          "received: " + req.method + " " +
+          req.url.substr(0, 70) + (req.url.length > 70 ? "..." : ""));
+      resp.setHeader("X-XSS-Protection", 0);
 
 
-    //console.log("---------------------------------------------\n");
-    //console.log("typeof query.q == " + typeof query.q);
-    //console.log("---------------------------------------------\n");
+      //console.log("---------------------------------------------\n");
+      //console.log("typeof query.q == " + typeof query.q);
+      //console.log("---------------------------------------------\n");
 
-    if (query.error) {
-      log(request_num + ": error: " + query.error);
-      resp.statusCode = query.status_code;
-      resp.setHeader('Content-type', 'text/plain; charset=utf-8');
-      resp.write(query.error);
-      resp.close();
-    }
-    else if (query.test_form) {
-      log(request_num + ": returning test form");
-      /*
-        console.log("resp.headers = {");
-        for (var k in resp.headers) {
-          if (resp.headers.hasOwnProperty(k)) {
-            console.log("  '" + k + "': '" + resp.headers[k] + "'");
-          }
-        }
-        console.log("}");
-      */
-      resp.setHeader('Content-type', 'text/html; charset=utf-8');
-      resp.write(test_form);
-      resp.close();
-    }
-    else if (query.static_file) {
-      var static_file = query.static_file;
-      log(request_num + ": returning " + static_file);
-
-      // I was going to set a content-type, depending on extension, for all of the
-      // examples. But, the test page works better if we always use 'text/plain', because
-      // (for example) we don't have to worry about the browser trying to parse known-bad
-      // examples.
-      var extension = static_file.replace(/.*\.(.*)/, "$1");
-      var media_types = {
-        'js': 'application/javascript; charset=utf-8',
-        'html': 'text/html; charset=utf-8'
-      //  'latex': 'application/x-tex; charset=utf-8',
-      //  'mml': 'application/mathml+xml; charset=utf-8',
-      //  'nxml': 'application/jats+xml; charset=utf-8'
-      };
-      var media_type = media_types[extension] ? media_types[extension] : 'text/plain';
-
-      resp.setHeader('Content-type', media_type);
-      
-      var file_contents = fs.read(static_file);
-      resp.write(file_contents);
-      resp.close();
-    }
-
-    else if (query.in_format == 'jats') {
-      client_table(resp, query);
-    }
-
-    else {
-      // We need to send the contents to MathJax.
-      // The following evaluates the function argument in the bench page's context,
-      // with query -> _query. That, in turn, calls the process() function in
-      // engine.js, which causes MathJax to render the math.  The callback is
-      // PhantomJS's callPhantom() function, which in turn calls page.onCallback(),
-      // above.  This just queues up the call, and will return at once.
-
-      // Implement latex_style here
-      if (query.in_format == 'latex' && query.latex_style == 'display') {
-        query.q = '\\displaystyle{' + query.q + '}';
+      if (query.error) {
+        log(request_num + ": error: " + query.error);
+        resp.statusCode = query.status_code;
+        resp.setHeader('Content-type', 'text/plain; charset=utf-8');
+        resp.write(query.error);
+        resp.close();
       }
-      log(request_num + ": sending to MathJax");
-      activeRequests[request_num] = [resp, (new Date()).getTime()];
-      page.evaluate(function(_query) {
-        window.engine.process(_query, window.callPhantom);
-      }, query);
+      else if (query.test_form) {
+        log(request_num + ": returning test form");
+        /*
+          console.log("resp.headers = {");
+          for (var k in resp.headers) {
+            if (resp.headers.hasOwnProperty(k)) {
+              console.log("  '" + k + "': '" + resp.headers[k] + "'");
+            }
+          }
+          console.log("}");
+        */
+        resp.setHeader('Content-type', 'text/html; charset=utf-8');
+        resp.write(test_form);
+        resp.close();
+      }
+      else if (query.static_file) {
+        var static_file = query.static_file;
+
+        var read_error = false;
+        try {
+          var file_contents = fs.read(static_file);
+        }
+        catch(e) {
+          var errmsg = e;
+          log(request_num + ": " + errmsg);
+          resp.statusCode = 404;
+          resp.setHeader('Content-type', 'text/plain; charset=utf-8');
+          resp.write(errmsg);
+          read_error = true;
+        }
+
+        if (!read_error) {
+          log(request_num + ": returning " + static_file);
+
+          // I was going to set a content-type, depending on extension, for all of the
+          // examples. But, the test page works better if we always use 'text/plain', because
+          // (for example) we don't have to worry about the browser trying to parse known-bad
+          // examples.
+          var extension = static_file.replace(/.*\.(.*)/, "$1");
+          var media_types = {
+            'js': 'application/javascript; charset=utf-8',
+            'html': 'text/html; charset=utf-8'
+          //  'latex': 'application/x-tex; charset=utf-8',
+          //  'mml': 'application/mathml+xml; charset=utf-8',
+          //  'nxml': 'application/jats+xml; charset=utf-8'
+          };
+          var media_type = media_types[extension] ? media_types[extension] 
+                                                  : 'text/plain; charset=utf-8';
+          resp.setHeader('Content-type', media_type);
+
+          resp.write(file_contents);
+        }
+
+        resp.close();
+      }
+
+      else if (query.in_format == 'jats') {
+        client_table(resp, query);
+      }
+
+      else {
+        // We need to send the contents to MathJax.
+        // The following evaluates the function argument in the bench page's context,
+        // with query -> _query. That, in turn, calls the process() function in
+        // engine.js, which causes MathJax to render the math.  The callback is
+        // PhantomJS's callPhantom() function, which in turn calls page.onCallback(),
+        // above.  This just queues up the call, and will return at once.
+
+        // Implement latex_style here
+        if (query.in_format == 'latex' && query.latex_style == 'display') {
+          query.q = '\\displaystyle{' + query.q + '}';
+        }
+        log(request_num + ": sending to MathJax");
+        activeRequests[request_num] = [resp, (new Date()).getTime()];
+        page.evaluate(function(_query) {
+          window.engine.process(_query, window.callPhantom);
+        }, query);
+      }
+    }
+    catch(e) {
+      var errmsg = "Unknown server error: " + e;
+      resp.statusCode = 500;
+      resp.setHeader('Content-type', 'text/plain; charset=utf-8');
+      resp.write(e);
+      resp.close();
     }
   });
 

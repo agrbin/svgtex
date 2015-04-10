@@ -1,8 +1,11 @@
 # PMC Math Tool 2 tests
 
 # When composing the request, any parameter not given here will be absent in the
-# request. If request.example is given, then that example file will be read, and
-# stuffed into request.q. Default request.method is 'POST'.
+# request. The keys under request are:
+#   - method: HTTP method (GET, POST, etc.). Default is POST.
+#   - path: the path portion of the URL (defaults to '/')
+#   - example: that example file will be read, and stuffed into the `q` parameter. 
+#   - <anything else>: used as a request parameter
 # Defaults:
 #   request.method: POST
 #   expected.code: 200
@@ -15,7 +18,34 @@
     method: GET
   expected:
     content-type: 'text/html; charset=utf-8'
-    content-contains: "Render Math"
+    content-contains: "RenderMath"
+
+# GET a static page
+- name: static-page
+  request:
+    method: GET
+    path: /examples/README.md
+  expected:
+    content-type: 'text/plain; charset=utf-8'
+    content-contains: "Most of the examples"
+
+# GET a static resource
+- name: static-resource
+  request:
+    method: GET
+    path: /resources/client.js
+  expected:
+    content-type: 'application/javascript; charset=utf-8'
+
+# Bad GET: non-existent page
+- name: bad-static
+  request:
+    method: GET
+    path: /examples/foo.txt 
+  expected:
+    code: 404
+    content-type: 'text/plain; charset=utf-8'
+    content-contains: "Unable to open file"
 
 # GET request with some bad params
 - name: bad-get-params
@@ -153,7 +183,7 @@
     example: jats-latex-one
   expected:
     content-type: 'text/html; charset=utf-8'
-    content-contains: 'Math Tool 2'
+    content-contains: 'RenderMath'
 
 # JATS file with two good latex equations
 - name: jats-latex-two
@@ -161,7 +191,7 @@
     example: jats-latex-two
   expected:
     content-type: 'text/html; charset=utf-8'
-    content-contains: 'Math Tool 2'
+    content-contains: 'RenderMath'
 
 # JATS file with one good and one bad latex equation
 - name: bad-jats-latex
@@ -178,7 +208,7 @@
     example: jats-mathml-one-nons
   expected:
     content-type: 'text/html; charset=utf-8'
-    content-contains: 'Math Tool 2'
+    content-contains: 'RenderMath'
 
 # JATS file with one MathML formula, with namespace prefix
 - name: jats-mathml-one-ns
@@ -186,7 +216,7 @@
     example: jats-mathml-one-ns
   expected:
     content-type: 'text/html; charset=utf-8'
-    content-contains: 'Math Tool 2'
+    content-contains: 'RenderMath'
 
 # JATS file with multiple MathML formulas
 - name: jats-mathml-many
@@ -194,7 +224,7 @@
     example: jats-mathml-many
   expected:
     content-type: 'text/html; charset=utf-8'
-    content-contains: 'Math Tool 2'
+    content-contains: 'RenderMath'
 
 # JATS file with a unicode (non-ascii) character
 - name: jats-with-unicode
@@ -202,7 +232,7 @@
     example: jats-with-unicode
   expected:
     content-type: 'text/html; charset=utf-8'
-    content-contains: 'Math Tool 2'
+    content-contains: 'RenderMath'
 
 # Real JATS file, article 3479416 from BMC
 - name: jats-3479416
@@ -210,7 +240,7 @@
     example: jats-3479416
   expected:
     content-type: 'text/html; charset=utf-8'
-    content-contains: 'Math Tool 2'
+    content-contains: 'RenderMath'
 
 # Real JATS file, article 2762331 from PLoS Currents
 - name: jats-2762331
@@ -218,7 +248,7 @@
     example: jats-2762331
   expected:
     content-type: 'text/html; charset=utf-8'
-    content-contains: 'Math Tool 2'
+    content-contains: 'RenderMath'
 
 
 
