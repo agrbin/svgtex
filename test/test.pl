@@ -18,7 +18,7 @@ use URI::Encode qw(uri_encode);
 use Getopt::Long;
 use Data::Dumper;
 
-my $examples_dir = 'examples';
+my $examples_dir = '../examples';
 my $default_service_url = 'http://localhost:16000';
 
 my %options;

@@ -1,3 +1,7 @@
+// This is the main phantomjs program that runs on the server. It loads the engine.html
+// page inside the headless browser, and then starts up an HTTP service that listens for 
+// requests.
+
 // Version
 var VERSION = '0.1-dev';
 
@@ -23,8 +27,7 @@ var usage =
 
 var port = 16000;
 var requests_to_serve = -1;
-var bench_page = 'bench.html';    // bench page template, before $mathjax_url is substituted
-var tmp_bench = 'tmp_bench.html'; // bench page with the correct value for $mathjax_url
+var engine_page = 'engine.html';    // engine page template, before $mathjax_url is substituted
 var mathjax_url = 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_SVG';
 var debug = false;
 
@@ -144,8 +147,8 @@ var request_num = 0;
 var activeRequests = {};
 
 // This will hold the test HTML form, which is read once, the first time it is
-// requested, from test.html.
-var test_form_filename = 'test.html';
+// requested, from main.html.
+var test_form_filename = 'main.html';
 var test_form = null;
 
 // Similarly, this will hold the client template HTML file.  But this is read right
@@ -403,12 +406,12 @@ function parse_request(req) {
 
 
 
-// This function is called back from page.open, below, after the bench page
+// This function is called back from page.open, below, after the engine page
 // has loaded.  It sets up the service listener that will respond to every new request.
 
-function listenLoop(bench_status) {
-  if (bench_status == "fail") {
-    console.error("Bench page failed to load.");
+function listenLoop(engine_status) {
+  if (engine_status == "fail") {
+    console.error("Engine page failed to load.");
     phantom.exit(1);
   }
 
@@ -495,7 +498,7 @@ function listenLoop(bench_status) {
 
       else {
         // We need to send the contents to MathJax.
-        // The following evaluates the function argument in the bench page's context,
+        // The following evaluates the function argument in the engine page's context,
         // with query -> _query. That, in turn, calls the process() function in
         // engine.js, which causes MathJax to render the math.  The callback is
         // PhantomJS's callPhantom() function, which in turn calls page.onCallback(),
@@ -596,30 +599,29 @@ function log(msg) {
 }
 
 
-// Read the bench page in, substitute the mathjax_url
+// Read the engine page in, substitute the mathjax_url
 
-if (fs.isReadable(bench_page)) {
-  var bench_str = fs.read(bench_page);
+if (fs.isReadable(engine_page)) {
+  var engine_str = fs.read(engine_page);
 }
 else {
-  console.error("Can't find " + bench_page);
+  console.error("Can't find " + engine_page);
   phantom.exit(1);
 }
-bench_str = bench_str.replace("$mathjax_url", mathjax_url);
+engine_str = engine_str.replace("$mathjax_url", mathjax_url);
 
 // Open the web page. Once loaded, it will invoke listenLoop.
-//page.open(tmp_bench, listenLoop);
 page.onLoadFinished = listenLoop;
-page.setContent(bench_str, "file://" + fs.absolute(".") + "/bench.html");
+page.setContent(engine_str, "file://" + fs.absolute(".") + "/engine.html");
 
 
 
 
 /* These includeJs calls would allow us to specify the MathJax location as a
    command-line parameter, but then you'd have to take the <script> tags out of
-   bench.html, and we'd lose the ability to debug by loading that in a browser
+   engine.html, and we'd lose the ability to debug by loading that in a browser
    directly.
-page.open('bench.html', function (status) {
+page.open('engine.html', function (status) {
   page.includeJs('mathjax/MathJax.js?config=TeX-AMS-MML_SVG', function() {
     page.includeJs('engine.js', listenLoop);
   });

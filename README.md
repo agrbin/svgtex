@@ -19,7 +19,6 @@ Then, start the server:
 ```
 $ phantomjs main.js
 2015-03-26T16:20:05.602Z: Starting RenderMath, version 0.1: port = 16000, ...
-2015-03-26T16:20:05.602Z: Loading bench page bench.html
 2015-03-26T16:20:05.640Z: Server started on port 16000
 Point your browser at http://localhost:16000 for a test form.
 ```
@@ -86,6 +85,8 @@ To see the command line options that are available when you start the service, e
 
 Example input files are included in the *examples* subdirectory. Metadata about these
 examples is in the *examples.yaml* file.
+
+Test files are in the *test* subdirectory.
 
 The Perl script *test.pl* runs automated tests against the service, using tests defined
 in the *tests.yaml* file. Most of those tests use the example files 

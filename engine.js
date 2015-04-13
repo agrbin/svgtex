@@ -1,4 +1,5 @@
-// Create and initialize the singleton engine object.
+// Create and initialize the singleton engine object. This runs inside
+// the bench.html page in the headless browser on the server.
 
 window.engine = (function() {
 

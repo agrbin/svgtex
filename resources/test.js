@@ -1,4 +1,8 @@
 // test.js
+// This loads from the HTML page that is presented to the client when he/she enters,
+// for example, http://localhost:16000. Since this application is, first and foremost, 
+// a service, we call that the "test page". This javascript populates the list of
+// examples at the bottom, and then sets even handlers to wait for user input.
 
 (function($) {
 
