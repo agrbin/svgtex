@@ -63,7 +63,7 @@
   "deploy": {
     "target": "ubuntu",
     "dependencies": {
-      "_all": []
+      "_all": ["openjdk-7-jre-headless"]
     }
   }
 }
