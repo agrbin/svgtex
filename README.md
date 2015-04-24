@@ -61,9 +61,11 @@ reporting the percentage of code covered. Start it with:
 npm run-script coverage
 ```
 
-## Troubleshooting
+### Troubleshooting
 
-In a lot of cases when there is an issue with node it helps to recreate the `node_modules` directory:
+In a lot of cases when there is an issue with node it helps to recreate the
+`node_modules` directory:
+
 ```
 rm -r node_modules
 npm install

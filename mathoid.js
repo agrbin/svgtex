@@ -34,9 +34,34 @@ function initApp(options) {
     app.info = packageInfo;         // this app's package info
 
     // ensure some sane defaults
-    if (!app.conf.port) { app.conf.port = 10042; }
-    if (!app.conf.interface) { app.conf.interface = '0.0.0.0'; }
-    if (!app.conf.compression_level) { app.conf.compression_level = 3; }
+    if(!app.conf.port) { app.conf.port = 10042; }
+    if(!app.conf.interface) { app.conf.interface = '0.0.0.0'; }
+    if(!app.conf.compression_level) { app.conf.compression_level = 3; }
+    if(app.conf.cors === undefined) { app.conf.cors = '*'; }
+    if(!app.conf.csp) {
+        app.conf.csp =
+            "default-src 'self'; object-src 'none'; media-src *; img-src *; style-src *; frame-ancestors 'self'";
+    }
+
+    // set outgoing proxy
+    if(app.conf.proxy) {
+        process.env.HTTP_PROXY = app.conf.proxy;
+    }
+
+    // set the CORS and CSP headers
+    app.all('*', function(req, res, next) {
+        if(app.conf.cors !== false) {
+            res.header('Access-Control-Allow-Origin', app.conf.cors);
+            res.header('Access-Control-Allow-Headers', 'Accept, X-Requested-With, Content-Type');
+        }
+        res.header('X-XSS-Protection', '1; mode=block');
+        res.header('X-Content-Type-Options', 'nosniff');
+        res.header('X-Frame-Options', 'SAMEORIGIN');
+        res.header('Content-Security-Policy', app.conf.csp);
+        res.header('X-Content-Security-Policy', app.conf.csp);
+        res.header('X-WebKit-CSP', app.conf.csp);
+        next();
+    });
 
     // disable the X-Powered-By header
     app.set('x-powered-by', false);
@@ -75,34 +100,34 @@ function loadRoutes (app) {
 
     // get the list of files in routes/
     return fs.readdirAsync(__dirname + '/routes')
-        .map(function (fname) {
-            // ... and then load each route
-            // but only if it's a js file
-            if (!/\.js$/.test(fname)) {
-                return;
-            }
-            // import the route file
-            var route = require(__dirname + '/routes/' + fname);
-            route = route(app);
-            // check that the route exports the object we need
-            if (route.constructor !== Object || !route.path || !route.router || !(route.api_version || route.skip_domain)) {
-                throw new TypeError('routes/' + fname + ' does not export the correct object!');
-            }
-            // wrap the route handlers with Promise.try() blocks
-            sUtil.wrapRouteHandlers(route.router);
-            // determine the path prefix
-            var prefix = '';
-            if(!route.skip_domain) {
-                prefix = '/:domain/v' + route.api_version;
-            }
-            // all good, use that route
-            app.use(prefix + route.path, route.router);
-        }).then(function () {
-            // catch errors
-            sUtil.setErrorHandler(app);
-            // route loading is now complete, return the app object
-            return BBPromise.resolve(app);
-        });
+    .map(function (fname) {
+        // ... and then load each route
+        // but only if it's a js file
+        if(!/\.js$/.test(fname)) {
+            return;
+        }
+        // import the route file
+        var route = require(__dirname + '/routes/' + fname);
+        route = route(app);
+        // check that the route exports the object we need
+        if(route.constructor !== Object || !route.path || !route.router || !(route.api_version || route.skip_domain)) {
+            throw new TypeError('routes/' + fname + ' does not export the correct object!');
+        }
+        // wrap the route handlers with Promise.try() blocks
+        sUtil.wrapRouteHandlers(route.router, app);
+        // determine the path prefix
+        var prefix = '';
+        if(!route.skip_domain) {
+            prefix = '/:domain/v' + route.api_version;
+        }
+        // all good, use that route
+        app.use(prefix + route.path, route.router);
+    }).then(function () {
+        // catch errors
+        sUtil.setErrorHandler(app);
+        // route loading is now complete, return the app object
+        return BBPromise.resolve(app);
+    });
 
 }
 
