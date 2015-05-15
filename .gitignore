@@ -11,4 +11,4 @@ debian/mathoid.prerm.debhelper
 debian/mathoid.substvars
 node_modules
 .idea
-mathoid.iml
+mathoid*.iml

@@ -56,7 +56,14 @@ function handleRequest(res, q, type) {
     if (type === "ascii" || type === "asciimath") {
         type = "AsciiMath";
     }
-    app.mjAPI.typeset({math: q, format: type, svg: true, img: true, mml: mml, speakText: true, png: true}, function (data) {
+    app.mjAPI.typeset( {
+        math: q,
+        format: type,
+        svg: app.conf.svg,
+        img: app.conf.img,
+        mml: mml,
+        speakText: app.conf.speakText,
+        png: app.conf.png }, function (data) {
         if (data.errors) {
             data.success = false;
             data.log = "Error:" + JSON.stringify(data.errors);

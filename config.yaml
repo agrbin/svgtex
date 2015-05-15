@@ -33,3 +33,7 @@ services:
       port: 10042
       # interface: localhost # uncomment to only listen on localhost
       # more per-service config settings
+      svg: true
+      img: true
+      png: true #new feature
+      speakText: true #new feature
