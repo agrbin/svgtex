@@ -13,16 +13,6 @@ var assert = require('../../utils/assert.js');
 var server = require('../../utils/server.js');
 var baseURL =  server.config.uri;
 
-function deepEqual(result, expected) {
-    try {
-        assert.deepEqual(result, expected);
-    } catch (e) {
-      //  console.log('Expected:\n' + JSON.stringify(expected, null, 2));
-      //  console.log('Result:\n' + JSON.stringify(result, null, 2));
-        throw e;
-    }
-}
-
 var testData = [
         {
             query: {
@@ -133,7 +123,14 @@ describe('Simple Mathoid API tests', function () {
                 })
                     .then(function (res) {
                         assert.status(res, data.response.status);
-                        deepEqual(res.body, data.response.body);
+                        Object.keys(data.response.body).forEach(function(key) {
+                            if(key === 'png') {
+                                assert.notDeepEqual(res.body.png, undefined);
+                                assert.notDeepEqual(res.body.png.length, 0);
+                            } else {
+                                assert.deepEqual(res.body[key], data.response.body[key]);
+                            }
+                        });
                     });
             });
         });
@@ -148,7 +145,7 @@ describe('Simple Mathoid API tests', function () {
                 throw new Error('Expected an error to be thrown, got status: ' + res.status);
             }, function (res) {
                 assert.status(res, 400);
-                deepEqual(res.body.error, "q (query) post parameter is missing!");
+                assert.deepEqual(res.body.error, "q (query) post parameter is missing!");
             });
         });
         it("reject invalid tex input", function () {
@@ -160,8 +157,8 @@ describe('Simple Mathoid API tests', function () {
                 throw new Error('Expected an error to be thrown, got status: ' + res.status);
             }, function (res) {
                 assert.status(res, 400);
-                deepEqual(res.body.success, false);
-                deepEqual(res.body.log, "F: \\newcommand");
+                assert.deepEqual(res.body.success, false);
+                assert.deepEqual(res.body.log, "F: \\newcommand");
             });
         });
     });
