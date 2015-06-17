@@ -540,6 +540,27 @@ function client_table(resp, query) {
   var formulas = query.q;
   var width = query.width || null;
 
+  // We have to do some munging of the mathjax_url to avoid the 15-second problem.
+  // This is a nasty hack, but I can't think of a better solution. The problem is that
+  // PMC mathjax config files must be invoked host-relative, because they have this line
+  // at the end:
+  //    MathJax.Ajax.loadComplete("/corehtml/pmc/js/mathjax-config-classic.3.4.1.js");
+  // But, inside phantomjs, if you try to use host-relative URL for the mathjax config
+  // file, it fails. So, we've configured our servers to start phantomjs using the
+  // full URLs of the config file, including domain, like this:
+  //    phantomjs main.js --mathjax=http://www.ncbi.nlm.nih.gov/core/mathjax/2.5/MathJax.js?\
+  //        config=http://www.ncbi.nlm.nih.gov/corehtml/pmc/js/mathjax-config-classic.3.4.1.js
+  // But that means that, when setting the script tag in the page returned to the client,
+  // we have to strip out the schema and domain from the config file URL.
+  var re = /(http:\/\/([a-z]+)\.ncbi\.nlm\.nih\.gov[^?]*)\?config=http:\/\/([a-z]+)\.ncbi\.nlm\.nih\.gov(.*)/;
+  var m = mathjax_url.match(re);
+  if (m && m[2] == m[3]) {
+    mathjax_url = m[1] + "?config=" + m[4];
+  }
+
+
+
+
   resp_page = client_template.replace("$mathjax_url", mathjax_url);
 
   var rows = '';
