@@ -14,7 +14,7 @@ var bodyParser = require('body-parser');
 var fs = BBPromise.promisifyAll(require('fs'));
 var sUtil = require('./lib/util');
 var packageInfo = require('./package.json');
-var mjAPI = require("./node_modules/MathJax-node/lib/mj-single.js");
+var mjAPI = require("MathJax-node/lib/mj-single.js");
 
 
 /**
