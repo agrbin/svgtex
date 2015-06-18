@@ -3,7 +3,7 @@
 // requests.
 
 // Version
-var VERSION = '1.0';
+var VERSION = '1.1-SNAPSHOT';
 
 var system = require('system');
 var args = system.args;
