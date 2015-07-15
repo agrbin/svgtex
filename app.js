@@ -78,6 +78,7 @@ function initApp(options) {
 
     mjAPI.config({
         MathJax: {
+            menuSettings: {semantics: true},
             SVG: {font: "TeX"}//,
             //TeX: {extensions: ["mediawiki-texvc.js"]}
         }
