@@ -137,7 +137,10 @@ window.engine = (function() {
                 script_elem.appendChild(document.createTextNode(q));
             },
 
-            // (Re)process the equation
+            // (Re)process the equation. Make sure equation labels are reset, see
+            // https://groups.google.com/forum/#!topic/mathjax-users/cpwy5eCH1ZQ/discussion
+            ["resetEquationNumbers", MathJax.InputJax.TeX], 
+            ["PreProcess", MathJax.Hub], 
             ["Reprocess", jax],
 
             // Evaluate the results
